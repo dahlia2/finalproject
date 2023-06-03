@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewLike {
+public class ReviewLikeDTO {
 	
 	private int reviewNo;
 	private int userNo;

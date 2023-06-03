@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WithDTO {
+public class WishDTO {
 	
 	private int classNo;
 	private int userNo;
 	
-
 }

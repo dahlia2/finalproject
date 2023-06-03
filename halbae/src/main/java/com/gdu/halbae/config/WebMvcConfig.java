@@ -22,12 +22,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
   public void addInterceptors(InterceptorRegistry registry) {
     
     registry.addInterceptor(loginCheckInterceptor)
-      .addPathPatterns("/bbs/write.html", "/upload/write.html")
-      .addPathPatterns("/user/logout.do");
+      .addPathPatterns("", "")
+      .addPathPatterns("");
     
-    //registry.addInterceptor(loginCheckInterceptor)
-    //  .addPathPatterns("/**")                  // 모든 요청
-    //  .excludePathPatterns("/user/leave.do");  // 제외할 요청
+    // registry.addInterceptor(loginCheckInterceptor)
+    // .addPathPatterns("/**")                  // 모든 요청
+    // .excludePathPatterns("/user/leave.do");  // 제외할 요청
       
   }
   

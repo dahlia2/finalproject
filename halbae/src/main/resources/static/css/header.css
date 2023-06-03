@@ -1,0 +1,37 @@
+#headerWrap {
+  display: flex;
+  width: 1100px;
+  height: 100px;
+  line-height: 150px;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+#headerLogo {
+  margin-right: 60px;
+  height: 100px;
+  line-height: 100px;
+}
+#headerSearchArea {
+  height: 100px;
+  line-height: 100px;
+}
+#searchBar {
+  width: 350px;
+  height: 40px;
+  padding: 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #f8f8f8;
+}
+#headerNav {
+  margin-left: 90px;
+  height: 100px;
+  line-height: 100px;
+}
+#headerNav > ul {
+  display: flex;
+  list-style: none;
+}
+#headerNav li {
+  margin-left: 20px;
+}

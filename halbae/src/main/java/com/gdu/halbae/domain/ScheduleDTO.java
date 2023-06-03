@@ -15,7 +15,7 @@ public class ScheduleDTO {
 	private ClassListDTO classNo;   // 클래스식별자
 	private Date schStart;          // 시작시간
 	private Date schEnd;            // 종료시간
-	private int enrollPerson;       // 정원
+	private int schMaxNum;          // 정원
 	private String schCity;  		// 지역명
 	private int schState;           // 수강가능유무 (불가능 0, 가능 1)
 

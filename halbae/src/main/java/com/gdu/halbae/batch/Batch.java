@@ -1,5 +1,5 @@
 package com.gdu.halbae.batch;
 
-public class mapper {
+public class Batch {
 
 }

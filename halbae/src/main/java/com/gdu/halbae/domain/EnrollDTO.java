@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EnrollDTO {
 	
-	private int enrollNo;          // 수강신청식별번호
-	private UserDTO userNo;       // 회원식별자
-	private ScheduleDTO schNo;      // 일정식별변호
+	private int enrollNo;          // 수강신청식별자
+	private UserDTO userNo;        // 회원식별자
+	private ScheduleDTO schNo;     // 일정식별변호
 	private Date enrollDate;       // 수강신청일
 	private int enrollPerson;      // 신청인원
 	private String enrollRequest;  // 요청사항

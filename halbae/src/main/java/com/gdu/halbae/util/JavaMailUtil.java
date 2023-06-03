@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
          - [생성]      : 16자리 앱 비밀번호 생성
 */
 
-@PropertySource(value={"classpath:application.properties"})
+@PropertySource(value={"classpath:application.yaml"})
 @Component
 public class JavaMailUtil {
 
