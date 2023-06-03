@@ -1,10 +1,7 @@
 package com.gdu.halbae.intercept;
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,6 +15,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     
+    /*
     HttpSession session = request.getSession();
     
     // 로그인 여부 확인
@@ -38,10 +36,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
       
       return false;  // 컨트롤러의 요청이 처리되지 않는다.
       
-    }
-    
-    return true;     // 컨트롤러의 요청이 처리된다.
-    
+    } 
+   
+    */ 
+	  return true;     // 컨트롤러의 요청이 처리된다.
   }
   
 }
