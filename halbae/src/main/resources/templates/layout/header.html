@@ -12,40 +12,41 @@
 
 <body>
 
-	<div th:fragment="gnbFrag">
-	  	<div id="headerWrap">
+	  	<div id="headerWrap" th:fragment="gnbFrag">
 	  		<div id="headerLogo">
-	          <img th:src="@{images/logo_hb.gif}" width="230px;"/>
-	        </div>
-	        <div id="headerSearchArea">
-	          <form action="#">
-	            <input id="searchBar" placeholder="하루의 배움을 만나보세요." />
-	          </form>
-	        </div>
-	        <nav id="headerNav">
-	          <ul>
-	            <li>
-	              <p>튜터메뉴</p>
-	            </li>
-	            <li>
-	              <p>메세지</p>
-	            </li>
-	            <li>
-	              <p>클래스신청서</p>
-	            </li>
-	            <li>
-	              <p>수강목록</p>
-	            </li>
-	            <li>
-	              <p>찜</p>
-	            </li>
-	            <li>
-	              <p>프로필</p>
-	            </li>
-	          </ul>
-	        </nav>
+          <img th:src="@{images/logo_hb.gif}" width="230px;"/>
+        </div>
+        <form>
+        	<fieldset id="headerSearchArea">        	
+            <input id="searchBar" placeholder="하루의 배움을 만나보세요." />
+            <button id="searchBtn">
+            	<i class="fa-solid fa-magnifying-glass fa-xl"></i>
+            </button>
+        	</fieldset>
+   			</form>
+        <nav id="headerNav">
+          <ul>
+            <li>
+              <p>튜터메뉴</p>
+            </li>
+            <li>
+              <p>메세지</p>
+            </li>
+            <li>
+              <p>클래스신청서</p>
+            </li>
+            <li>
+              <p>수강목록</p>
+            </li>
+            <li>
+              <p>찜</p>
+            </li>
+            <li>
+              <p>프로필</p>
+            </li>
+          </ul>
+        </nav>
 		</div>
-	</div>
   
 </body>
 </html>
