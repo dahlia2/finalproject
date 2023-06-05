@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('회원가입 화면')}"></head>
+<body>
+	<div th:replace="~{/layout/header::gnbFrag}"></div>
+	
+	<form method="post" action="@{/user/agree.do}">
+		<input name="userName" placeholder="이름을 입력해주세요.">
+		<input name="useId" placeholder="이메일 주소를 입력해주세요.">
+		<input type="password" name="userPw" placeholder="비밀번호를 입력해주세요.">
+		<input type="password" placeholder="비밀번호를 재입력해주세요.">
+		<button>다음</button>
+	</form> 
+	
+</body>
+</html>
