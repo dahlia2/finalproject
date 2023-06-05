@@ -3,8 +3,19 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- 클래스, 일정, 썸네일 조인.. 흠 -->
 <!-- namespace는 @Mapper를 지정한다. -->
 <mapper namespace="com.gdu.halbae.mapper.EnrollMapper">
+
+	<select id="selectUserById" parameterType="String" resultType="UserDTO">
+		SELECT USER_NO
+		  FROM USER
+		 WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="selectClassByNo" parameterType="int" resultType="ClassListDTO">
+		SELECT CLASSTITLE, CLASSGRADE
+	</select>
 
 
 </mapper>

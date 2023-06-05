@@ -16,7 +16,7 @@
   line-height: 100px;
 }
 #searchBar {
-  width: 350px;
+  width: 200px;
   height: 40px;
   padding: 20px;
   border: none;
@@ -30,7 +30,6 @@
 }
 #headerNav > ul {
   display: flex;
-  list-style: none;
 }
 #headerNav li {
   margin-left: 20px;

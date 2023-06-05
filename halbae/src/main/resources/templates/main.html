@@ -1,18 +1,78 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<head th:replace="~{/layout/header::headFrag('Main')}"></head>
+
+<link rel="stylesheet" th:href="@{/css/main.css(ver=1.0)}">
+
+<script>
+var imgArray=new Array();
+imgArray[0]="/images/main/bigBanner1.png";
+imgArray[1]="/images/main/bigBanner2.png";
+
+function showImage(){
+	 var imgNum=Math.round(Math.random()*1);
+	 var objImg=document.getElementById("bigBanner");
+	 objImg.src=imgArray[imgNum];
+	 setTimeout(showImage,2000);
+}
+</script>
+
+<body onload="showImage()">
+
+<div th:replace="~{/layout/header::gnbFrag}"></div>
+
+<div class="main_container">
   
-  <div>
-	  <img th:src="@{/images/의문종찬.png}" width="250px;">
-	  <img th:src="@{/images/의문우민.png}" width="250px;">
-	  <img th:src="@{/images/의문현주.png}" width="250px;">
-	  <img th:src="@{/images/의문민서.png}" width="250px;">
+  	<div class="main_top">
+  		<div class="main_top_L">
+	  		<div class="login_box">
+	  			<div class="pr_hi">
+		  			<img th:src="@{images/main/default_user.png}" id="user_profile">
+		  			<div id="user_hi"><span style="font-size: 22px; font-weight: 600;">회원이름</span> 님!&nbsp;반가워요😊</div>
+	  			</div>
+		  			<p id="logout"><a th:href="@{user/logout.do}">로그아웃</a></p>
+		  		<div id="button_wrap1"><div>쿠폰함</div><div>캐시</div></div>
+		  		<div id="button_wrap2"><div>메세지</div><div>강의내역</div><div>찜</div></div>
+	  		</div>
+	  		<div class="smallBanner1"></div>
+  		</div>
+  		<div class="main_top_R">
+	  		<div>
+	  			<img src="../static/images/main/bigBanner1.png" id="bigBanner">
+	  		</div>
+  		</div>
+  	</div>
+  
+  	<div class="main_middle">
+  		<div class="smallBanner2"></div>
+  		<div class="classBar_Container">
+  			<ul id="class_Bar">
+  				<li onclick="fnList('all')"><img th:src="@{/images/main/all.png}" width="50px"><p>전체클래스</p></li>
+  				<li onclick="fnList('new')"><img th:src="@{/images/main/new.png}" width="50px"><p>최신클래스</p></li>
+  				<li onclick="fnList('cooking')"><img th:src="@{/images/main/cooking3.png}" width="50px"><p>요리/베이킹</p></li>
+  				<li onclick="fnList('sports')"><img th:src="@{/images/main/sports.png}" width="50px"><p>스포츠</p></li>
+  				<li onclick="fnList('dance')"><img th:src="@{/images/main/dance.png}" width="50px"><p>댄스</p></li>
+  				<li onclick="fnList('design')"><img th:src="@{/images/main/design.png}" width="50px"><p>디자인</p></li>
+  				<li onclick="fnList('study')"><img th:src="@{/images/main/study.png}" width="50px"><p>공부</p></li>
+  			</ul>
+  		</div>
+  	</div>
+  
+  
+  
+  	<div class="class_Container">
+  		<table>
+  			<thead>
+  				<tr>
+  					<td></td>
+  				</tr>
+  			</thead>
+  			<tbody id="ClassTableBody">
+       
+  			</tbody>
+  		</table>
+  	</div>
   </div>
-
-
+  
 </body>
 </html>
