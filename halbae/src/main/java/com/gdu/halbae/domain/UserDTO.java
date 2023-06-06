@@ -18,7 +18,7 @@ public class UserDTO {
 	private Date userJoinDate;
 	private int userPoint;
 	private String userImgPath;
-	private String userImgName;
+	private String userImgOriginName;
 	private String userImgFileName;
 	private int userHasImg;
 }

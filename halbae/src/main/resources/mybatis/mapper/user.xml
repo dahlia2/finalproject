@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.halbae.mapper.UserMapper">
+
+	<!-- 중복된 이메일 확인하기 -->
+	<select id="checkUniqueId" parameterType="String" resultType="userDTO">
+		SELECT *
+		  FROM USER
+		 WHERE USER_ID = #{userId} 
+	</select>
+	
+	<!-- 회원가입 시키기 -->
+	<insert id="insertUser" useGeneratedKeys="true" keyProperty="userNo" parameterType="userDTO">
+		INSERT INTO USER (
+			  USER_ID
+			, USER_PW
+			, USER_NAME
+			, USER_TEL
+			, USER_JOIN_DATE
+			, USER_POINT
+			, USER_IMG_PATH
+			, USER_HAS_IMG
+		) VALUES (
+			  #{userId}
+			, #{userPw}
+			, #{userName}
+			, #{userTel}
+			, NOW()
+			, 0
+			, '/images/main/default_user.png'
+			, 0
+			
+		)
+	</insert>		
+		
+    
+</mapper>
