@@ -1,7 +1,5 @@
 package com.gdu.halbae.controller;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +44,6 @@ public class UserController {
 	@PostMapping("/successJoin.do")
 	public String successJoin(UserDTO userDTO) {
 		System.out.println(userService.insertUser(userDTO));
-		return "main";
+		return "user/successjoin";
 	}
 }
