@@ -16,6 +16,8 @@ public class UserDTO {
 	private String userName;
 	private String userTel;
 	private Date userJoinDate;
+	private String userAutoLoginId;
+	private Date userAutoLoginExpired;
 	private int userPoint;
 	private String userImgPath;
 	private String userImgOriginName;

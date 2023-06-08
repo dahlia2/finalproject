@@ -32,9 +32,37 @@
 			, 0
 			, '/images/main/default_user.png'
 			, 0
-			
 		)
 	</insert>		
-		
+	
+	<!-- 로그인 -->
+	<select id="selectLoginInfo" parameterType="Map" resultType="UserDTO">
+		SELECT *
+		  FROM USER
+		 WHERE USER_ID = #{userId} AND USER_PW = #{userPw} 
+	</select>
+	
+	<!-- 자동 로그인 -->
+	<update id="insertAutoLogin" parameterType="UserDTO">
+		UPDATE USER
+		   SET USER_AUTO_LOGIN_ID = #{userAutoLoginId}
+		     , USER_AUTO_LOGIN_EXPIRED = #{userAutoLoginExpired}
+		 WHERE USER_ID = #{userId}
+	</update>		
+	
+	<update id="deleteAutoLogin" parameterType="String">
+		UPDATE USER
+		   SET USER_AUTO_LOGIN_ID = NULL
+		     , USER_AUTO_LOGIN_EXPIRED = NULL
+		 WHERE USER_ID = #{userId}
+	</update>		
+    
+    
+    
+    
+    
+    
+    
+    
     
 </mapper>

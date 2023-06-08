@@ -5,7 +5,7 @@
 $(function() {
 	$('#reg').text('');
 	
-	if($('#unqMsg').val().length != 0) {
+	if($('#unqMsg').val() != '') {
 		alert($('#unqMsg').val());
 	}
 	
