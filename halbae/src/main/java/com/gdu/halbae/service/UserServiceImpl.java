@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.mapper.UserMapper;
+import com.gdu.halbae.util.JavaMailUtil;
 import com.gdu.halbae.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -25,13 +27,23 @@ public class UserServiceImpl implements UserService {
 	
 	private final SecurityUtil securityUtil;
 	private final UserMapper userMapper;
+	private final JavaMailUtil javaMailUtil;
 	
 	// 회원가입
 	@Override
 	public String checkUniqueId(UserDTO userDTO) {
 		String msg = "";
 		if(userMapper.checkUniqueId(userDTO.getUserId()) != null) {
-			msg="중복된 이메일입니다. 다른 이메일을 사용해주세요.";
+			msg="이미 사용중인 이메일입니다.";
+			return msg;
+		}
+		return msg;
+	}
+	@Override
+	public String checkIdCountByTel(UserDTO userDTO) {
+		String msg = "";
+		if(userMapper.checkIdCountByTel(userDTO.getUserTel()) >= 3) {
+			msg="입력하신 연락처로 더 이상 계정 생성이 불가능합니다. (최대 3개)";
 			return msg;
 		}
 		return msg;
@@ -56,8 +68,7 @@ public class UserServiceImpl implements UserService {
 		userDTO.setUserTel(userTel);
 		userDTO.setUserId(userId);
 		userDTO.setUserPw(userPw);
-		
-		System.out.println(userId);
+		userDTO.setUserImgPath("/images/main/default_user.png");
 		
 		return userMapper.insertUser(userDTO);
 	}
@@ -65,7 +76,6 @@ public class UserServiceImpl implements UserService {
 	// 로그인
 	@Override
 	public void login(HttpServletRequest request, HttpServletResponse response) {
-		String url = request.getParameter("url");
 		String userId = request.getParameter("userId");
 		String userPw = request.getParameter("userPw");
 		
@@ -77,9 +87,7 @@ public class UserServiceImpl implements UserService {
 		map.put("userPw", userPw);
 		
 		UserDTO userDTO = userMapper.selectLoginInfo(map);
-		
-		
-		
+
 		if(userDTO != null) {
 			// 자동 로그인 처리하기
 			autoLogin(request, response);
@@ -87,18 +95,16 @@ public class UserServiceImpl implements UserService {
 			// 세션에 정보 저장
 			session.setAttribute("loginId", userId);
 			session.setAttribute("userNo", userDTO.getUserNo());
-			
-			// 로그인하고 로그인으로 접속한 url로 이동
+			session.setAttribute("userName", userDTO.getUserName());
+			// 로그인 후 메인으로 이동
 			try {
-				System.out.println(url);
-				response.sendRedirect(url);
+				response.sendRedirect("/");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 		} else {
 			response.setContentType("text/html; charset=UTF-8");
-			
 			try {
 		    PrintWriter out = response.getWriter();
 		    out.println("<script>");
@@ -107,9 +113,9 @@ public class UserServiceImpl implements UserService {
 		    out.println("</script>");
 		    out.flush();
 		    out.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
+				} catch (IOException e) {
+				    e.printStackTrace();
+				}
 		}
 		
 	}
@@ -134,22 +140,165 @@ public class UserServiceImpl implements UserService {
 			
 			Cookie cookie = new Cookie("autoLoginId", sessionId);
 			cookie.setMaxAge(60 * 60 * 24 * 15); // 15일
-			cookie.setPath(request.getContextPath());
+			cookie.setPath("/");
 			response.addCookie(cookie);
-			
 			
 		}else {
 			userMapper.deleteAutoLogin(userId);
-			
 			Cookie cookie = new Cookie("autoLoginId", "");
 			cookie.setMaxAge(0);
-			cookie.setPath(request.getContextPath());
+			cookie.setPath("/");
 			response.addCookie(cookie);
 		}
 	}
 	
+	// 로그아웃
+	@Override
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		String loginId = request.getParameter("loginId");
+		userMapper.deleteAutoLogin(loginId);
+		HttpSession session = request.getSession();
+		
+		session.invalidate();
+		
+		Cookie cookie = new Cookie("autoLoginId", "");
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		try {
+			response.sendRedirect("/");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
+	// 인증코드 보내기
+	@Override
+	public Map<String, Object> sendCode(String email) {
+		String authCode = securityUtil.getRandomString(5, true, true);
+		
+		String content = "";
+					content += "<h1>하루배움에서 인증코드를 발송했습니다</h1>";
+					content += "<div>인증코드</div>";
+					content += "<input readonly value='" + authCode + "'>";
+		
+		javaMailUtil.sendJavaMail(email, "[하루배움] 인증코드 발송해드립니다.", content);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("authCode", authCode);
+		return map;
+	}
+	// 임시 비번 보내기
+	@Override
+	public Map<String, Object> sendTempPw(String email) {
+		String tempPw = securityUtil.getRandomString(10, true, true);
+		
+		String content = "";
+		content += "<h1>하루배움에서 임시 비밀번호를 발송했습니다</h1>";
+		content += "<div>임시 비밀번호</div>";
+		content += "<input readonly value='" + tempPw + "'>";
+
+		javaMailUtil.sendJavaMail(email, "[하루배움] 임시 비밀번호 발송해드립니다.", content);
+		
+		System.out.println("비밀번호 전송 완료");
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("tempPw", tempPw);
+		return map;
+	}
+	// 임시 비번으로 비번 바꾸기
+	@Override
+	public void updateTempPw(UserDTO userDTO, HttpServletResponse response) {
+		String tempPw = securityUtil.getSha256(userDTO.getUserPw());
+		userDTO.setUserPw(tempPw);
+		int updateResult = userMapper.updateTempPw(userDTO);
+		System.out.println("비밀번호 변경 완료");
+		response.setContentType("text/html; charset=UTF-8");
+		
+		if(updateResult == 1) {
+			
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("if(confirm('로그인하러 가시겠습니까?')) {");
+				out.println("location.href='/user/login.html';");
+				out.println("} else {");
+				out.println(" location.href='/';");
+				out.println("}");
+				out.println("</script>");
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('임시 비밀번호 발급이 실패했습니다. 다시 시도해주세요');");
+				out.println("</script>");
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	
+	// 전화번호로 가입 아이디 조회
+	@Override
+		public List<UserDTO> selectUserIdByTel(String userTel) {
+		return userMapper.selectUserByTel(userTel);
+		}	
+	// 유저 프로필 가져오기
+	@Override
+	public UserDTO selectUserProfile(String loginId) {
+		return userMapper.selectUserProfile(loginId);
+	}
+	// 이름 변경하기
+	@Override
+	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
+		
+		System.out.println("이름 변경 " + userDTO);
+		userMapper.deleteAutoLogin(userDTO.getUserId());
+		HttpSession session = request.getSession();
+		
+		session.invalidate();
+		
+		Cookie cookie = new Cookie("autoLoginId", "");
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		if(userMapper.updateUserName(userDTO) == 1) {
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('이름(별명)이 변경되었습니다. 다시 로그인 해주세요.');");
+				out.println("location.href='/'");
+				out.println("</script>");
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('이름(별명)이 변경이 실패했습니다. 다시 시도해주세요.');");
+				out.println("location.href='/'");
+				out.println("</script>");
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
 }
 
 

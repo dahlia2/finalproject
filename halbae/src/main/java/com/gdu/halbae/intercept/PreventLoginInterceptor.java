@@ -27,7 +27,7 @@ public class PreventLoginInterceptor implements HandlerInterceptor {
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter out = response.getWriter();
       out.println("<script>");
-      out.println("alert('해당 기능은 사용할 수 없습니다.');");
+      out.println("alert('로그인 상태에서 이용이 불가능한 서비스입니다.');");
       out.println("history.back();");
       out.println("</script>");
       out.flush();

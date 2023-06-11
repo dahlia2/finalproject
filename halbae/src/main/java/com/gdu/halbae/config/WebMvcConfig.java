@@ -20,10 +20,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
   
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    
-    registry.addInterceptor(loginCheckInterceptor)
-      .addPathPatterns("", "")
-      .addPathPatterns("");
+//    
+//    registry.addInterceptor(loginCheckInterceptor)
+//      .addPathPatterns("", "")
+//      .addPathPatterns("");
     
     // registry.addInterceptor(loginCheckInterceptor)
     // .addPathPatterns("/**")                  // 모든 요청

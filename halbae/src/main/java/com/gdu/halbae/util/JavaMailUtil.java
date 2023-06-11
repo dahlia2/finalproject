@@ -15,6 +15,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 /*
   google 이메일 보내기
   
@@ -28,12 +30,12 @@ import org.springframework.stereotype.Component;
          - [생성]      : 16자리 앱 비밀번호 생성
 */
 
+@RequiredArgsConstructor
 @PropertySource(value={"classpath:application.yaml"})
 @Component
 public class JavaMailUtil {
 
-  @Autowired
-  private Environment env;
+  private final Environment env;
   
   public void sendJavaMail(String to, String title, String content) {  // 받는 사람, 제목, 내용
     
@@ -55,7 +57,7 @@ public class JavaMailUtil {
       }));
       
       // 이메일 만들기
-      message.setFrom( new InternetAddress(env.getProperty("spring.mail.username"), "사이트관리자") );
+      message.setFrom( new InternetAddress(env.getProperty("spring.mail.username"), "하루배움") );
       message.setRecipient( Message.RecipientType.TO, new InternetAddress(to) );
       message.setSubject(title);
       message.setContent(content, "text/html; charset=UTF-8");

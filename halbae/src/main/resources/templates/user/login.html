@@ -5,7 +5,6 @@
 <link rel="stylesheet" th:href="@{/css/header.css(ver=1.0)}">
 <script th:src="@{/js/user/reg.js}"></script>
 <script th:src="@{/js/user/checkbox.js}"></script>
-
 <body>
 	<div th:replace="~{/layout/header::gnbFrag}"></div>
 	<div id="loginWrap">
@@ -14,7 +13,7 @@
 				<div>간편하게 로그인하고 하루배움의<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;다양한 튜터를 만나보세요.</div>
 			</div>	
 			<form id="loginFrm" method="post" th:action="@{/user/login.do}">
-				<input type="hidden" th:value="${url}" name="url">
+				<input type="hidden" id="contextPath" name="contextPath">
 				<div class="loginInput">
 					<div class="inputWrap">
 						<div class="idArea">
@@ -40,9 +39,11 @@
 						</div>	
 						<button>로그인 하기</button>
 						<div class="linkWrap">
-							<span>비밀번호 찾기</span>
-							<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-							<span><a th:href="@{/user/join.html}">회원가입</a></span>
+							<a th:href="@{/user/findId.html}">아이디 찾기</a>
+							<span>&nbsp;|&nbsp;</span>
+							<a th:href="@{/user/findPw.html}">비밀번호 찾기</a>
+							<span>&nbsp;|&nbsp;</span>
+							<a th:href="@{/user/join.html}">회원가입</a>
 						</div>
 					</div>
 				</div>

@@ -95,16 +95,24 @@ function checkRePw() {
  function togglePw() {
 	if($('#userPw').attr("type") === "text") {
 		$('#userPw').attr("type", "password");
+		$('.pwIcon1').removeClass('fa-eye');
+		$('.pwIcon1').addClass('fa-eye-slash');
 	}else {
 		$('#userPw').attr("type", "text");
+		$('.pwIcon1').removeClass('fa-eye-slash');
+		$('.pwIcon1').addClass('fa-eye');
 	}
 }
- 
+// 가입 시 비밀 번호 확인 칸도 보이게 하기
  function toggleChkPw() {
 	if($('#chkUserPw').attr("type") === "text") {
 		$('#chkUserPw').attr("type", "password");
+		$('.pwIcon2').removeClass('fa-eye');
+		$('.pwIcon2').addClass('fa-eye-slash');
 	}else {
 		$('#chkUserPw').attr("type", "text");
+		$('.pwIcon2').removeClass('fa-eye-slash');
+		$('.pwIcon2').addClass('fa-eye');
 	}
 }
  
