@@ -1,0 +1,99 @@
+html, body {
+	height: 100%;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#coupon {
+    margin-bottom: 10px;
+}
+
+#code {
+    width: 280px;
+    height: 50px;
+    background-color: #F6F6F6;
+    color: #999999;
+    border: none;
+    border-radius: 5px;
+}
+
+#button {
+    width: 90px;
+    height: 50px;
+    background-color: #F6F6F6;
+    color: #F6A2AF;
+    border: none;
+    border-radius: 5px;
+}
+
+#m {
+    display: flex;
+    justify-content: space-between;
+}
+
+#info1 {
+    font-size: 13px;
+    color: #999999;
+    margin-right: 160px;
+}
+
+#info2 {
+    font-size: 12px;
+    color: #999999;
+    margin-right: 10px;
+}
+
+#info2 p {
+    line-height: 0.5;
+}
+
+#couponList {
+    margin-bottom: 20px;
+    width: 380px;
+    display: flex;
+    justify-content: center;
+    border-style: solid;
+    border-color: lightgray; /* 테두리 색상 변경 */
+    border-width: 2px;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+#couponList table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#couponList td {
+    display: flex;
+    justify-content: center;
+}
+
+#couponList tr:first-child td {
+    background-color: white; /* 첫 번째 행 배경색 */
+    font-weight: bold; /* 첫 번째 행 폰트 굵게 */
+}
+
+#couponList tr:first-child td:first-child {
+    font-size: 18px;
+}
+
+#couponList tr:first-child td:nth-child(2) {
+    font-size: 28px;
+    color: red;
+}
+
+#couponList tr:first-child td:nth-child(3),
+#couponList tr:first-child td:nth-child(4) {
+    font-size: 13px;
+    color: #999999;
+}
+
+#couponList tr:not(:first-child) td {
+    background-color: #FFFFFF; /* 첫 번째 행 이외의 행 배경색 */
+}

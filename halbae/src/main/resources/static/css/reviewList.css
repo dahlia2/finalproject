@@ -1,0 +1,53 @@
+/* 라뷰 */
+#reviewList {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	list-style: none;
+	padding: 0;
+ 	margin-left: 165px;
+}
+#reviewList li {
+	width: 1080px;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	background-color: #f9f9f9;
+	align-items: flex-start;
+	display: flex;
+	flex-direction: column;
+}
+#reviewList li p {
+	margin: 0;
+}
+#reviewList li p:first-child {
+	font-weight: bold;
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+#reviewList li p:nth-child(1) {
+	font-size: 12px;
+	margin-right: 10px;
+}
+#reviewList li p:nth-child(2) {
+	color: #777;
+	font-size: 12px;
+	margin-right: 10px;
+}
+#reviewList li p:nth-child(3) {
+	margin-top: 10px;
+}
+   
+/* 리뷰 별점 */
+.rating {
+	display: flex;
+}
+.rating span {
+	color: gold;
+	font-size: 20px;
+}
+.rating span::selection {
+   	background: none;
+}

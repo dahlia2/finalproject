@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CouponUserDTO {
-
 	private int userNo;
 	private int couponNo;
 	private int couponStatus;
-	
 }

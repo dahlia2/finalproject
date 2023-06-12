@@ -4,22 +4,20 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gdu.halbae.mapper.ChatMapper">
-	
-	<resultMap id="ReviewResultMap" type="ReviewDTO">
-		<id property="reviewNo" column="REVIEW_NO" />
-		<result property="userDTO.userId" column="USER_ID" />
-		<result property="reviewContent" column="REVIEW_CONTENT" />
-		<result property="reviewGrade" column="REVIEW_GRADE" />
-		<result property="reviewCreatedAt" column="REVIEW_CREATED_AT" />
-	</resultMap>
-	
-	<select id="getReviewList" resultMap="ReviewResultMap">
-		SELECT R.REVIEW_NO, U.USER_ID, R.REVIEW_CONTENT, R.REVIEW_GRADE, R.REVIEW_CREATED_AT
-     	  FROM USERS U INNER JOIN REVIEW R
-            ON U.USER_NO = R.USER_NO INNER JOIN ORDER_DETAIL OD
-     	    ON R.ORDER_DETAIL_NO = OD.ORDER_DETAIL_NO INNER JOIN PRODUCT P
-     	    ON OD.PROD_NO = P.PROD_NO
-	     WHERE P.PROD_NO = #{prodNo}
-	</select>
-    
+
+    <insert id="createChatRoom">
+        INSERT INTO CONVERSATION (CLASS_NO, USER_NO, CON_CREATE, CON_STATE)
+        VALUES (#{classNo}, #{userNo}, #{conCreate}, #{conState})
+    </insert>
+
+    <select id="getConversationList" resultType="ConversationDTO">
+        SELECT *
+          FROM CONVERSATION
+    </select>
+
+    <insert id="sendMessage">
+        INSERT INTO MESSAGE (CON_ID, USER_NO, MESSAGE, SEND_TIME)
+        VALUES (#{conId}, #{userNo}, #{message}, #{sendTime})
+    </insert>
+
 </mapper>

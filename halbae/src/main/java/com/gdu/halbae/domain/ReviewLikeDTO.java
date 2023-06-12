@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewLikeDTO {
-	
 	private int reviewNo;
 	private int userNo;
-
 }
