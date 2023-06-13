@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 public class ClassListDTO {
 	
 	private int classNo;
-	private int userNo;
 	private String classTitle;
 	private String classCategory;
 	private String classArea;
 	private String classTime;
 	private String classMoney;
 	private double classGrade;
+	private String classMainPath;
+	private UserDTO userDTO;
 	
 
 }

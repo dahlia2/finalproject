@@ -18,8 +18,11 @@ function showImage(){
 }
 
 /* 클래스 카테고리 바 */
-function fnList(catagory) {
-	location.href='class/classList.do?classCatagory=' + catagory;	
+function fnList(classCategory) {
+	location.href='class/classList.do?classCategory=' + classCategory;	
+}
+function fnNew(){
+	location.href='class/classListNew.do';
 }
 </script>
 
@@ -54,7 +57,7 @@ function fnList(catagory) {
   		<div class="classBar_Container">
   			<ul id="class_Bar">
   				<li onclick="fnList('all')"><img th:src="@{/images/main/all.png}" width="50px"><p>전체클래스</p></li>
-  				<li onclick="fnList('new')"><img th:src="@{/images/main/new.png}" width="50px"><p>최신클래스</p></li>
+  				<li onclick="fnNew()"><img th:src="@{/images/main/new.png}" width="50px"><p>최신클래스</p></li>
   				<li onclick="fnList('cooking')"><img th:src="@{/images/main/cooking3.png}" width="50px"><p>요리/베이킹</p></li>
   				<li onclick="fnList('fitness')"><img th:src="@{/images/main/fitness.png}" width="50px"><p>피트니스</p></li>
   				<li onclick="fnList('dance')"><img th:src="@{/images/main/dance.png}" width="50px"><p>댄스</p></li>
