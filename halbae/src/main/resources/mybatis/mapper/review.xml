@@ -44,6 +44,16 @@
     
     <!-- 리뷰 목록 -->
     <!-- 리뷰 목록을 조회하여 ReviewDTO 객체에 매핑 -->
+	<resultMap id="ReviewAttachResultMap" type="ReviewAttachDTO">
+	    <id property="reaNo" column="REA_NO"/>
+	    <result property="reviewNo" column="REVIEW_NO"/>
+	    <result property="path" column="PATH"/>
+	    <result property="originName" column="ORIGIN_NAME"/>
+	    <result property="fileName" column="FILE_NAME"/>
+	    <result property="download" column="DOWNLOAD"/>
+	    <result property="thumbnail" column="THUMBNAIL"/>
+	</resultMap>
+    
     <resultMap id="ReviewResultMap" type="ReviewDTO">
         <id property="reviewNo" column="REVIEW_NO" />
         <result property="userNo" column="USER_NO" />

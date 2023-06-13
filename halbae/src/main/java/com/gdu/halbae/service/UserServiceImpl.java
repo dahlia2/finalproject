@@ -15,8 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.mapper.UserMapper;
@@ -100,6 +104,7 @@ public class UserServiceImpl implements UserService {
 			autoLogin(request, response);
 			HttpSession session = request.getSession();
 			// 세션에 정보 저장
+			// 추천 : session.setAttribute("loginUser", userDTO);   ${session.loginUser.userNo}
 			session.setAttribute("loginId", userId);
 			session.setAttribute("userNo", userDTO.getUserNo());
 			session.setAttribute("userName", userDTO.getUserName());
@@ -402,15 +407,22 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public String updateProfile(MultipartFile profile, HttpServletRequest request) {
-		
-		String userId = request.getParameter("userId");
+	public ResponseEntity<byte[]> updateProfile(MultipartHttpServletRequest multipartRequest) {
 		
 		String sep = Matcher.quoteReplacement(File.separator);
 		
-		String userImgPath = "";
+		String userId = multipartRequest.getParameter("userId");
+		MultipartFile profile = multipartRequest.getFile("profile");
+		List<MultipartFile> profiles = multipartRequest.getFiles("profile");
+		
+		ResponseEntity<byte[]> image = null;
+		
+		System.out.println("프로필 : " + profile);
+		System.out.println("프로필 : " + profiles);
+		System.out.println("아이디 : " + userId);
 		
 		try {
+			
 			if(profile != null && profile.isEmpty() == false) {
 				
 				String path = profileUtil.getPath();
@@ -419,7 +431,9 @@ public class UserServiceImpl implements UserService {
 				if(dir.exists() == false) {
 					dir.mkdirs();
 				}
+				
 				String imgOriginName = profile.getOriginalFilename();
+				
 				imgOriginName = imgOriginName.substring(imgOriginName.lastIndexOf("\\") + 1);
 				
 				String userImgFileName = profileUtil.getFilesystemName(imgOriginName);
@@ -432,9 +446,9 @@ public class UserServiceImpl implements UserService {
 				
 				boolean userHasImg = contentType != null && contentType.startsWith("image");
 
-				userImgPath = path + sep + userImgFileName;
-//				/Users/woomin/Documents/TeamPrj/finalproject/halbae/src/main/resources/static/images/user/profile/aaaa@aaaa.aaaa
+				String userImgPath = path + sep + userImgFileName;
 				
+				image = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), HttpStatus.OK);
 				
 				UserDTO userDTO = new UserDTO();
 				userDTO.setUserId(userId);
@@ -445,13 +459,13 @@ public class UserServiceImpl implements UserService {
 				
 				userMapper.updateProfile(userDTO);
 				
+				System.out.println(userImgPath);
 			}
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-			
-		return userImgPath;
-		
+		System.out.println("리스폰트엔티티 : " + image);
+		return image;
 	}
 	
 	
