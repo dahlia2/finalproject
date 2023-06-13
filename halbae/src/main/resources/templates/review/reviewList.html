@@ -50,36 +50,40 @@
 	    </div>
 	    <ul id="reviewList">
 	        <!-- 리뷰들을 리뷰 번호(REVIEW_NO) 내림차순으로 정렬 -->
-	        <li th:each="review : ${reviewList}">
-	            <div style="display: flex; justify-content: space-between; align-items: center;">
+	        <li class="review-container" th:each="review : ${reviewList}">
+	        	<div class="left-section">
 	                <!-- 회원의 프로필사진 -->
-	                <div th:class="${review.userDTO.userH asImg == 1} ? 'profile-image' : 'profile-image no-image'">
-	                    <img id="images1" th:if="${review.userDTO.userHasImg == 1}" th:src="${review.userDTO.userImgPath}" alt="Profile Image">
-	                </div>
-				<div class="rating">
-	                <img th:each="i : ${#numbers.sequence(1, review.reviewGrade)}" th:src="@{'/images/review/star-filled.png'}" alt="Filled Star">
-	                <img th:each="i : ${#numbers.sequence(review.reviewGrade + 1, 5)}" th:src="@{'/images/review/star-empty.png'}" alt="Empty Star">
+	                <div class="profile-image" th:class="${review.userDTO.userH asImg == 1} ? 'profile-image' : 'profile-image no-image'">
+	                	<img id="images1" th:if="${review.userDTO.userHasImg == 1}" th:src="${review.userDTO.userImgPath}" alt="Profile Image">
+                	</div>
+            	</div>
+				<div class="right-section">
+					<!-- 회원 정보 -->
+					<div class="profile-info">
+						<!-- 닉네임 -->
+		                <p style="margin-bottom: 5px;" th:text="${review.userDTO.userName}"></p>
+		                <!-- 리뷰 작성 시간 -->
+		                <p style="font-size: 12px; color: #999999;" th:text="${review.writeDate}"></p>
+		            </div>
+		            <!-- 리뷰 내용 -->
+		            <p style="text-align: center;" th:text="${review.reviewContent}"></p>
+		            <!-- 리뷰 작성 시 첨부한 이미지들 출력 -->
+		            <div>
+		                <ul class="attachment-list">
+		                    <li th:each="attach : ${review.reviewAttachList}">
+		                        <img id="images2" th:if="${attach.thumbnail == 1}" th:src="${attach.path}" alt="Attachment Image">
+		                        <span th:if="${attach.thumbnail == 0}"></span>
+		                    </li>
+		                </ul>
+		            </div>
+	            	<!-- 좋아요 기능 -->
+		            <div class="like-container">
+		               <button class="like-button" th:id="'likeButton_' + ${review.reviewNo}" th:text="'Like (' + ${review.likeCount} + ')'" th:attr="onclick='likeReview(' + ${review.reviewNo} + ')'"></button>
+		               <span class="like-count">0</span>
+		            </div>
 	            </div>
-	                <p style="margin-right: 10px;" th:text="${review.userDTO.userName}"></p>
-	                <!-- 리뷰 작성 시간 -->
-	                <p style="font-size: 12px;" th:text="${review.writeDate}"></p>
-	            </div>
-	            <p th:text="${review.reviewContent}"></p>
-	            <!-- 리뷰 작성 시 첨부한 이미지들 출력 -->
-	            <div>
-	                <ul class="attachment-list">
-	                    <li th:each="attach : ${review.reviewAttachList}">
-	                        <img id="images2" th:if="${attach.thumbnail == 1}" th:src="${attach.path}" alt="Attachment Image">
-	                        <span th:if="${attach.thumbnail == 0}"></span>
-	                    </li>
-	                </ul>
-	            </div>
-	            <!-- 좋아요 기능 -->
-	            <div>
-	               <button class="like-button" th:id="'likeButton_' + ${review.reviewNo}" th:text="'Like (' + ${review.likeCount} + ')'" th:attr="onclick='likeReview(' + ${review.reviewNo} + ')'"></button>
-	            </div>
-	        </li>
-	    </ul>
+			</li>
+		</ul>
 	</div>
 
 </body>

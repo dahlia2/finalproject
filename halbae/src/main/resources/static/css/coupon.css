@@ -1,5 +1,5 @@
 html, body {
-	height: 100%;
+height: 100%;
 }
 
 #container {
@@ -13,7 +13,7 @@ html, body {
     margin-bottom: 10px;
 }
 
-#code {
+#couponName {
     width: 280px;
     height: 50px;
     background-color: #F6F6F6;
@@ -54,7 +54,7 @@ html, body {
 
 #couponList {
     margin-bottom: 20px;
-    width: 380px;
+    width: 360px;
     display: flex;
     justify-content: center;
     border-style: solid;
@@ -96,4 +96,8 @@ html, body {
 
 #couponList tr:not(:first-child) td {
     background-color: #FFFFFF; /* 첫 번째 행 이외의 행 배경색 */
+}
+
+#couponCount {
+    color: red;
 }

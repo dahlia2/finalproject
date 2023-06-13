@@ -8,7 +8,7 @@ public class MvcController {
 
 	@GetMapping("/")
 	public String welcome() {
-		return "point/pointForm";
+		return "chat/chatForm";
 	}
 	
 }

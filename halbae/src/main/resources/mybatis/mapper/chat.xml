@@ -1,23 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gdu.halbae.mapper.ChatMapper">
 
-    <insert id="createChatRoom">
+	<!-- 채팅방 생성 -->
+    <insert id="createConversation">
         INSERT INTO CONVERSATION (CLASS_NO, USER_NO, CON_CREATE, CON_STATE)
-        VALUES (#{classNo}, #{userNo}, #{conCreate}, #{conState})
+        VALUES (#{classNo}, #{userNo}, #{conCreate}, 1)
     </insert>
+    <!-- 채팅방 입장 -->
+	<update id="enterChatRoom" parameterType="int">
+		UPDATE CONVERSATION
+		   SET CON_STATE = 1
+		 WHERE CON_ID = #{conId}
+	</update>
 
-    <select id="getConversationList" resultType="ConversationDTO">
-        SELECT *
-          FROM CONVERSATION
-    </select>
+	<!-- 채팅방 퇴장 -->
+	<update id="exitChatRoom" parameterType="int">
+		UPDATE CONVERSATION
+		   SET CON_STATE = 0
+		 WHERE CON_ID = #{conId}
+	</update>
 
-    <insert id="sendMessage">
+	<!-- 채팅 내용 가져오기 -->
+	<select id="getChatMessagesByConversation" resultType="MessageDTO">
+		SELECT MSG_ID, CON_ID, USER_NO, MESSAGE, SEND_TIME
+		  FROM MESSAGE
+		 WHERE CON_ID = #{conId}
+		 ORDER BY SEND_TIME ASC
+	</select>
+	
+	<!-- 메시지 전송 -->
+	<insert id="insertMessage">
         INSERT INTO MESSAGE (CON_ID, USER_NO, MESSAGE, SEND_TIME)
         VALUES (#{conId}, #{userNo}, #{message}, #{sendTime})
     </insert>
-
+    
+    <!-- 메시지 실시간 업데이트 -->
+    <select id="selectNewChatMessages" resultType="MessageDTO">
+        SELECT * 
+          FROM MESSAGE
+         WHERE CON_ID = #{conId} AND MSG_ID > #{lastMsgId}
+    </select>
+    
+    <!-- 채팅 내역 조회 -->
+    <select id="selectChatHistory" resultType="MessageDTO">
+        SELECT * 
+          FROM MESSAGE
+         WHERE CON_ID = #{conId}
+         ORDER BY SEND_TIME ASC
+    </select>
+    
+    <!-- 채팅방 삭제 -->
+	<update id="updateChatRoomState">
+		UPDATE CONVERSATION
+		  SET CON_STATE = #{state}
+		 WHERE CON_ID = #{conId}
+	</update>
+    
 </mapper>

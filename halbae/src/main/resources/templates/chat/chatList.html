@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reviewList</title>
+    <link rel="stylesheet" href="/css/chatList.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<script th:inline="javascript">
+
+	// 채팅방 목록을 가져와서 표시하는 함수
+	function displayChatRooms() {
+	    // Ajax 요청을 통해 채팅방 목록을 가져옴
+	    $.ajax({
+	        url: "/chat/rooms",
+	        method: "GET",
+	        success: function(data) {
+	            var chatRooms = data.chatRooms;
+	            if (chatRooms.length === 0) {
+	                // 대화방이 없을 경우 메시지를 표시
+	                $("#chatRoomList").text("대화방이 존재하지 않습니다.");
+	            } else {
+	                // 채팅방 목록을 chatRoomList 컨테이너에 추가
+	                chatRooms.forEach(function(room) {
+	                    var roomItem = "<p>" + room.roomId + ": " + room.roomName + "</p>";
+	                    $("#chatRoomList").append(roomItem);
+	                });
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("채팅방 목록 가져오기 실패: " + error);
+	        }
+	    });
+	}
+	
+	// 페이지 로드 시 채팅방 목록을 표시
+	$(document).ready(function() {
+	    displayChatRooms();
+	});
+	
+</script>
+<body>
+
+    <div class="chat-container">
+        <div class="header">
+            <img src="/images/chat/logo.jpg">
+            <p>하루배움 메시지로 간편하게 문의해보세요!</p>
+        </div>
+        <div class="mid">
+            <p>채팅방 목록</p>
+        </div>
+        <div id="chatRoomList"></div>
+    </div>
+
+</body>
+</html>

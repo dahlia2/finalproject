@@ -7,6 +7,28 @@
     <title>reviewList</title>
     <link rel="stylesheet" href="/css/coupon.css" />
 </head>
+<script>
+
+	$(document).ready(function() {
+	    $("#button").click(function() {
+	    	// 쿠폰명을 입력한 input 요소의 값을 가져옴
+	        var couponName = $("#couponName").val(); 
+	        // Ajax 요청 전송
+	        $.ajax({
+	            url: "/coupons",
+	            method: "POST",
+	            data: { couponName: couponName }, // 쿠폰명을 서버에 전달
+	            success: function(response) {
+	                alert("쿠폰이 발행되었습니다.");
+	            },
+	            error: function(xhr) {
+	                alert("쿠폰명을 다시 확인해주세요.");
+	            }
+	        });
+	    });
+	});
+	
+</script>
 <body>
 
     <form id="container">
@@ -14,11 +36,11 @@
 	        <h3>내쿠폰</h3>
 	    </div>
 	    <div id="coupon">
-	        <input type="text" id="code" placeholder="&nbsp;&nbsp;&nbsp;쿠폰 코드를 입력해주세요.">
+	        <input type="text" id="couponName" placeholder="&nbsp;&nbsp;&nbsp;쿠폰 코드를 입력해주세요.">
 	        <input type="button" id="button" value="등록">
 	    </div>
 		<div id="m">
-	        <p>사용 가능 쿠폰(<span id="count">1</span>장)</p>
+	        <p>사용 가능 쿠폰(<span id="count" th:text="${couponCount}"></span>장)</p>
 	    </div>
 	    <div id="couponList">
 	        <table>
@@ -26,7 +48,6 @@
 		            <tr th:each="coupon : ${coupons}">
 		                <td th:text="${coupon.couponName}"></td>
 		                <td th:text="${coupon.couponDiscount}"></td>
-		                <td th:text="${coupon.couponStartDate}"></td>
 		                <td>
 		                    <span th:text="${coupon.couponStartDate} + ' ~ ' + ${coupon.couponEndDate}"></span>
 		                </td>

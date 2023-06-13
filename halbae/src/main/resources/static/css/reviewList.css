@@ -1,53 +1,141 @@
-/* 라뷰 */
+body {
+    margin-top: 200px;
+}
+
+a {
+    color: black; /* 링크의 색상을 검정색으로 변경 */
+}
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.profile-image img {
+    border-radius: 50%;
+    margin-top: 14px;
+}
+
+.review-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.right-section {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.profile-info p {
+    margin: 5px 0;
+}
+
+.attachment-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.attachment-list li {
+    margin-top: 5px;
+}
+
+.attachment-list img {
+    max-width: 100%;
+    height: auto;
+}
+
+.like-container {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.like-count {
+    margin-left: 5px;
+}
+
+.like-button {
+    width: 18px;
+    height: 18px;
+    background: url('/images/review/heart.png') no-repeat;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+}
+
+#review {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#review p {
+    text-align: center;
+}
+
 #reviewList {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	list-style: none;
-	padding: 0;
- 	margin-left: 165px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline-start: 0;
 }
-#reviewList li {
-	width: 1080px;
-	padding: 10px;
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	margin-bottom: 20px;
-	background-color: #f9f9f9;
-	align-items: flex-start;
-	display: flex;
-	flex-direction: column;
+
+#images1 {
+    width: 40px;
+    height: 40px;
 }
-#reviewList li p {
-	margin: 0;
+
+#images2 {
+    width: 100px;
+    height: 100px;
 }
-#reviewList li p:first-child {
-	font-weight: bold;
-	font-size: 16px;
-	margin-bottom: 5px;
+
+#link {
+    margin-left: 400px;
 }
-#reviewList li p:nth-child(1) {
-	font-size: 12px;
-	margin-right: 10px;
-}
-#reviewList li p:nth-child(2) {
-	color: #777;
-	font-size: 12px;
-	margin-right: 10px;
-}
-#reviewList li p:nth-child(3) {
-	margin-top: 10px;
-}
-   
+
 /* 리뷰 별점 */
 .rating {
-	display: flex;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    margin-bottom: 38px;
+    justify-content: flex-start;
 }
-.rating span {
-	color: gold;
-	font-size: 20px;
+
+.rating input {
+    display: none;
 }
-.rating span::selection {
-   	background: none;
+
+.rating label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+    background: url('star-empty.png') no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+    background: url('star-field.png') no-repeat;
+    background-size: contain;
 }

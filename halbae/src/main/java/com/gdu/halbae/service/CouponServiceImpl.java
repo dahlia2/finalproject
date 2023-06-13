@@ -23,6 +23,12 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.getAllCoupons();
     }
     
+    // 회원의 보유 쿠폰 수 조회
+    @Override
+    public int getUserCouponCount(int userNo) {
+        return couponMapper.getUserCouponCount(userNo);
+    }
+    
     @Override
     public CouponDTO createCoupon(CouponDTO couponDTO) {
         LocalDateTime now = LocalDateTime.now();
