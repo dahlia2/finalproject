@@ -1,11 +1,14 @@
 package com.gdu.halbae.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.mapper.UserMapper;
 import com.gdu.halbae.util.JavaMailUtil;
+import com.gdu.halbae.util.ProfileUtil;
 import com.gdu.halbae.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -25,9 +30,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserServiceImpl implements UserService {
 	
-	private final SecurityUtil securityUtil;
 	private final UserMapper userMapper;
+	private final SecurityUtil securityUtil;
 	private final JavaMailUtil javaMailUtil;
+	private final ProfileUtil profileUtil;
+	
 	
 	// 회원가입
 	@Override
@@ -108,7 +115,7 @@ public class UserServiceImpl implements UserService {
 			try {
 		    PrintWriter out = response.getWriter();
 		    out.println("<script>");
-		    out.println("alert('이메일과 비밀번호를 확인해주세요.');");
+		    out.println("alert('존재하지 않는 계정입니다.');");
 		    out.println("location.href='" + request.getContextPath() + "/user/login.html'");
 		    out.println("</script>");
 		    out.flush();
@@ -260,19 +267,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
 		
-		System.out.println("이름 변경 " + userDTO);
-		userMapper.deleteAutoLogin(userDTO.getUserId());
-		HttpSession session = request.getSession();
-		
-		session.invalidate();
-		
-		Cookie cookie = new Cookie("autoLoginId", "");
-		cookie.setMaxAge(0);
-		cookie.setPath("/");
-		response.addCookie(cookie);
-		
-		response.setContentType("text/html; charset=UTF-8");
 		if(userMapper.updateUserName(userDTO) == 1) {
+			userMapper.deleteAutoLogin(userDTO.getUserId());
+			HttpSession session = request.getSession();
+			
+			session.invalidate();
+			
+			Cookie cookie = new Cookie("autoLoginId", "");
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			response.setContentType("text/html; charset=UTF-8");
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
@@ -288,7 +294,7 @@ public class UserServiceImpl implements UserService {
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("alert('이름(별명)이 변경이 실패했습니다. 다시 시도해주세요.');");
+				out.println("alert('이름(별명) 변경이 실패했습니다. 다시 시도해주세요.');");
 				out.println("location.href='/'");
 				out.println("</script>");
 				out.flush();
@@ -296,10 +302,162 @@ public class UserServiceImpl implements UserService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		
+	}
+	
+	@Override
+	public boolean confirmPw(UserDTO userDTO) {
+		String userId = userDTO.getUserId();
+		String userPw = securityUtil.getSha256(userDTO.getUserPw());
 
+		if(userPw.equals(userMapper.selectUserPwById(userId))) {
+			return true;
+		}else {
+			return false;
 		}
 	}
+	
+	@Override
+	public void updateUserPwById(HttpServletRequest request, HttpServletResponse response) {
+		String userId = request.getParameter("userId");
+		String userPw = securityUtil.getSha256(request.getParameter("userPw"));
+		
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUserId(userId);
+		userDTO.setUserPw(userPw);
+		
+		if(userMapper.updateUserPwById(userDTO) == 1) {
+			
+			userMapper.deleteAutoLogin(userDTO.getUserId());
+			HttpSession session = request.getSession();
+			
+			session.invalidate();
+			
+			Cookie cookie = new Cookie("autoLoginId", "");
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			response.setContentType("text/html; charset=UTF-8");
+			
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('비밀번호가 변경되었습니다. 다시 로그인 해주세요.');");
+				out.println("location.href='/'");
+				out.println("</script>");
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('비밀번호 변경이 실패했습니다. 다시 시도해주세요.');");
+				out.println("location.href='/'");
+				out.println("</script>");
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+		
+	@Override
+	public void deleteUser(HttpServletRequest request, HttpServletResponse response) {
+
+		String userId = request.getParameter("userId");
+		
+		if(userMapper.deleteUser(userId) == 1) {
+			userMapper.deleteAutoLogin(userId);
+			HttpSession session = request.getSession();
+			
+			session.invalidate();
+			
+			Cookie cookie = new Cookie("autoLoginId", "");
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			response.setContentType("text/html; charset=UTF-8");
+			
+			try {
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				out.println("alert('하루배움을 이용해주셔서 감사합니다.');");
+				out.println("location.href='/';");
+				out.println("</script>");
+				out.flush();
+				out.close();
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public void updateProfile(MultipartFile profile, HttpServletRequest request) {
+		
+		String userId = request.getParameter("userId");
+		
+		String sep = Matcher.quoteReplacement(File.separator);
+		
+		try {
+			if(profile != null && profile.isEmpty() == false) {
+				// 이미지를 저장할 경로 (static으로)
+				String path = profileUtil.getPath() + sep + userId;
+				
+				File dir = new File(path);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}
+				String imgOriginName = profile.getOriginalFilename();
+				imgOriginName = imgOriginName.substring(imgOriginName.lastIndexOf("\\") + 1);
+				
+				String userImgFileName = profileUtil.getFilesystemName(imgOriginName);
+				
+				File file = new File(dir, userImgFileName);
+			
+				profile.transferTo(file);
+				
+				String contentType = Files.probeContentType(file.toPath());
+				
+				boolean userHasImg = contentType != null && contentType.startsWith("image");
+
+				String userImgPath = "/images/user/profile/" + userId + "/" + userImgFileName;
+//				/Users/woomin/Documents/TeamPrj/finalproject/halbae/src/main/resources/static/images/user/profile/aaaa@aaaa.aaaa
+				
+				
+				UserDTO userDTO = new UserDTO();
+				userDTO.setUserId(userId);
+				userDTO.setUserImgFileName(userImgFileName);
+				userDTO.setUserHasImg(userHasImg ? 1 : 0);
+				userDTO.setUserImgOriginName(imgOriginName);
+				userDTO.setUserImgPath(userImgPath);
+				
+				userMapper.updateProfile(userDTO);
+				
+				
+			}
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+			
+			
+	}
+	
+	
 }
+	
+	
+	
+	
 
 
 

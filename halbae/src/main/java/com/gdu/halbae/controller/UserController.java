@@ -1,7 +1,10 @@
 package com.gdu.halbae.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.halbae.domain.UserDTO;
@@ -63,10 +67,9 @@ public class UserController {
 	}
 	
 	// 로그아웃
-	@GetMapping("/logout.do")
+	@PostMapping("/logout.do")
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
 			userService.logout(request, response);
-			System.out.println("로그아웃");
 	}
 	
 	// 아이디 찾기
@@ -109,15 +112,49 @@ public class UserController {
 	@PostMapping("/myProfile.html")
 	public String myProfile(String loginId, Model model) {
 		model.addAttribute("userDTO", userService.selectUserProfile(loginId));
-		System.out.println(userService.selectUserProfile(loginId));
 		return "user/myprofile";
 	}
+	// 프로필 사진 바꾸기
+	@PostMapping("/updateProfile.do")
+	public String updateProfile(MultipartFile profile, HttpServletRequest request, HttpServletResponse response) {
+			userService.updateProfile(profile, request);
+			String loginId = request.getParameter("userId");
+			return "redirect:myProfile.html?loginId=" + loginId;
+	}
+	
 	// 이름(별명)바꾸기
 	@PostMapping("/modifyName.do")
 	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
 		userService.modifyName(userDTO, request, response);
-		
+	}
+	// 비번 바꾸기로 이동
+	@PostMapping("/modifyPw.html")
+	public String ToModifyPw(String userId, Model model)  {
+		model.addAttribute("userId", userId);
+		return "user/modifyPw";
 	}
 	
+	// 현재 비밀번호 확인
+	@ResponseBody
+	@PostMapping(value="/confirmPw.do", produces="application/json")
+	public Map<String, Object> confirmPw(UserDTO userDTO) {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("confirmResult", userService.confirmPw(userDTO));
+		
+		return map;
+	}
+	
+	// 비밀번호 변경하기
+	@PostMapping("/modifyPw.do")
+	public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
+		userService.updateUserPwById(request, response);
+	}
+	
+	// 회원 탈퇴
+	@PostMapping("/deleteUser.do")
+	public void deleteAccount(HttpServletRequest request, HttpServletResponse response) {
+		userService.deleteUser(request, response);
+	}
 	
 }

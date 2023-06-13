@@ -8,6 +8,16 @@
 		var userImgPath = /*[[${userDTO.userImgPath}]]*/ null;
 		$('.userImg').attr("src", userImgPath);
 	})
+	
+	function fnAskDelete() {
+		if(confirm('계정을 삭제하시면 포인트와 쿠폰도 사라집니다. 삭제하시겠습니까?')) {
+			$('#deleteUserFrm').submit();
+		}
+	}
+	
+	function fnProfile() {
+		$('#profileFrm').submit();
+	}
 
 </script>
 
@@ -20,20 +30,32 @@
 			<div class="sectionLine"></div>
 			
 			<div class="profileImgArea">
-				<img class="userImg" th:src="${userDTO.userImgPath}">
+					<img class="userImg" th:src="${userDTO.userImgPath}">
 			</div>
+			<form id="profileFrm" method="post" enctype="multipart/form-data" th:action="@{/user/updateProfile.do}">	
+				<div class="profileBtn">
+					<label for="newProfile" class="newProfile">
+						프로필 변경
+					</label>
+					<input type="hidden" name="userId" th:value="${userDTO.userId}">
+					<input type="file" id="newProfile" name="profile" onchange="fnProfile()">
+				</div>
+			</form>	
 			<div class="sectionLine"></div>
-			
+				
 			<div class="InfoArea">
 				<div class="category">이메일(ID)</div>
 				<div class="userId content" th:text="${userDTO.userId}"></div>
 			</div>
 			<div class="sectionLine"></div>
 			
-			<div class="InfoArea">
-				<div class="category">비밀번호</div>
-				<input type="button" class="modifyPw" value="비밀번호 변경하기">
-			</div>
+			<form method="post" th:action="@{/user/modifyPw.html}">
+				<div class="InfoArea">
+					<div class="category">비밀번호</div>
+					<input type="hidden" name="userId" th:value="${userDTO.userId}">
+					<button class="modifyPw">비밀번호 변경하기</button>
+				</div>
+			</form>
 			<div class="sectionLine"></div>
 		
 			<div class="InfoArea">
@@ -51,6 +73,12 @@
 				</div>
 			</form>
 			<div class="sectionLine"></div>
+			<div class="deleteWrap">
+				<form id="deleteUserFrm" method="post" th:action="@{/user/deleteUser.do}">
+					<input type="hidden" name="userId" th:value="${userDTO.userId}">
+					<button type="button" class="deleteUser" onclick="fnAskDelete()">자기개발 포기하고 패배자로 살기</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>

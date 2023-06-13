@@ -61,17 +61,20 @@ function fnList(catagory) {
 			  			<div>
 			  				<span th:text="${session.userName}"style="font-size: 22px; font-weight: 600;"></span> 님
 			  			</div>
-		  				<input type="hidden" th:value="${session.loginId}" class="loginId">
-			  			<div class="logoutBtn" onclick="fnLogout()">로그아웃</div>
+			  			<form method="post" th:action="@{/user/logout.do}">
+			  				<input type="hidden" th:value="${session.loginId}" name="loginId">
+				  			<!-- <div class="logoutBtn" onclick="fnLogout()">로그아웃</div> -->
+				  			<button class="logoutBtn">로그아웃</button>
+			  			</form>
 		  			</div>
 			  		<div class="eventBox">
-			  			<div>쿠폰함 <span>0</span></div>
-			  			<div>포인트 <span>1000</span>P</div>
+			  			<div onclick="openCoupon()">쿠폰함 <span>0</span></div>
+			  			<div onclick="openPoint()">포인트 <span>1000</span>P</div>
 			  		</div>
 			  		<div class="serviceBox">
-			  			<div><i class="fa-solid fa-comments"></i></div>
-			  			<div><i class="fa-solid fa-school"></i></div>
-			  			<div><i class="fa-solid fa-heart"></i></div>
+			  			<div onclick="openMessage()">메세지</div>
+			  			<div>수강 목록</div>
+			  			<div>찜 목록</div>
 			  		</div>
 		  		</th:block>
 	  		</div>

@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.gdu.halbae.domain.UserDTO;
 
 public interface UserService {
@@ -28,7 +30,14 @@ public interface UserService {
 	public List<UserDTO> selectUserIdByTel(String userTel);
 	//프로필 정보 가져오기
 	public UserDTO selectUserProfile(String loginId);
+	//프로필 사진 변경하기
+	public void updateProfile(MultipartFile profile, HttpServletRequest request);
 	//이름 변경하기
 	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response);
-	
+	//비번 변경전 현재 비번 확인
+	public boolean confirmPw(UserDTO userDTO);
+	// 비번 변경하기
+	public void updateUserPwById(HttpServletRequest request, HttpServletResponse response);
+	// 회원 탈퇴
+	public void deleteUser(HttpServletRequest request, HttpServletResponse response);
 }

@@ -24,7 +24,7 @@
 	text-align: center;	
 	width: 150px;
 	height: 150px;
-	border-radius: 50%;
+	/* border-radius: 50%; */
 	overflow: hidden;
 	margin: 10px auto;
 	position: relative;
@@ -34,7 +34,6 @@
 	height: 150px;
 	position: absolute;
 	left: 0;
-	cursor: pointer;
 }
 .InfoArea {
 	padding: 30px 0;
@@ -80,11 +79,43 @@
 	color: white;
 	border-radius: 4px;
 }
+.deleteWrap {
+	position: relative;
+	height: 40px;
+}
+.deleteUser {
+	font-size: 14px;
+	opacity: 0.7;
+	text-decoration: underline;
+	position: absolute;
+	right:0;
+	cursor: pointer;
+	background-color: white;
+	margin-top: 10px;
+}
 
+/* 프로필 변경 버튼 */
+.profileBtn {
+	width: 100px;
+	margin:0 auto;
+	text-align: center;
+}
 
+#newProfile {
+ display: none;	
+}
 
-
-
+.newProfile {
+	display:inline-block;
+	background-color: #d74550;
+	padding: 5px;
+	font-size: 14px;
+	margin-bottom: 10px;
+	border-radius: 3px;
+	width: 80px;
+	height: 30px;
+	color: white;
+}
 
 
 

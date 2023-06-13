@@ -41,6 +41,7 @@
 	height: 60px;
 	margin-top: 2px;
 	margin-right: 5px;
+	cursor: pointer;
 }
 .logoutBtn {
 	font-size: 12px;
@@ -82,7 +83,6 @@
 	margin-top: 15px;
 	padding-top: 1.6px;
 	cursor: pointer;
-	color: #ff0045;
 }
 
 .linkWrap span:first-child,
