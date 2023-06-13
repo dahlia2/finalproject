@@ -17,9 +17,9 @@ public class CouponServiceImpl implements CouponService {
 	
     private final CouponMapper couponMapper;
     
+    // 모든 쿠폰 목록 조회
     @Override
     public List<CouponDTO> getAllCoupons() {
-        // 모든 쿠폰 목록 조회
         return couponMapper.getAllCoupons();
     }
     
@@ -29,20 +29,20 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.getUserCouponCount(userNo);
     }
     
+    // 쿠폰 생성
     @Override
     public CouponDTO createCoupon(CouponDTO couponDTO) {
         LocalDateTime now = LocalDateTime.now();
         couponDTO.setCouponStartDate(now);
         couponDTO.setCouponEndDate(now.plusDays(30));
-        // 쿠폰 생성
         couponMapper.createCoupon(couponDTO);
         return couponDTO;
     }
     
+    // 쿠폰 사용
     @Override
     public void useCoupon(CouponUserDTO couponUserDTO) {
         couponUserDTO.setCouponStatus(1);
-        // 쿠폰 사용
         couponMapper.useCoupon(couponUserDTO);
     }
     

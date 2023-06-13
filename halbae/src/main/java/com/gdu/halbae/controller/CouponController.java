@@ -17,34 +17,35 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class CouponController {
+	
     private final CouponService couponService;
     
+    // 모든 쿠폰 목록 조회
     @GetMapping("/coupon")
     public String getCouponPage(Model model) {
         model.addAttribute("coupons", couponService.getAllCoupons());
         return "coupon/couponForm";
     }
     
+    // 회원의 보유 쿠폰 수 조회
     @GetMapping("/coupons")
     public String getCoupons(@RequestParam("userNo") int userNo, Model model) {
-        // 회원의 보유 쿠폰 수 조회
         int couponCount = couponService.getUserCouponCount(userNo);
         model.addAttribute("couponCount", couponCount);
         return "coupon/coupon";
     }
-
     
+    // 쿠폰 생성
     @PostMapping("/coupon")
     @ResponseBody
     public CouponDTO createCoupon(@RequestBody CouponDTO couponDTO) {
-        // 쿠폰 생성
         return couponService.createCoupon(couponDTO);
     }
     
+    // 쿠폰 사용
     @PostMapping("/coupon/use")
     @ResponseBody
     public void useCoupon(@RequestBody CouponUserDTO couponUserDTO) {
-        // 쿠폰 사용
         couponService.useCoupon(couponUserDTO);
     }
     

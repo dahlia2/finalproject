@@ -72,13 +72,13 @@ public class ReviewServiceImpl implements ReviewService {
         reviewMapper.increaseLikeCount(reviewNo, userNo);
     }
 
-    // 사용자명으로 사용자 번호 조회
+    // 닉네임으로 사용자 번호 조회
     @Override
     public int getUserNoByUsername(String username) {
         return reviewMapper.getUserNoByUsername(username);
     }
 
-    // 해당 사용자가 리뷰를 좋아요 했는지 확인
+    // 해당 회원이 리뷰를 좋아요 했는지 확인
     @Override
     public boolean hasLikedReview(int reviewNo, int userNo) {
         int count = reviewMapper.getLikeCountByUser(reviewNo, userNo);

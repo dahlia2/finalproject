@@ -13,6 +13,7 @@ public class PointController {
     @Autowired
     private PointService pointService;
 
+    // 회원의 보유 포인트 조회
     @GetMapping("/point")
     public String getPoint(Model model, int userNo) {
         int userPoint = pointService.getUserPoint(userNo);

@@ -5,6 +5,7 @@
   
 <mapper namespace="com.gdu.halbae.mapper.PointMapper">
 
+	<!-- 회원의 보유 포인트 조회 -->
     <select id="getUserPoint" parameterType="int" resultType="int">
         SELECT USER_POINT 
           FROM USER 
@@ -12,4 +13,3 @@
     </select>
     
 </mapper>
-

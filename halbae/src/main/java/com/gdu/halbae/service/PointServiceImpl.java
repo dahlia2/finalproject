@@ -11,6 +11,7 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private PointMapper pointMapper;
 
+    // 회원의 보유 포인트 조회
     @Override
     public int getUserPoint(int userNo) {
         return pointMapper.getUserPoint(userNo);

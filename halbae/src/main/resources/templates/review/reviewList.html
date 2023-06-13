@@ -36,6 +36,17 @@
 	            console.error('Error:', error);
 	        });
 	}
+	
+	function openPopup() {
+	    // 팝업 창을 열기 위한 설정
+	    var popupWidth = 500;
+	    var popupHeight = 1000;
+	    var left = (screen.width - popupWidth) / 2;
+	    var top = (screen.height - popupHeight) / 2;
+	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
+	    // 팝업 창을 열고 해당 HTML 페이지를 로드
+	    window.open('/review/write', '리뷰 작성', popupOptions);
+	}
     
 </script>
 
@@ -45,17 +56,18 @@
 	<div id="review" class="tab-content">
 	    <!-- 리뷰 별점의 평균 출력 -->
 	    <p> 평점: <span th:text="${averageRating}"></span></p>
-	    <div>
-	    	<a th:href="@{/review/write}">리뷰 작성하기</a>
-	    </div>
+		<div>
+		    <a th:href="javascript:void(0);" onclick="openPopup()">리뷰 작성하기</a>
+		</div>
 	    <ul id="reviewList">
 	        <!-- 리뷰들을 리뷰 번호(REVIEW_NO) 내림차순으로 정렬 -->
 	        <li class="review-container" th:each="review : ${reviewList}">
 	        	<div class="left-section">
-	                <!-- 회원의 프로필사진 -->
-	                <div class="profile-image" th:class="${review.userDTO.userH asImg == 1} ? 'profile-image' : 'profile-image no-image'">
-	                	<img id="images1" th:if="${review.userDTO.userHasImg == 1}" th:src="${review.userDTO.userImgPath}" alt="Profile Image">
-                	</div>
+	                <!-- 회원의 프로필사진(0이면 기본 프로필 사진, 1이면 회원이 등록한 프로필 사진) -->
+					<div class="profile-image" th:class="${review.userDTO.userHasImg == 1} ? 'profile-image' : 'profile-image no-image'">
+					    <img id="images1" th:if="${review.userDTO.userHasImg == 1}" th:src="${review.userDTO.userImgPath}" alt="Profile Image">
+					    <img id="images1" th:unless="${review.userDTO.userHasImg == 1}" src="https://img.taling.me/Content/Images/placeholders/profile-default.thumb.jpg" alt="Default Profile Image">
+					</div>
             	</div>
 				<div class="right-section">
 					<!-- 회원 정보 -->

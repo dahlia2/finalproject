@@ -8,7 +8,7 @@ public class MvcController {
 
 	@GetMapping("/")
 	public String welcome() {
-		return "chat/chatForm";
+		return "main";
 	}
 	
 }
