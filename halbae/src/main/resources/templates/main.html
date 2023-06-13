@@ -3,6 +3,8 @@
 <head th:replace="~{/layout/header::headFrag('Main')}"></head>
 
 <link rel="stylesheet" th:href="@{/css/main.css(ver=1.0)}">
+<link rel="stylesheet" th:href="@{/css/user/logBox.css(ver=1.0)}">
+<script th:src="@{/js/user/userFn.js}"></script>
 
 <script>
 /* 메인배너 변환 */
@@ -32,13 +34,49 @@ function fnList(catagory) {
   	<div class="main_top">
   		<div class="main_top_L">
 	  		<div class="login_box">
-	  			<div class="pr_hi">
-		  			<img th:src="@{images/main/default_user.png}" id="user_profile">
-		  			<div id="user_hi"><span style="font-size: 22px; font-weight: 600;">회원이름</span> 님!&nbsp;반가워요😊</div>
-	  			</div>
-		  			<p id="logout"><a th:href="@{user/logout.do}">로그아웃</a></p>
-		  		<div id="button_wrap1"><div>쿠폰함</div><div>캐시</div></div>
-		  		<div id="button_wrap2"><div>메세지</div><div>강의내역</div><div>찜</div></div>
+	  			<!-- 로그인이 안되어 있을 경우 -->
+	  			<th:block th:if="${session.loginId == null}">
+						<div class="loginWord">
+							로그인하시고 하루배움의 <br> 다양한 튜터를 만나보세요.
+						</div>
+						<div>
+							<button class="loginBtn" onclick="location.href='/user/login.html'">로그인하기</button>
+						</div>
+						<div class="linkWrap">
+							<div>
+								<span onclick="fnFindId()">아이디 찾기</span>
+								<span>&nbsp;|&nbsp;</span>
+								<span onclick="fnFindPw()">비밀번호 찾기</span>
+							</div>
+							<div onclick="location.href='/user/join.html'" style="cursor: pointer;">회원가입</div>
+						</div>
+		  		</th:block>
+		  		 <!-- 로그인이 되어 있을 경우 -->
+		  		<th:block th:if="${session.loginId != null}">
+		  			<div class="welcomeBox">
+							<form id="profileFrm" method="post" th:action="@{/user/myProfile.html}">
+								<input type="hidden" name="loginId" th:value="${session.loginId}">
+			  				<img th:src="@{/images/main/default_user.png}" class="profile" onclick="$('#profileFrm').submit()">
+			  			</form>
+			  			<div>
+			  				<span th:text="${session.userName}"style="font-size: 22px; font-weight: 600;"></span> 님
+			  			</div>
+			  			<form method="post" th:action="@{/user/logout.do}">
+			  				<input type="hidden" th:value="${session.loginId}" name="loginId">
+				  			<!-- <div class="logoutBtn" onclick="fnLogout()">로그아웃</div> -->
+				  			<button class="logoutBtn">로그아웃</button>
+			  			</form>
+		  			</div>
+			  		<div class="eventBox">
+			  			<div onclick="openCoupon()">쿠폰함 <span>0</span></div>
+			  			<div onclick="openPoint()">포인트 <span>1000</span>P</div>
+			  		</div>
+			  		<div class="serviceBox">
+			  			<div onclick="openMessage()">메세지</div>
+			  			<div>수강 목록</div>
+			  			<div>찜 목록</div>
+			  		</div>
+		  		</th:block>
 	  		</div>
 	  		<div class="smallBanner1"></div>
   		</div>

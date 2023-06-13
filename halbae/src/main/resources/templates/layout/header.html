@@ -3,6 +3,7 @@
 
 <head th:fragment="headFrag(title)">
   <meta charset="UTF-8">
+  <meta name="contextPath" th:content="${#servletContext.contextPath}" />
   <title th:text="${title}"></title>
   <script th:src="@{/js/lib/jquery-3.6.4.min.js}"></script>
   <link rel="stylesheet" th:href="@{/css/init.css(ver=1.0)}">
@@ -14,7 +15,7 @@
 
 	  	<div id="headerWrap" th:fragment="gnbFrag">
 	  		<div id="headerLogo">
-          <img th:src="@{images/logo_hb.gif}" width="230px;"/>
+          <a th:href="@{/}"><img th:src="@{/images/logo_hb.gif}" width="230px;"/></a>
         </div>
         <form id="searchFrm">
         	<fieldset id="headerSearchArea">        	
@@ -24,29 +25,39 @@
             </button>
         	</fieldset>
    			</form>
-   			
-        <nav id="headerNav">
-          <ul>
-            <li>
-              <p>튜터메뉴</p>
-            </li>
-            <li>
-              <p>메세지</p>
-            </li>
-            <li>
-              <p>클래스신청서</p>
-            </li>
-            <li>
-              <p>수강목록</p>
-            </li>
-            <li>
-              <p>찜</p>
-            </li>
-            <li>
-              <p>프로필</p>
-            </li>
-          </ul>
-        </nav>
+   			<th:block th:if="${session.loginId != null}">
+	        <nav id="headerNav">
+	          <ul>
+	            <li>
+	              <p>튜터메뉴</p>
+	            </li>
+	            <li>
+	              <p>메세지</p>
+	            </li>
+	            <li>
+	              <p>클래스신청서</p>
+	            </li>
+	            <li>
+	              <p>수강목록</p>
+	            </li>
+	            <li>
+	              <p>찜</p>
+	            </li>
+	            <li>
+	              <p>프로필</p>
+	            </li>
+	          </ul>
+	        </nav>
+        </th:block>
+        <th:block th:if="${session.loginId == null}">
+	        <nav id="headerLogin">
+	        	<ul>
+	        		<li>
+	        			<p><a th:href="@{/user/login.html}">로그인</a></p>
+	        		</li>
+	        	</ul>
+        	</nav>
+        </th:block>
 		</div>
   
 </body>

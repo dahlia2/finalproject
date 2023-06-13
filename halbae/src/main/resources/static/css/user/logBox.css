@@ -1,0 +1,106 @@
+@charset "UTF-8";
+
+.login_box {
+	padding: 15px 20px;
+	background-color: #f3f5fa;
+	border: 2px solid #f1f3f8
+}
+
+/* 로그인 전 */
+.loginWord {
+	font-size: 19px;
+	font-weight: 600;
+}
+
+.loginBtn {
+	width: 310px;
+	height: 45px; 
+	background-color: #ff0045;
+	color: white;
+	font-size: 16px;
+	margin-top: 20px;
+}
+
+.linkWrap{
+	display: flex;
+	justify-content: space-between;
+	color: #919292;
+	font-size: 14px;
+	margin-top: 10px;
+}
+
+/* 로그인 후 */
+.welcomeBox {
+	display: flex;
+	height: 60px;
+	line-height: 60px;
+	position:relative;
+}
+.profile {
+	width: 60px;
+	height: 60px;
+	margin-top: 2px;
+	margin-right: 5px;
+	cursor: pointer;
+}
+.logoutBtn {
+	font-size: 12px;
+	cursor: pointer;
+	color: #919292;
+	margin-top: 20px;
+	text-decoration: underline;
+	position: absolute;
+	right: 0;
+}
+.eventBox {
+	display: flex;
+	background-color: #dadbe0;
+	width: 200px;
+	height: 30px;
+	border-radius: 20px;
+	line-height: 30px;
+	padding: 0 10px;
+	margin-top: 15px;
+	cursor:pointer;
+}
+.eventBox div:first-child {
+	width: 70px;
+	border-right: 2px solid #f1f3f8;
+}
+.eventBox div:last-child {
+	padding-left: 5px;
+}
+
+.serviceBox{
+	display:flex;
+}
+.serviceBox div {
+	border: 2px solid #dadbe0;
+	background-color: #f1f3f8;
+	width: 33%;
+	height: 30px;
+	text-align: center;
+	margin-top: 15px;
+	padding-top: 1.6px;
+	cursor: pointer;
+}
+
+.linkWrap span:first-child,
+.linkWrap span:last-child {
+	cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

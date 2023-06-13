@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('회원가입 약관동의')}"></head>
+<link rel="stylesheet" th:href="@{/css/user/agree.css(ver=1.0)}">
+<link rel="stylesheet" th:href="@{/css/header.css(ver=1.0)}">
+<script th:src="@{/js/user/agree.js}"></script>
+<script th:src="@{/js/user/checkbox.js}"></script>
+
+<body>
+	<div th:replace="~{/layout/header::gnbFrag}"></div>
+	<div id="loginWrap">
+		<div class="loginBox">
+				 <div class="agreeTitle">환영합니다!</div>
+			<div class="loginTitle">
+				 <div>원활한 서비스 이용을 위해<br>&nbsp;&nbsp;&nbsp;약관에 동의해주세요.</div>
+			</div>
+			<div class="checkContainer">	
+				<div class="checkWrap">
+					<label for="checkAll">
+						<img src="/images/user/check_off.png">
+						<input type="checkbox" id="checkAll">
+						<div>전체 선택</div>
+					</label>
+				</div>
+				<div class="agreeLine"></div>
+				<div class="checkCover">
+					<div class="checkWrap checkOneWrap">
+						<label for="checkService">
+							<img src="/images/user/check_off.png">
+							<input type="checkbox" id="checkService" class="checkOne">
+							<div>서비스 이용약관 (필수)</div>
+						</label>
+					</div>
+					<textarea cols="50" rows="3">모든 국민은 고문을 받지 아니하며, 형사상 자기에게 불리한 진술을 강요당하지 아니한다. 대통령은 제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다.
+	
+						대통령·국무총리·국무위원·행정각부의 장·헌법재판소 재판관·법관·중앙선거관리위원회 위원·감사원장·감사위원 기타 법률이 정한 공무원이 그 직무집행에 있어서 헌법이나 법률을 위배한 때에는 국회는 탄핵의 소추를 의결할 수 있다.
+						
+						국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 대통령의 선거에 관한 사항은 법률로 정한다.
+					</textarea>
+				</div>
+				<div class="checkCover">
+					<div class="checkWrap checkOneWrap">
+						<label for="checkInfo">
+							<img src="/images/user/check_off.png">
+							<input type="checkbox" id="checkInfo" class="checkOne">
+							<div>개인정보처리방침 (필수)</div>
+						</label>
+					</div>
+					<textarea cols="50" rows="3">모든 국민은 고문을 받지 아니하며, 형사상 자기에게 불리한 진술을 강요당하지 아니한다. 대통령은 제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다.
+	
+						대통령·국무총리·국무위원·행정각부의 장·헌법재판소 재판관·법관·중앙선거관리위원회 위원·감사원장·감사위원 기타 법률이 정한 공무원이 그 직무집행에 있어서 헌법이나 법률을 위배한 때에는 국회는 탄핵의 소추를 의결할 수 있다.
+						
+						국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 대통령의 선거에 관한 사항은 법률로 정한다.
+					</textarea>
+				</div>
+				<div class="checkCover">
+					<div class="checkWrap checkOneWrap">
+						<label for="checkAge">
+							<img src="/images/user/check_off.png">
+							<input type="checkbox" id="checkAge" class="checkOne">
+							<div>본인은 만 14세 이상입니다. (필수)</div>
+						</label>
+					</div>
+					<textarea cols="50" rows="3">어린이는 집에 가라~ ㅋ</textarea>
+				</div>
+			</div>
+			<form id="agreeFrm" method="post" th:action="@{/user/successJoin.do}">
+				<input type="hidden" name="userName" th:value="${userDTO.userName}">
+				<input type="hidden" name="userTel" th:value="${userDTO.userTel}">
+				<input type="hidden" name="userId" th:value="${userDTO.userId}">
+				<input type="hidden" name="userPw" th:value="${userDTO.userPw}">
+			</form>
+				<div class="loginBtnArea">
+					<div class="btnWrap">
+							<button type="button" onclick="isAllChecked()">시작하기</button>
+					</div>
+				</div>
+			
+	  </div>
+  </div>
+</body>
+</html>
