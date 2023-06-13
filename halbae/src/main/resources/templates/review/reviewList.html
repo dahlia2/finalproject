@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/reviewList.css" />
 </head>
 
-<script>
+<script th:inline="javascript">
 
 	function likeReview(reviewNo) {
 	    // 좋아요 버튼 요소 가져오기
@@ -89,10 +89,12 @@
 		                </ul>
 		            </div>
 	            	<!-- 좋아요 기능 -->
-		            <div class="like-container">
-		               <button class="like-button" th:id="'likeButton_' + ${review.reviewNo}" th:text="'Like (' + ${review.likeCount} + ')'" th:attr="onclick='likeReview(' + ${review.reviewNo} + ')'"></button>
-		               <span class="like-count">0</span>
-		            </div>
+					<div class="like-container">
+					    <button class="like-button" th:id="'likeButton_' + ${review.reviewNo}" th:text="'Like (' + ${review.likeCount} + ')'"
+					            th:class="${review.likedByCurrentUser} ? 'like-button liked' : 'like-button'"
+					            th:attr="onclick='likeReview(' + ${review.reviewNo} + ')'"></button>
+					    <span class="like-count" th:text="${review.likeCount}"></span>
+					</div>
 	            </div>
 			</li>
 		</ul>
