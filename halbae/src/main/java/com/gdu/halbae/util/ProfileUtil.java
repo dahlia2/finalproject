@@ -16,7 +16,7 @@ public class ProfileUtil {
 	// String path 만들기
 	public String getPath() {
 		// 루트/storage/2023/05/08
-		return "/Users/woomin/Documents/TeamPrj/finalproject/halbae/src/main/resources/static/images/user/profile";
+		return "/Users/woomin/Documents/TeamPrj/UserProfile";
 	}
 	
 	// String filesystemName 만들기
