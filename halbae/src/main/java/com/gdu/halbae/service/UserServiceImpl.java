@@ -402,16 +402,18 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void updateProfile(MultipartFile profile, HttpServletRequest request) {
+	public String updateProfile(MultipartFile profile, HttpServletRequest request) {
 		
 		String userId = request.getParameter("userId");
 		
 		String sep = Matcher.quoteReplacement(File.separator);
 		
+		String userImgPath = "";
+		
 		try {
 			if(profile != null && profile.isEmpty() == false) {
-				// 이미지를 저장할 경로 (static으로)
-				String path = profileUtil.getPath() + sep + userId;
+				
+				String path = profileUtil.getPath();
 				
 				File dir = new File(path);
 				if(dir.exists() == false) {
@@ -430,7 +432,7 @@ public class UserServiceImpl implements UserService {
 				
 				boolean userHasImg = contentType != null && contentType.startsWith("image");
 
-				String userImgPath = "/images/user/profile/" + userId + "/" + userImgFileName;
+				userImgPath = path + sep + userImgFileName;
 //				/Users/woomin/Documents/TeamPrj/finalproject/halbae/src/main/resources/static/images/user/profile/aaaa@aaaa.aaaa
 				
 				
@@ -443,13 +445,13 @@ public class UserServiceImpl implements UserService {
 				
 				userMapper.updateProfile(userDTO);
 				
-				
 			}
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
 			
-			
+		return userImgPath;
+		
 	}
 	
 	

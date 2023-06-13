@@ -115,11 +115,13 @@ public class UserController {
 		return "user/myprofile";
 	}
 	// 프로필 사진 바꾸기
-	@PostMapping("/updateProfile.do")
-	public String updateProfile(MultipartFile profile, HttpServletRequest request, HttpServletResponse response) {
-			userService.updateProfile(profile, request);
-			String loginId = request.getParameter("userId");
-			return "redirect:myProfile.html?loginId=" + loginId;
+	@ResponseBody
+	@GetMapping(value="/updateProfile.do", produces="application/json")
+	public Map<String, Object> updateProfile(MultipartFile profile, HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userDTO", userService.updateProfile(profile, request));
+			return map;
 	}
 	
 	// 이름(별명)바꾸기

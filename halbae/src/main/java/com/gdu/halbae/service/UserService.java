@@ -31,7 +31,7 @@ public interface UserService {
 	//프로필 정보 가져오기
 	public UserDTO selectUserProfile(String loginId);
 	//프로필 사진 변경하기
-	public void updateProfile(MultipartFile profile, HttpServletRequest request);
+	public String updateProfile(MultipartFile profile, HttpServletRequest request);
 	//이름 변경하기
 	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response);
 	//비번 변경전 현재 비번 확인

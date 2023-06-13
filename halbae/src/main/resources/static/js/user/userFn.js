@@ -4,6 +4,20 @@
  
 $(function() {
 	$('#confirmed').val('off');
+	
+	// 프로필 이미지 변경
+	function fnProfile() {
+		$.ajax({
+			type: 'get',
+			url: '/updateProfile.do',
+			data: 'profile=' + $('#newProfile').val(),
+			dataType: 'json',
+			success: function(res) {
+				$('.userImg').attr('src', res.userImgPath);
+			}
+			
+		})
+	}
 })
  
 	
