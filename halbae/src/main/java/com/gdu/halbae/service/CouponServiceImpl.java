@@ -25,8 +25,8 @@ public class CouponServiceImpl implements CouponService {
     
     // 회원의 보유 쿠폰 수 조회
     @Override
-    public int getUserCouponCount(int userNo) {
-        return couponMapper.getUserCouponCount(userNo);
+    public int getAvailableCouponCount() {
+        return couponMapper.getAvailableCouponCount();
     }
     
     // 쿠폰 생성

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>reviewList</title>
+    <title>쿠폰</title>
     <link rel="stylesheet" href="/css/coupon.css" />
 </head>
 
@@ -16,7 +16,7 @@
 	        var couponName = $("#couponName").val(); 
 	        // Ajax 요청 전송
 	        $.ajax({
-	            url: "/coupons",
+	            url: "/coupon",
 	            method: "POST",
 	            data: { couponName: couponName }, // 쿠폰명을 서버에 전달
 	            success: function(response) {
@@ -42,17 +42,22 @@
 	        <input type="button" id="button" value="등록">
 	    </div>
 		<div id="m">
-	        <p>사용 가능 쿠폰(<span id="count" th:text="${couponCount}"></span>장)</p>
+			<p>사용 가능 쿠폰(<span id="count" th:text="${couponCount}"></span>장)</p>
 	    </div>
 	    <div id="couponList">
 	        <table>
 	        	<tbody>
 		            <tr th:each="coupon : ${coupons}">
-		                <td th:text="${coupon.couponName}"></td>
-		                <td th:text="${coupon.couponDiscount}"></td>
+		                <td th:text="|${coupon.couponName} 회원 웰컴 쿠폰|"></td>
 		                <td>
-		                    <span th:text="${coupon.couponStartDate} + ' ~ ' + ${coupon.couponEndDate}"></span>
-		                </td>
+						  <span th:text="|${coupon.couponDiscount}%|"></span>
+						  <span style="color: black;">&nbsp;할인</span>
+						</td>
+						<td>
+						  <span th:text="${#temporals.format(coupon.couponStartDate, 'yyyy-MM-dd')}"></span>
+						  <span>&nbsp;~&nbsp;</span>
+						  <span th:text="${#temporals.format(coupon.couponEndDate, 'yyyy-MM-dd')}"></span>
+						</td>
 		            </tr>
 	        	</tbody>
 	        </table>

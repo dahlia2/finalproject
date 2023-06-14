@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.halbae.domain.CouponDTO;
@@ -29,10 +28,10 @@ public class CouponController {
     
     // 회원의 보유 쿠폰 수 조회
     @GetMapping("/coupons")
-    public String getCoupons(@RequestParam("userNo") int userNo, Model model) {
-        int couponCount = couponService.getUserCouponCount(userNo);
+    public String getCoupons(Model model) {
+        int couponCount = couponService.getAvailableCouponCount();
         model.addAttribute("couponCount", couponCount);
-        return "coupon/coupon";
+        return "/coupon/coupon";
     }
     
     // 쿠폰 생성

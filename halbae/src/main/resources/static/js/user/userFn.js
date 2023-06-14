@@ -145,31 +145,22 @@ function fnModifyPw() {
 }
 
 	// 쿠폰함 팝업 열기
-	function openCoupon() {
-	    // 팝업 창을 열기 위한 설정
+	function openCoupon(userNo) {
 	    var popupWidth = 500;
 	    var popupHeight = 1000;
 	    var left = (screen.width - popupWidth) / 2;
 	    var top = (screen.height - popupHeight) / 2;
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
-	    // 팝업 창을 열고 해당 HTML 페이지를 로드
 	    window.open('/coupon', '쿠폰', popupOptions);
 	}
  
  	// 포인트 팝업 열기
- 	function openPoint() {
-	    // 팝업 창을 열기 위한 설정
-	    var popupWidth = 500;
-	    var popupHeight = 1000;
-	    var left = (screen.width - popupWidth) / 2;
-	    var top = (screen.height - popupHeight) / 2;
-	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
-	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/point', '포인트', popupOptions);
+	function openPoint() {
+	    window.open("/user/point", "PointForm", "width=500,height=1000");
 	}
  
  	// 메시지창 팝업 	열기
- 	function openMessage() {
+	function openMessage() {
 	    // 팝업 창을 열기 위한 설정
 	    var popupWidth = 500;
 	    var popupHeight = 1000;
@@ -177,7 +168,12 @@ function fnModifyPw() {
 	    var top = (screen.height - popupHeight) / 2;
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
 	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/chat/chatList', '메시지', popupOptions);
+	    var popupWindow = window.open('/chat/chatList.html', '메시지', popupOptions);
+	    
+	    // 팝업 창이 차단되었을 경우 대비
+	    if (!popupWindow || popupWindow.closed || typeof popupWindow.closed == 'undefined') {
+	        alert('팝업 창이 차단되었습니다. 팝업 차단을 해제해주세요.');
+	    }
 	}
  
  

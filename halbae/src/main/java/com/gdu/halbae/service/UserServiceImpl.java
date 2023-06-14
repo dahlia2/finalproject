@@ -83,6 +83,7 @@ public class UserServiceImpl implements UserService {
 	// 로그인
 	@Override
 	public void login(HttpServletRequest request, HttpServletResponse response) {
+		
 		String userId = request.getParameter("userId");
 		String userPw = request.getParameter("userPw");
 		
@@ -103,6 +104,8 @@ public class UserServiceImpl implements UserService {
 			session.setAttribute("loginId", userId);
 			session.setAttribute("userNo", userDTO.getUserNo());
 			session.setAttribute("userName", userDTO.getUserName());
+			session.setAttribute("userPoint", userDTO.getUserPoint());
+			
 			// 로그인 후 메인으로 이동
 			try {
 				response.sendRedirect("/");

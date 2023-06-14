@@ -98,6 +98,6 @@ height: 100%;
     background-color: #FFFFFF; /* 첫 번째 행 이외의 행 배경색 */
 }
 
-#couponCount {
+#couponCountSpan {
     color: red;
 }
