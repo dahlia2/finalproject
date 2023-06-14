@@ -3,13 +3,15 @@
  */
  
 $(function() {
+	
 	$('#confirmed').val('off');
 	
 	$('#newProfile').on('change', function(){
+		
 		var formData = new FormData();
 		formData.append("profile", $('#newProfile')[0].files[0]);
-		formData.append("userId", $('.userId').val());
-
+		formData.append("userId", $('#userId').val());
+		
 		$.ajax({
 			contentType: false,
 			processData: false,
@@ -18,10 +20,12 @@ $(function() {
 			data: formData,
 			dataType: 'json',
 			success: function(res) {
-				$('.userImg').attr('src', res.userImgPath);
+				console.log("결과 " + res.display);
+				$('.userImg').attr('src', res.display);
 			}
 			
 		})
+		
 	})	
 	
 })
@@ -164,6 +168,13 @@ function fnModifyPw() {
 		alert('현재 비밀번호를 인증해주세요.');
 	}
 }
+
+	// 회원 탈퇴
+	function fnAskDelete() {
+		if(confirm('계정을 삭제하시면 포인트와 쿠폰도 사라집니다. 삭제하시겠습니까?')) {
+			$('#deleteUserFrm').submit();
+		}
+	}
 
 	// 쿠폰함 팝업 열기
 	function openCoupon() {

@@ -118,9 +118,12 @@ public class UserController {
 	// 프로필 사진 바꾸기
 	@ResponseBody
 	@PostMapping(value="/updateProfile.do", produces="application/json")
-	public ResponseEntity<byte[]> updateProfile(MultipartHttpServletRequest multipartRequest) {
-		System.out.println("컨트롤러 : " + userService.updateProfile(multipartRequest));
-		return	userService.updateProfile(multipartRequest);
+	public Map<String, Object> updateProfile(MultipartHttpServletRequest multipartRequest) {
+		return userService.updateProfile(multipartRequest);
+	}
+	@GetMapping("/display.do")
+	public ResponseEntity<byte[]> display(String userImgPath) {
+		return userService.displayProfile(userImgPath);
 	}
 	
 	// 이름(별명)바꾸기

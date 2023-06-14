@@ -407,18 +407,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public ResponseEntity<byte[]> updateProfile(MultipartHttpServletRequest multipartRequest) {
+	public Map<String, Object> updateProfile(MultipartHttpServletRequest multipartRequest) {
 		
-		String sep = Matcher.quoteReplacement(File.separator);
+		Map<String, Object> map = new HashMap<>();
 		
 		String userId = multipartRequest.getParameter("userId");
 		MultipartFile profile = multipartRequest.getFile("profile");
-		List<MultipartFile> profiles = multipartRequest.getFiles("profile");
 		
-		ResponseEntity<byte[]> image = null;
-		
-		System.out.println("프로필 : " + profile);
-		System.out.println("프로필 : " + profiles);
+		System.out.println("프로필 : " + profile.getOriginalFilename());
 		System.out.println("아이디 : " + userId);
 		
 		try {
@@ -446,9 +442,7 @@ public class UserServiceImpl implements UserService {
 				
 				boolean userHasImg = contentType != null && contentType.startsWith("image");
 
-				String userImgPath = path + sep + userImgFileName;
-				
-				image = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), HttpStatus.OK);
+				String userImgPath = path + "/" + userImgFileName;
 				
 				UserDTO userDTO = new UserDTO();
 				userDTO.setUserId(userId);
@@ -459,15 +453,27 @@ public class UserServiceImpl implements UserService {
 				
 				userMapper.updateProfile(userDTO);
 				
-				System.out.println(userImgPath);
+				map.put("display", "/user/display.do?userImgPath=" + userImgPath);
 			}
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("리스폰트엔티티 : " + image);
-		return image;
+		return map;
 	}
 	
+	@Override
+	public ResponseEntity<byte[]> displayProfile(String userImgPath) {
+		ResponseEntity<byte[]> img = null;
+		
+		File profile = new File(userImgPath);
+		try {
+			img = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(profile), HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return img;
+	}
 	
 }
 	

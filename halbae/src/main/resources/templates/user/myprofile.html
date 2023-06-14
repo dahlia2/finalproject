@@ -3,22 +3,17 @@
 <head th:replace="~{/layout/header::headFrag('나의 프로필')}"></head>
 <link rel="stylesheet" th:href="@{/css/header.css(ver=1.0)}">
 <link rel="stylesheet" th:href="@{/css/user/myprofile.css(ver=1.0)}">
-<script th:src="@{/js/user/userFn.js}"></script>
+<script th:inline="javascript" th:src="@{/js/user/userFn.js(ver=1.0)}"></script>
 <script th:inline="javascript">
-	$(function() {
-		var userImgPath = /*[[${userDTO.userImgPath}]]*/ null;
-		$('.userImg').attr("src", userImgPath);
-	})
-	
-	function fnAskDelete() {
-		if(confirm('계정을 삭제하시면 포인트와 쿠폰도 사라집니다. 삭제하시겠습니까?')) {
-			$('#deleteUserFrm').submit();
-		}
-	}
-	
-</script>
 
+	$(function(){
+		var userId = '[[${userDTO.userId}]]';
+		console.log(userId);
+	})
+
+</script>
 <body>
+
 	<div th:replace="~{/layout/header::gnbFrag}"></div>
 	
 	<div class="profileContainer">
@@ -27,10 +22,11 @@
 			<div class="sectionLine"></div>
 			
 			<div class="profileImgArea">
-					<img class="userImg" th:src="">
+					<img class="userImg">
 			</div>
 			<div class="profileBtn">
 				<label for="newProfile" id="lblNewProfile" class="newProfile">프로필 변경</label>
+				<input type="hidden" id="userId" th:value="${userDTO.userId}">
 				<input type="file" id="newProfile" name="profile">
 			</div>
 			<div class="sectionLine"></div>
