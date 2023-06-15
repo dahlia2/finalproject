@@ -148,15 +148,20 @@ function fnModifyPw() {
 	function openCoupon(userNo) {
 	    var popupWidth = 500;
 	    var popupHeight = 1000;
-	    var left = (screen.width - popupWidth) / 2;
-	    var top = (screen.height - popupHeight) / 2;
+	    var left = Math.floor((screen.width - popupWidth) / 2);
+	    var top = Math.floor((screen.height - popupHeight) / 2);
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
-	    window.open('/coupon', '쿠폰', popupOptions);
+	    window.open('/coupon?userNo=' + userNo, '쿠폰', popupOptions);
 	}
  
  	// 포인트 팝업 열기
 	function openPoint() {
-	    window.open("/user/point", "PointForm", "width=500,height=1000");
+		var popupWidth = 500;
+	    var popupHeight = 1000;
+	    var left = (screen.width - popupWidth) / 2;
+	    var top = (screen.height - popupHeight) / 2;
+	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
+	    window.open('/user/point', '포인트', popupOptions);
 	}
  
  	// 메시지창 팝업 	열기

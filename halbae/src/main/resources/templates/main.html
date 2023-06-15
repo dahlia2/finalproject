@@ -68,7 +68,7 @@ function fnList(catagory) {
 			  			</form>
 		  			</div>
 			  		<div class="eventBox">
-			  			<div onclick="openCoupon()">쿠폰 <span></span></div>
+			  			<div th:onclick="|openCoupon(${session.userNo})|" >쿠폰 <span th:text="${couponCount}"></span>장</div>
 			  			<div onclick="openPoint()">포인트 <span th:text="${userPoint}"></span>P</div>
 			  		</div>
 			  		<div class="serviceBox">

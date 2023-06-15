@@ -1,6 +1,5 @@
 package com.gdu.halbae.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,26 +16,34 @@ public class CouponServiceImpl implements CouponService {
 	
     private final CouponMapper couponMapper;
     
-    // 모든 쿠폰 목록 조회
+    // 회원이 보유한 쿠폰 목록 조회
     @Override
-    public List<CouponDTO> getAllCoupons() {
-        return couponMapper.getAllCoupons();
+    public List<CouponDTO> getAllCoupons(int userNo) {
+        return couponMapper.getAllCoupons(userNo);
     }
     
     // 회원의 보유 쿠폰 수 조회
     @Override
-    public int getAvailableCouponCount() {
-        return couponMapper.getAvailableCouponCount();
+    public int getAvailableCouponCount(int userNo) {
+        return couponMapper.getAvailableCouponCount(userNo);
     }
-    
-    // 쿠폰 생성
+
+    // 쿠폰 등록
     @Override
-    public CouponDTO createCoupon(CouponDTO couponDTO) {
-        LocalDateTime now = LocalDateTime.now();
-        couponDTO.setCouponStartDate(now);
-        couponDTO.setCouponEndDate(now.plusDays(30));
-        couponMapper.createCoupon(couponDTO);
-        return couponDTO;
+    public void issueCouponToUser(CouponDTO couponDTO, int userNo) {
+        String couponName = couponDTO.getCouponName();
+        int couponNo = couponMapper.getCouponNoByCouponName(couponName);
+        CouponUserDTO couponUserDTO = new CouponUserDTO();
+        couponUserDTO.setUserNo(userNo);
+        couponUserDTO.setCouponNo(couponNo);
+        couponUserDTO.setCouponStatus(1);
+        couponMapper.insertCouponUser(couponUserDTO);
+    }
+
+    // 쿠폰명을 기준으로 쿠폰 번호를 조회
+    @Override
+    public int getCouponNoByCouponName(String couponName) {
+        return couponMapper.getCouponNoByCouponName(couponName);
     }
     
     // 쿠폰 사용

@@ -10,24 +10,26 @@
 
 <script th:inline="javascript">
 
-	$(document).ready(function() {
-	    $("#button").click(function() {
-	    	// 쿠폰명을 입력한 input 요소의 값을 가져옴
-	        var couponName = $("#couponName").val(); 
-	        // Ajax 요청 전송
-	        $.ajax({
-	            url: "/coupon",
-	            method: "POST",
-	            data: { couponName: couponName }, // 쿠폰명을 서버에 전달
-	            success: function(response) {
-	                alert("쿠폰이 발행되었습니다.");
-	            },
-	            error: function(xhr) {
-	                alert("쿠폰명을 다시 확인해주세요.");
+	function issueCoupon() {
+	    var couponName = document.getElementById("couponName").value;
+	    // Ajax를 사용하여 서버에 쿠폰 정보를 전송
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("POST", "/issueCoupon", true);
+	    xhr.setRequestHeader("Content-Type", "application/json");
+	    xhr.onreadystatechange = function () {
+	        if (xhr.readyState === 4 && xhr.status === 200) {
+	            // 응답을 받았을 때의 동작
+	            var response = JSON.parse(xhr.responseText);
+	            if (response === "success") {
+	                alert("쿠폰이 발급되었습니다.");
+	            } else {
+	                alert("쿠폰 발급에 실패했습니다.");
 	            }
-	        });
-	    });
-	});
+	        }
+	    };
+	    var couponDTO = { couponName: couponName };
+	    xhr.send(JSON.stringify(couponDTO));
+	}
 	
 </script>
 
@@ -37,12 +39,12 @@
 	    <div id="header">
 	        <h3>내쿠폰</h3>
 	    </div>
-	    <div id="coupon">
-	        <input type="text" id="couponName" placeholder="&nbsp;&nbsp;&nbsp;쿠폰 코드를 입력해주세요.">
-	        <input type="button" id="button" value="등록">
-	    </div>
+		<div id="coupon">
+		    <input type="text" id="couponName" placeholder="&nbsp;&nbsp;&nbsp;쿠폰 코드를 입력해주세요.">
+		    <input type="button" id="button" value="등록" onclick="issueCoupon()">
+		</div>
 		<div id="m">
-			<p>사용 가능 쿠폰(<span id="count" th:text="${couponCount}"></span>장)</p>
+			<p>사용 가능 쿠폰 <span id="count" style="color: red; font-weight: bold;" th:text="|${couponCount}장|"></span></p>
 	    </div>
 	    <div id="couponList">
 	        <table>
