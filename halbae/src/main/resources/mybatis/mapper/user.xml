@@ -57,7 +57,7 @@
 		 WHERE USER_ID = #{userId}
 	</update>
 	<select id="selectUserDTOByAutoLoginId" parameterType="String">
-		SELECT USER_NO, USER_ID, USER_NAME 
+		SELECT USER_NO, USER_ID, USER_NAME, USER_IMG_PATH 
 		  FROM USER
 		 WHERE USER_AUTO_LOGIN_ID = #{userAutoLoginId}
 		   AND USER_AUTO_LOGIN_EXPIRED > NOW()
@@ -91,12 +91,6 @@
  		  FROM USER
  		 WHERE USER_ID = #{loginId} 
  	</select> 
-  <!-- 유저 이름 변경하기 -->
-  <update id="updateUserName" parameterType="UserDTO">
-  	UPDATE USER
-  	   SET USER_NAME = #{userName}
-  	 WHERE USER_ID = #{userId}  
-  </update>  
   <!-- 아이디로 비번 가져오기 -->
   <select id="selectUserPwById" parameterType="String" resultType="String">
   	SELECT USER_PW
@@ -114,16 +108,19 @@
   	DELETE FROM USER
   	 WHERE USER_ID = #{userId}
   </delete>
+  
+  <!-- 프로필 업데이트 하기 --> 
   <update id="updateProfile" parameterType="UserDTO">
   	UPDATE USER
   	   SET USER_IMG_PATH = #{userImgPath},
-  	   		 USER_IMG_ORIGIN_NAME = #{userImgOriginName},
-  	   		 USER_IMG_FILE_NAME = #{userImgFileName},
-  	   		 USER_HAS_IMG = #{userHasImg}
+  	   		 USER_NAME = #{userName}
   	 WHERE USER_ID = #{userId}
   </update>
   
-    
+  <select id="selectUsedProfile" resultType="String">
+  	SELECT USER_IMG_PATH
+  	  FROM USER
+  </select>
     
     
 </mapper>

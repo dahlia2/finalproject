@@ -39,6 +39,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor{
 					session.setAttribute("loginId", userDTO.getUserId());
 					session.setAttribute("userNo", userDTO.getUserNo());
 					session.setAttribute("userName", userDTO.getUserName());
+					session.setAttribute("userImgPath", userDTO.getUserImgPath());
 				
 				}
 			}

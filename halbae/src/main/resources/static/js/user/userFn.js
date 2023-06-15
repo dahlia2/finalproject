@@ -6,27 +6,26 @@ $(function() {
 	
 	$('#confirmed').val('off');
 	
-	$('#newProfile').on('change', function(){
-		
-		var formData = new FormData();
-		formData.append("profile", $('#newProfile')[0].files[0]);
-		formData.append("userId", $('#userId').val());
-		
-		$.ajax({
-			contentType: false,
-			processData: false,
-			type: 'post',
-			url: '/user/updateProfile.do',
-			data: formData,
-			dataType: 'json',
-			success: function(res) {
-				console.log("결과 " + res.display);
-				$('.userImg').attr('src', res.display);
-			}
-			
-		})
-		
-	})	
+		$('#newProfile').on('change', function(){
+			alert('실행');
+			var formData = new FormData();
+			formData.append("profile", $(this)[0].files[0]);
+			formData.append("userId", $('#userId').val());
+	
+			$.ajax({
+				contentType: false,
+				processData: false,
+				type: 'post',
+				url: '/user/updateProfile.do',
+				data: formData,
+				dataType: 'json',
+				success: function(res) {
+					var display = res.display;
+					$('#userImgPath').val(display);
+					$('.userImg').attr('src', display);
+				}
+			})
+		})	
 	
 })
  

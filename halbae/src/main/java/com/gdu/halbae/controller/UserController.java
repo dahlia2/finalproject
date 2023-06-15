@@ -12,9 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -108,9 +106,8 @@ public class UserController {
 	public void updateTempPw(UserDTO userDTO, HttpServletResponse response) {
 		userService.updateTempPw(userDTO, response);
 	}
-	
 	// 마이 프로필로 이동
-	@PostMapping("/myProfile.html")
+	@GetMapping("/myProfile.html")
 	public String myProfile(String loginId, Model model) {
 		model.addAttribute("userDTO", userService.selectUserProfile(loginId));
 		return "user/myprofile";
@@ -119,20 +116,21 @@ public class UserController {
 	@ResponseBody
 	@PostMapping(value="/updateProfile.do", produces="application/json")
 	public Map<String, Object> updateProfile(MultipartHttpServletRequest multipartRequest) {
-		return userService.updateProfile(multipartRequest);
+		return userService.updateProfileImg(multipartRequest);
 	}
 	@GetMapping("/display.do")
 	public ResponseEntity<byte[]> display(String userImgPath) {
 		return userService.displayProfile(userImgPath);
 	}
 	
-	// 이름(별명)바꾸기
-	@PostMapping("/modifyName.do")
-	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
-		userService.modifyName(userDTO, request, response);
+	// 변경사항 적용하기
+	@PostMapping("/editProfile.do")
+	public void editProfile(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
+		userService.editProfile(userDTO, request, response);
 	}
+	
 	// 비번 바꾸기로 이동
-	@PostMapping("/modifyPw.html")
+	@GetMapping("/modifyPw.html")
 	public String ToModifyPw(String userId, Model model)  {
 		model.addAttribute("userId", userId);
 		return "user/modifyPw";

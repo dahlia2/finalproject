@@ -57,16 +57,15 @@ function fnNew(){
 		  		 <!-- 로그인이 되어 있을 경우 -->
 		  		<th:block th:if="${session.loginId != null}">
 		  			<div class="welcomeBox">
-							<form id="profileFrm" method="post" th:action="@{/user/myProfile.html}">
+							<form id="profileFrm" method="get" th:action="@{/user/myProfile.html}">
 								<input type="hidden" name="loginId" th:value="${session.loginId}">
-			  				<img th:src="@{/images/main/default_user.png}" class="profile" onclick="$('#profileFrm').submit()">
+			  				<img th:src="@{${session.userImgPath}}" class="profile" onclick="$('#profileFrm').submit()">
 			  			</form>
 			  			<div>
 			  				<span th:text="${session.userName}"style="font-size: 22px; font-weight: 600;"></span> 님
 			  			</div>
 			  			<form method="post" th:action="@{/user/logout.do}">
 			  				<input type="hidden" th:value="${session.loginId}" name="loginId">
-				  			<!-- <div class="logoutBtn" onclick="fnLogout()">로그아웃</div> -->
 				  			<button class="logoutBtn">로그아웃</button>
 			  			</form>
 		  			</div>

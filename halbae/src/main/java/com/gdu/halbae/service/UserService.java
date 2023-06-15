@@ -32,14 +32,16 @@ public interface UserService {
 	//프로필 정보 가져오기
 	public UserDTO selectUserProfile(String loginId);
 	//프로필 사진 변경하기
-	public Map<String, Object> updateProfile(MultipartHttpServletRequest multipartRequest);
+	public Map<String, Object> updateProfileImg(MultipartHttpServletRequest multipartRequest);
 	public ResponseEntity<byte[]> displayProfile(String userImgPath);
-	//이름 변경하기
-	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response);
+	// 프로필 변경 사항 적용하기
+	public void editProfile(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response);
 	//비번 변경전 현재 비번 확인
 	public boolean confirmPw(UserDTO userDTO);
 	// 비번 변경하기
 	public void updateUserPwById(HttpServletRequest request, HttpServletResponse response);
 	// 회원 탈퇴
 	public void deleteUser(HttpServletRequest request, HttpServletResponse response);
+	// 유저 미사용 프로필 사진 지우기
+	public void removeUnusedProfile();
 }

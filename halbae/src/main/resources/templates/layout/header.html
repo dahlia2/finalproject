@@ -8,12 +8,21 @@
   <script th:src="@{/js/lib/jquery-3.6.4.min.js}"></script>
   <link rel="stylesheet" th:href="@{/css/init.css(ver=1.0)}">
   <link rel="stylesheet" th:href="@{/css/header.css(ver=1.0)}">
+  <script th:src="@{/js/user/headerFn.js}"></script>
+  <script th:src="@{/js/user/userFn.js}"></script>
 </head>
 
 
 <body>
-
+		
+		
 	  	<div id="headerWrap" th:fragment="gnbFrag">
+				<form id="profileFrm" method="get" th:action="@{/user/myProfile.html}">
+					<input type="hidden" name="loginId" th:value="${session.loginId}">
+				</form>
+		  	<form id="logoutFrm" method="post" th:action="@{/user/logout.do}">
+					<input type="hidden" th:value="${session.loginId}" name="loginId">
+				</form>
 	  		<div id="headerLogo">
           <a th:href="@{/}"><img th:src="@{/images/logo_hb.gif}" width="230px;"/></a>
         </div>
@@ -44,14 +53,22 @@
 	              <p>찜</p>
 	            </li>
 	            <li>
-	              <p>프로필</p>
+	            	<div class="myGnb" onclick="fnToggleLnb()">
+	              	My <i class="fa-solid fa-chevron-down"></i>
+	              </div>
+	              <ul class="myLnb hidden">
+	              	<li onclick="$('#profileFrm').submit()"><span>내 프로필</span></li>
+	              	<li><span>내 쿠폰</span></li>
+	              	<li><span>내 포인트</span></li>
+	              	<li onclick="$('#logoutFrm').submit()"><span>로그아웃</span></li>
+	              </ul>
 	            </li>
 	          </ul>
 	        </nav>
         </th:block>
         <th:block th:if="${session.loginId == null}">
 	        <nav id="headerLogin">
-	        	<ul>
+	        	<ul class="loginLink">
 	        		<li>
 	        			<p><a th:href="@{/user/login.html}">로그인</a></p>
 	        		</li>
@@ -59,6 +76,6 @@
         	</nav>
         </th:block>
 		</div>
-  
+
 </body>
 </html>
