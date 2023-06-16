@@ -3,12 +3,10 @@ package com.gdu.halbae.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -110,7 +108,8 @@ public class UserServiceImpl implements UserService {
 			session.setAttribute("userNo", userDTO.getUserNo());
 			session.setAttribute("userName", userDTO.getUserName());
 			session.setAttribute("userPoint", userDTO.getUserPoint());
-			
+			session.setAttribute("userImgPath", userDTO.getUserImgPath());
+
 			// 로그인 후 메인으로 이동
 			try {
 				response.sendRedirect("/");
@@ -271,26 +270,23 @@ public class UserServiceImpl implements UserService {
 	public UserDTO selectUserProfile(String loginId) {
 		return userMapper.selectUserProfile(loginId);
 	}
-	// 이름 변경하기
+	
+	// 프로필 변경사항 적용하기
 	@Override
-	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
+	public void editProfile(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
 		
-		if(userMapper.updateUserName(userDTO) == 1) {
-			userMapper.deleteAutoLogin(userDTO.getUserId());
-			HttpSession session = request.getSession();
-			
-			session.invalidate();
-			
-			Cookie cookie = new Cookie("autoLoginId", "");
-			cookie.setMaxAge(0);
-			cookie.setPath("/");
-			response.addCookie(cookie);
-			
-			response.setContentType("text/html; charset=UTF-8");
+		int result = userMapper.updateProfile(userDTO);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("userName", userDTO.getUserName());
+		session.setAttribute("userImgPath", userDTO.getUserImgPath());
+		
+		response.setContentType("text/html; charset=UTF-8");
+		if(result == 1) {
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("alert('이름(별명)이 변경되었습니다. 다시 로그인 해주세요.');");
+				out.println("alert('변경 사항이 적용되었습니다.');");
 				out.println("location.href='/'");
 				out.println("</script>");
 				out.flush();
@@ -302,7 +298,7 @@ public class UserServiceImpl implements UserService {
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("alert('이름(별명) 변경이 실패했습니다. 다시 시도해주세요.');");
+				out.println("alert('프로필 변경이 실패했습니다.');");
 				out.println("location.href='/'");
 				out.println("</script>");
 				out.flush();
@@ -310,10 +306,12 @@ public class UserServiceImpl implements UserService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 		}
 		
 	}
 	
+	// 비밀번호 변경하기
 	@Override
 	public boolean confirmPw(UserDTO userDTO) {
 		String userId = userDTO.getUserId();
@@ -410,19 +408,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public ResponseEntity<byte[]> updateProfile(MultipartHttpServletRequest multipartRequest) {
+	public Map<String, Object> updateProfileImg(MultipartHttpServletRequest multipartRequest) {
 		
-		String sep = Matcher.quoteReplacement(File.separator);
+		Map<String, Object> map = new HashMap<>();
 		
-		String userId = multipartRequest.getParameter("userId");
 		MultipartFile profile = multipartRequest.getFile("profile");
-		List<MultipartFile> profiles = multipartRequest.getFiles("profile");
-		
-		ResponseEntity<byte[]> image = null;
-		
-		System.out.println("프로필 : " + profile);
-		System.out.println("프로필 : " + profiles);
-		System.out.println("아이디 : " + userId);
 		
 		try {
 			
@@ -442,36 +432,73 @@ public class UserServiceImpl implements UserService {
 				String userImgFileName = profileUtil.getFilesystemName(imgOriginName);
 				
 				File file = new File(dir, userImgFileName);
-			
+				
+				System.out.println("이미지 생성");
+				
 				profile.transferTo(file);
 				
-				String contentType = Files.probeContentType(file.toPath());
+				String userImgPath = path + "/" + userImgFileName;
 				
-				boolean userHasImg = contentType != null && contentType.startsWith("image");
-
-				String userImgPath = path + sep + userImgFileName;
-				
-				image = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), HttpStatus.OK);
-				
-				UserDTO userDTO = new UserDTO();
-				userDTO.setUserId(userId);
-				userDTO.setUserImgFileName(userImgFileName);
-				userDTO.setUserHasImg(userHasImg ? 1 : 0);
-				userDTO.setUserImgOriginName(imgOriginName);
-				userDTO.setUserImgPath(userImgPath);
-				
-				userMapper.updateProfile(userDTO);
-				
-				System.out.println(userImgPath);
+				map.put("display", "/user/display.do?userImgPath=" + userImgPath);
 			}
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("리스폰트엔티티 : " + image);
-		return image;
+		return map;
 	}
 	
+	@Override
+	public ResponseEntity<byte[]> displayProfile(String userImgPath) {
+		ResponseEntity<byte[]> img = null;
+		
+		File profile = new File(userImgPath);
+		try {
+			img = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(profile), HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return img;
+	}
 	
+	// 미사용 프로필 지우기
+	@Override
+	public void removeUnusedProfile() {
+		List<String> profiles = userMapper.selectUsedProfile();		
+		String path = profileUtil.getPath();
+		
+		File dir = new File(path);
+		
+		// 프로필 저장 경로의 모든 파일 배열
+		File[] files = dir.listFiles();
+		
+		if(files != null) {
+			
+			for(File file : files) {
+				
+				String fileName = file.getName();
+				boolean keepFile = false;
+				
+				for(String profile : profiles) {
+					profile = profile.substring(profile.lastIndexOf("/") + 1);
+					System.out.println("사용 프로필 " + profile);
+					if(profile.equals(fileName)) {
+						keepFile = true;
+						break;
+					}
+				}
+				
+				if(keepFile == false) {
+					boolean delete = file.delete();
+					if(delete) {
+						System.out.println("파일 삭제 :" + fileName);
+					}else {
+						System.out.println("삭제 실패 :" + fileName);
+					}
+				}
+				
+			}
+		}
+	}
 }
 	
 	

@@ -3,26 +3,30 @@
  */
  
 $(function() {
+	
 	$('#confirmed').val('off');
 	
-	$('#newProfile').on('change', function(){
-		var formData = new FormData();
-		formData.append("profile", $('#newProfile')[0].files[0]);
-		formData.append("userId", $('.userId').val());
-
-		$.ajax({
-			contentType: false,
-			processData: false,
-			type: 'post',
-			url: '/user/updateProfile.do',
-			data: formData,
-			dataType: 'json',
-			success: function(res) {
-				$('.userImg').attr('src', res.userImgPath);
-			}
+		$('#newProfile').on('change', function(){
 			
-		})
-	})	
+			console.log(this);
+			var formData = new FormData();
+			formData.append("profile", $(this)[0].files[0]);
+			formData.append("userId", $('#userId').val());
+	
+			$.ajax({
+				contentType: false,
+				processData: false,
+				type: 'post',
+				url: '/user/updateProfile.do',
+				data: formData,
+				dataType: 'json',
+				success: function(res) {
+					var display = res.display;
+					$('#userImgPath').val(display);
+					$('.userImg').attr('src', display);
+				}
+			})
+		})	
 	
 })
  
@@ -165,6 +169,13 @@ function fnModifyPw() {
 	}
 }
 
+	// 회원 탈퇴
+	function fnAskDelete() {
+		if(confirm('계정을 삭제하시면 포인트와 쿠폰도 사라집니다. 삭제하시겠습니까?')) {
+			$('#deleteUserFrm').submit();
+		}
+	}
+
 	// 쿠폰함 팝업 열기
 	function openCoupon(userNo) {
 	    var popupWidth = 500;
@@ -195,4 +206,16 @@ function fnModifyPw() {
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
 	    // 팝업 창을 열고 해당 HTML 페이지를 로드
 	    window.open('/chat/chatList.html', '메시지', popupOptions);
+<<<<<<< HEAD
 	}
+=======
+	}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+>>>>>>> users
