@@ -206,16 +206,4 @@ function fnModifyPw() {
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
 	    // 팝업 창을 열고 해당 HTML 페이지를 로드
 	    window.open('/chat/chatList.html', '메시지', popupOptions);
-<<<<<<< HEAD
-	}
-=======
-	}
- 
- 
- 
- 
- 
- 
- 
- 
->>>>>>> users
+}
