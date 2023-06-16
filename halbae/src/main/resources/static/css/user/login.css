@@ -1,15 +1,12 @@
 @charset "UTF-8";
 
-#loginWrap {
-	display:flex;
-
-}
 
 .loginBox {
 	border: 1px solid rgb(210, 211, 213);
 	margin: 100px auto;
+	margin-bottom: 15px;
 	width: 420px;
-	height: 400px;
+	height: 420px;
 	padding: 35px 20px;
 	position: relative;
 	
@@ -83,8 +80,8 @@
 	display: none;
 }
 .btnWrap button {
-	margin-bottom: 10px;
-	margin-top:10px;
+	margin-bottom: 20px;
+	margin-top:20px;
 	width:350px;
 	height: 45px;
 	background-color: #ff0045;
@@ -152,8 +149,40 @@
 	opacity: 0.7;
 }
 
-
-
+.externalLogin {
+	width: 420px;
+	margin:0 auto;
+	display: flex;
+	justify-content: space-around;
+	font-size: 15px;
+	color: white;
+}
+.externalLogin span {
+	display: inline-block;
+}
+#naver_id_login img {
+	width: 200px;
+	height: 50px;
+}
+.kakao {
+	background-color: #f6e24b;	
+	width: 200px;
+	height: 50px;
+	padding: 10px;
+}
+.kakao > div {
+	height: 50px;
+	line-height: 30px;
+	display: flex;
+}
+.kakao span {
+	color: #371f1f;
+}
+.kakao  img {
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
+}
 
 
 

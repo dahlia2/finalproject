@@ -70,8 +70,8 @@ function fnNew(){
 			  			</form>
 		  			</div>
 			  		<div class="eventBox">
-			  			<div onclick="openCoupon()">쿠폰함 <span>0</span></div>
-			  			<div onclick="openPoint()">포인트 <span>1000</span>P</div>
+			  			<div th:onclick="|openCoupon(${session.userNo})|" >쿠폰 <span th:text="${couponCount}"></span>장</div>
+			  			<div onclick="openPoint()">포인트 <span th:text="${session.userPoint}"></span>P</div>
 			  		</div>
 			  		<div class="serviceBox">
 			  			<div onclick="openMessage()">메세지</div>
@@ -79,6 +79,7 @@ function fnNew(){
 			  			<div>찜 목록</div>
 			  		</div>
 		  		</th:block>
+		  		
 	  		</div>
 	  		<div class="smallBanner1"></div>
   		</div>
@@ -103,8 +104,6 @@ function fnNew(){
            </ul>
         </div>
      </div>
-  
-  
   
   	<div class="class_Container">
   		<table>
