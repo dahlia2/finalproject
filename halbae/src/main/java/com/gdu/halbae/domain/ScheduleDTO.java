@@ -11,12 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScheduleDTO {
 	
-	private int schNo;              // 일정식별자
-	private ClassListDTO classNo;   // 클래스식별자
-	private Date schStart;          // 시작시간
-	private Date schEnd;            // 종료시간
-	private int schMaxNum;          // 정원
-	private String schCity;  		// 지역명
-	private int schState;           // 수강가능유무 (불가능 0, 가능 1)
+	private int schNo;                  // 일정식별자
+	private ClassListDTO classListDTO;  // 클래스식별자
+	private Date schStart;              // 시작시간
+	private int schNowNum;				// 현재 정원
+	private int schMaxNum;              // 최대 정원
+	private int schState;               // 수강가능유무 (불가능 0, 가능 1)
 
 }

@@ -5,22 +5,29 @@
 $(function() {
 	$('#confirmed').val('off');
 	
-	// 프로필 이미지 변경
-	function fnProfile() {
+	$('#newProfile').on('change', function(){
+		var formData = new FormData();
+		formData.append("profile", $('#newProfile')[0].files[0]);
+		formData.append("userId", $('.userId').val());
+
 		$.ajax({
-			type: 'get',
-			url: '/updateProfile.do',
-			data: 'profile=' + $('#newProfile').val(),
+			contentType: false,
+			processData: false,
+			type: 'post',
+			url: '/user/updateProfile.do',
+			data: formData,
 			dataType: 'json',
 			success: function(res) {
 				$('.userImg').attr('src', res.userImgPath);
 			}
 			
 		})
-	}
+	})	
+	
 })
  
 	
+		
 function fnLogout() {
 	location.href="/user/logout.do?loginId=" + $('.loginId').val();	
 }
@@ -159,31 +166,27 @@ function fnModifyPw() {
 }
 
 	// 쿠폰함 팝업 열기
-	function openCoupon() {
-	    // 팝업 창을 열기 위한 설정
+	function openCoupon(userNo) {
 	    var popupWidth = 500;
 	    var popupHeight = 1000;
-	    var left = (screen.width - popupWidth) / 2;
-	    var top = (screen.height - popupHeight) / 2;
+	    var left = Math.floor((screen.width - popupWidth) / 2);
+	    var top = Math.floor((screen.height - popupHeight) / 2);
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
-	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/coupon', '쿠폰', popupOptions);
+	    window.open('/coupon?userNo=' + userNo, '쿠폰', popupOptions);
 	}
  
  	// 포인트 팝업 열기
- 	function openPoint() {
-	    // 팝업 창을 열기 위한 설정
-	    var popupWidth = 500;
+	function openPoint() {
+		var popupWidth = 500;
 	    var popupHeight = 1000;
 	    var left = (screen.width - popupWidth) / 2;
 	    var top = (screen.height - popupHeight) / 2;
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
-	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/point', '포인트', popupOptions);
+	    window.open('/user/point', '포인트', popupOptions);
 	}
  
  	// 메시지창 팝업 	열기
- 	function openMessage() {
+	function openMessage() {
 	    // 팝업 창을 열기 위한 설정
 	    var popupWidth = 500;
 	    var popupHeight = 1000;
@@ -191,16 +194,5 @@ function fnModifyPw() {
 	    var top = (screen.height - popupHeight) / 2;
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
 	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/chat/chatList', '메시지', popupOptions);
+	    window.open('/chat/chatList.html', '메시지', popupOptions);
 	}
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 

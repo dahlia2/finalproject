@@ -1,0 +1,281 @@
+main_wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 50px;
+	margin-bottom: 80px;
+	}
+#enroll_title {
+	margin: 0 auto;
+	width: 1100px;
+	padding-top: 30px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid gray;
+	padding-left: 30px;
+	font-size: 30px;
+	color: #4a4a49;
+	font-weight: 700;
+	}
+#main_box {
+	width: 1100px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 20px;
+	margin-bottom: 200px;
+	}
+#main_L {
+	padding-right: 80px;
+	margin-top: 50px;
+	justify-content: center;
+	align-items: center;
+	}
+#main_R {
+	padding-left: 60px;
+	}
+#applyClass {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 45px;
+}
+#classImage {
+	border-radius: 10px;
+	margin-bottom: 10px;
+	}
+
+#classTitle {
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 10px;	
+	}
+	
+#classinfo {
+	display: flex;
+	margin-bottom: 15px;
+	}
+	
+#classTime {
+	width: 90px;
+	height: 25px;
+	color: white;
+	background-color: #f5c2b7;
+	border-radius: 10px;
+	text-align: center;
+	margin-right: 5px;
+	}
+#classArea {
+	width: 45px;
+	height: 25px;
+	color: white;
+	background-color: #f5c15f;
+	border-radius: 10px;
+	text-align: center;
+	margin-right: 5px;
+	}
+	
+#star {
+	margin-right: 10px;
+	}
+
+.discountArea span {
+	margin-bottom: 20px;
+	}
+
+h3 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: -0.45px;
+    color: #333;
+    padding-bottom: 10px;
+	}
+	
+.discountArea h3:nth-of-type(2) {
+	padding-bottom: 15px;
+}
+
+#couponArea {
+	display: flex;
+	margin-bottom: 30px;
+	}
+	
+#couponArea p {
+	margin-right: 20px;
+	padding-top: 10px;
+	}
+
+#pointArea {
+	display: flex;
+	margin-bottom: 5px;
+	}
+#pointArea p {
+	padding-right: 30px;
+	}
+
+#pointArea2 {
+	display: flex;
+	margin-bottom: 40px;
+	}
+	
+#pointArea2 p {
+	padding-top: 10px;
+	padding-right: 30px;
+	}
+	
+#pointArea p, 
+#pointArea2 p,
+#pointArea2 span {
+	margin-right: 20px;
+	}
+	
+#point_inputWrap {
+	position: relative;
+    width: 180px;
+    height: 46px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-right: 14px;
+	}
+#point_inputWrap span {
+	position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateX(180%) translateY(-60%);
+    font-weight: 500;
+	}
+#point_inputBox {
+	position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0 23px 0 10px;
+    border: none;
+    font-weight: 500;
+    text-align: right;
+    background: none;
+	}
+#btn_coupon, #btn_point {
+	width: 100px;
+    height: 48px;
+    margin-left: 15px;
+    border-radius: 24px;
+    line-height: 48px;
+    letter-spacing: -0.35px;
+    background-color: #efefef;
+	}
+
+.payHow {
+	display: flex;
+	flex-direction: column;
+    margin-top: 25px;
+	}
+.payHow h3 {
+	padding-bottom: 15px;
+}
+
+.payWrap {
+	display: flex;
+	}
+.payButton {
+	width: 135px;
+    height: 50px;
+    text-align: center;
+    border-radius: 25px;
+    font-size: 15px;
+    line-height: 50px;
+    letter-spacing: -0.38px;
+    background-color: #efefef;
+    }
+.payButton:first-child {
+	margin-right: 40px;
+	}
+    
+/* main_right */
+#pay_title {
+	margin-bottom: 25px;
+	font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    letter-spacing: -0.45px;
+    color: #333;
+    }
+
+table {
+	width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+	}
+
+.receipt_area {
+	width: 430px;
+    margin-top: 14px;
+    margin-left: 40px;
+    padding: 30px 35px;
+    border: 1px solid gray;
+	}
+	
+.tb_pay {
+	margin-bottom: 40px;
+    border-top: 1px solid #eee;
+	}
+
+	
+.tb_pay th {
+	width: 90px;
+    padding: 10px 0;
+    text-align: left;
+    vertical-align: top;
+    font-size: 15px;
+    line-height: 20px;
+    letter-spacing: -0.38px;
+    color: #666;	
+	}
+
+.tb_pay td {
+	padding-left: 20px;
+	}
+.tb_pay tr:first-child th, .tb_pay tr:first-child td {
+    padding-top: 24px;
+	}
+.fees td {
+	vertical-align: top;
+	}
+.pointdiscount th {
+	padding-bottom: 30px;
+	}
+.pointdiscount td {
+	padding-bottom: 30px;
+	vertical-align: bottom;
+	}
+
+.total_count th {
+	padding: 29px 0 0;
+    border-top: 0.5px solid #111;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+	}
+
+.total_count td {
+    padding: 29px 20px 0;
+    border-top: 0.5px solid #111;
+    padding-bottom: 25px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 16px;
+	} 
+
+#btn_next {
+	margin-top: 30px;
+    width: 100%;
+    height: 48px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 48px;
+    letter-spacing: -0.38px;
+    color: #fff;
+    background-color: #ff0045;
+	}

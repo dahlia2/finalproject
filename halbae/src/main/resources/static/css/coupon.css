@@ -1,5 +1,5 @@
 html, body {
-height: 100%;
+	height: 100%;
 }
 
 #container {
@@ -29,7 +29,14 @@ height: 100%;
     color: #F6A2AF;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
+
+#button:hover {
+  background-color: #F8D7E0;
+  color: #ED485F;
+}
+
 
 #m {
     display: flex;
@@ -52,52 +59,45 @@ height: 100%;
     line-height: 0.5;
 }
 
-#couponList {
-    margin-bottom: 20px;
-    width: 360px;
-    display: flex;
-    justify-content: center;
-    border-style: solid;
-    border-color: lightgray; /* 테두리 색상 변경 */
-    border-width: 2px;
-    border-radius: 10px;
-    padding: 8px;
-}
-
 #couponList table {
-    table-layout: fixed;
-    width: 100%;
+    border-collapse: collapse;
+    width: 370px;
+    border-radius: 10px; /* 테두리의 둥글기 정도 조절 */
+    overflow: hidden; /* 테두리가 둥글게 보이도록 overflow 속성 추가 */
+    	
+    
 }
 
-#couponList td {
+#couponList tr {
+    border: 2px solid lightgrey;
+}
+
+#couponList td:first-child,
+#couponList td:nth-child(2),
+#couponList td:nth-child(3) {
     display: flex;
+    align-items: center;
     justify-content: center;
 }
 
-#couponList tr:first-child td {
-    background-color: white; /* 첫 번째 행 배경색 */
-    font-weight: bold; /* 첫 번째 행 폰트 굵게 */
+#couponList td:first-child {
+    text-align: center;
+    padding-top: 18px; /* 상단 여백 */
 }
 
-#couponList tr:first-child td:first-child {
-    font-size: 18px;
+#couponList td:nth-child(2) {
+    text-align: center;
 }
 
-#couponList tr:first-child td:nth-child(2) {
-    font-size: 28px;
-    color: red;
+#couponList td:nth-child(3) {
+    text-align: right;
+    padding-bottom: 18px; /* 하단 여백 */
 }
 
-#couponList tr:first-child td:nth-child(3),
-#couponList tr:first-child td:nth-child(4) {
-    font-size: 13px;
-    color: #999999;
+.new-coupon::after {
+    content: " 회원 웰컴 쿠폰";
 }
 
-#couponList tr:not(:first-child) td {
-    background-color: #FFFFFF; /* 첫 번째 행 이외의 행 배경색 */
-}
-
-#couponCount {
-    color: red;
+.monthly-coupon::after {
+    content: " 이달의 혜택";
 }

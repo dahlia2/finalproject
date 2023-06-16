@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" th:href="@{/css/main.css(ver=1.0)}">
 <link rel="stylesheet" th:href="@{/css/user/logBox.css(ver=1.0)}">
+<script th:src="@{/js/lib/jquery-3.6.4.min.js}"></script>
 <script th:src="@{/js/user/userFn.js}"></script>
 
 <script>
@@ -71,8 +72,8 @@ function fnNew(){
 			  			</form>
 		  			</div>
 			  		<div class="eventBox">
-			  			<div onclick="openCoupon()">쿠폰함 <span>0</span></div>
-			  			<div onclick="openPoint()">포인트 <span>1000</span>P</div>
+			  			<div th:onclick="|openCoupon(${session.userNo})|" >쿠폰 <span th:text="${couponCount}"></span>장</div>
+			  			<div onclick="openPoint()">포인트 <span th:text="${session.userPoint}"></span>P</div>
 			  		</div>
 			  		<div class="serviceBox">
 			  			<div onclick="openMessage()">메세지</div>
