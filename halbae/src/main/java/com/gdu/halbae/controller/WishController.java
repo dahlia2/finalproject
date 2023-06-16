@@ -19,6 +19,8 @@ public class WishController {
 	// field
 	private final WishService wishService;
 	
+	// 안녕
+	
 	// 찜목록 이동 페이지
 	@GetMapping("/wish.html")
 	public String wish() {
