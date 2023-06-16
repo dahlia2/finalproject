@@ -30,21 +30,24 @@ public class CouponServiceImpl implements CouponService {
 
     // 쿠폰 등록
     @Override
-    public void issueCouponToUser(CouponDTO couponDTO, int userNo) {
-        String couponName = couponDTO.getCouponName();
-        int couponNo = couponMapper.getCouponNoByCouponName(couponName);
+    public int issueCouponToUser(String couponName, int userNo) {
+        CouponDTO dto = couponMapper.getCouponNoByCouponName(couponName);
+        if(dto == null) {
+        	return 0;
+        }
         CouponUserDTO couponUserDTO = new CouponUserDTO();
         couponUserDTO.setUserNo(userNo);
-        couponUserDTO.setCouponNo(couponNo);
+        couponUserDTO.setCouponNo(dto.getCouponNo());
         couponUserDTO.setCouponStatus(1);
-        couponMapper.insertCouponUser(couponUserDTO);
+        return couponMapper.insertCouponUser(couponUserDTO);
     }
 
     // 쿠폰명을 기준으로 쿠폰 번호를 조회
     @Override
     public int getCouponNoByCouponName(String couponName) {
-        return couponMapper.getCouponNoByCouponName(couponName);
-    }
+    	CouponDTO dto = couponMapper.getCouponNoByCouponName(couponName);
+    	return dto.getCouponNo();
+    };
     
     // 쿠폰 사용
     @Override

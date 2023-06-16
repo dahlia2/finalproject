@@ -22,13 +22,13 @@
 	</select>
 
     <!-- 쿠폰 등록 -->
-    <insert id="insertCouponUser">
+    <insert id="insertCouponUser" parameterType="CouponUserDTO">
         INSERT INTO COUPON_USER (USER_NO, COUPON_NO, COUPON_STATUS)
-        VALUES (#{userNo}, #{couponNo}, 1);
+        VALUES (#{userNo}, #{couponNo}, 1)
     </insert>
     
     <!-- 쿠폰명을 기준으로 쿠폰 번호를 조회 -->
-    <select id="getCouponNoByCouponName" resultType="int">
+    <select id="getCouponNoByCouponName" resultType="CouponDTO">
 	    SELECT COUPON_NO
 	      FROM COUPON
 	     WHERE COUPON_NAME = #{couponName}

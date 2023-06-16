@@ -5,30 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>쿠폰</title>
+    <script th:src="@{/js/lib/jquery-3.6.4.min.js}"></script>
     <link rel="stylesheet" href="/css/coupon.css" />
 </head>
 
 <script th:inline="javascript">
 
 	function issueCoupon() {
-	    var couponName = document.getElementById("couponName").value;
-	    // Ajax를 사용하여 서버에 쿠폰 정보를 전송
-	    var xhr = new XMLHttpRequest();
-	    xhr.open("POST", "/issueCoupon", true);
-	    xhr.setRequestHeader("Content-Type", "application/json");
-	    xhr.onreadystatechange = function () {
-	        if (xhr.readyState === 4 && xhr.status === 200) {
-	            // 응답을 받았을 때의 동작
-	            var response = JSON.parse(xhr.responseText);
-	            if (response === "success") {
-	                alert("쿠폰이 발급되었습니다.");
-	            } else {
-	                alert("쿠폰 발급에 실패했습니다.");
-	            }
-	        }
-	    };
-	    var couponDTO = { couponName: couponName };
-	    xhr.send(JSON.stringify(couponDTO));
+	
+		$.ajax({
+			type: 'post',
+			url: '/issueCoupon',
+			data: 'couponName=' + $('#couponName').val(),
+			dataType: 'json',
+			success: function(resData){
+				if (resData.isSuccess) {
+					let userNo = /*[[${session.userNo}]]*/ null;
+                    alert("쿠폰이 발급되었습니다.");
+                    location.href='/coupon?userNo=' + userNo;
+                } else {
+                    alert("쿠폰 발급에 실패했습니다.");
+                }
+			}
+		})
+	
 	}
 	
 </script>
@@ -44,26 +44,33 @@
 		    <input type="button" id="button" value="등록" onclick="issueCoupon()">
 		</div>
 		<div id="m">
-			<p>사용 가능 쿠폰 <span id="count" style="color: red; font-weight: bold;" th:text="|${couponCount}장|"></span></p>
+			<p>사용 가능 쿠폰 <span id="count" th:text="|${couponCount}장|" style="color: red; font-weight: bold;" ></span></p>
 	    </div>
-	    <div id="couponList">
-	        <table>
-	        	<tbody>
-		            <tr th:each="coupon : ${coupons}">
-		                <td th:text="|${coupon.couponName} 회원 웰컴 쿠폰|"></td>
+		<div th:if="${not #lists.isEmpty(coupons)}" id="couponList">
+		    <table>
+		        <tbody>
+		            <tr th:each="coupon, stat : ${coupons}">
 		                <td>
-						  <span th:text="|${coupon.couponDiscount}%|"></span>
-						  <span style="color: black;">&nbsp;할인</span>
-						</td>
-						<td>
-						  <span th:text="${#temporals.format(coupon.couponStartDate, 'yyyy-MM-dd')}"></span>
-						  <span>&nbsp;~&nbsp;</span>
-						  <span th:text="${#temporals.format(coupon.couponEndDate, 'yyyy-MM-dd')}"></span>
-						</td>
+		                    <span th:text="|${coupon.couponName}|"
+		                          th:class="${coupon.couponName == '신규' ? 'new-coupon' : (coupon.couponName == '6월' ? 'monthly-coupon' : '')}"
+		                          style="font-weight: bold; font-size: 18px;"></span>
+		                </td>
+		                <td>
+		                    <span th:text="|${coupon.couponDiscount}%|" style="font-weight: bold; font-size: 25px; color: red;"></span>
+		                    <span style="font-weight: bold; font-size: 25px;">&nbsp;할인</span>
+		                </td>
+		                <td>
+		                    <span th:text="${#temporals.format(coupon.couponStartDate, 'yyyy-MM-dd')}" style="font-weight: bold; font-size: 13px; color: gray;"></span>
+		                    <span style="font-weight: bold; font-size: 13px; color: gray;">&nbsp;~&nbsp;</span>
+		                    <span th:text="${#temporals.format(coupon.couponEndDate, 'yyyy-MM-dd')}" style="font-weight: bold; font-size: 13px; color: gray;"></span>
+		                </td>
 		            </tr>
-	        	</tbody>
-	        </table>
-	    </div>
+		        </tbody>
+		    </table>
+		</div>
+		<div th:unless="${not #lists.isEmpty(coupons)}" style="text-align: center;">
+            <p style="font-size: 18px; font-weight: bold; color: #ED485F;">보유 중인 쿠폰이 없습니다.</p>
+        </div>
 	    <div id="info1">
 	        <p>①&nbsp;쿠폰 사용 유의사항을 꼭 숙지해주세요!</p>
 	    </div>

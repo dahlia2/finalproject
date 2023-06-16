@@ -1,6 +1,8 @@
 package com.gdu.halbae.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -36,15 +38,15 @@ public class CouponController {
         model.addAttribute("couponCount", couponCount);
         return "coupon/couponForm";
     }
-
     
     // 쿠폰 등록
-    @PostMapping("/issueCoupon")
+    @PostMapping(value="/issueCoupon", produces="application/json")
     @ResponseBody
-    public String issueCoupon(@RequestBody CouponDTO couponDTO, HttpSession session) {
+    public Map<String, Object> issueCoupon(String couponName, HttpSession session) {
         int userNo = (int) session.getAttribute("userNo");
-        couponService.issueCouponToUser(couponDTO, userNo);
-        return "success";
+        Map<String, Object> map = new HashMap<>();
+        map.put("isSuccess", couponService.issueCouponToUser(couponName, userNo) == 1);
+        return map;
     }
     
     // 쿠폰 사용

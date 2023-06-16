@@ -11,7 +11,7 @@ public interface CouponService {
     // 회원의 보유 쿠폰 수 조회
 	int getAvailableCouponCount(int userNo);
     // 쿠폰 등록
-    void issueCouponToUser(CouponDTO couponDTO, int userNo);
+    int issueCouponToUser(String couponName, int userNo);
     // 쿠폰명을 기준으로 쿠폰 번호를 조회
     int getCouponNoByCouponName(String couponName);
     // 쿠폰 사용
