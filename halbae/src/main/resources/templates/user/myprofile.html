@@ -3,6 +3,7 @@
 <head th:replace="~{/layout/header::headFrag('나의 프로필')}"></head>
 <link rel="stylesheet" th:href="@{/css/header.css(ver=1.0)}">
 <link rel="stylesheet" th:href="@{/css/user/myprofile.css(ver=1.0)}">
+<script th:src="@{/js/user/userFn.js}"></script>
 <script th:inline="javascript">
 	$(function() {
 		var userImgPath = /*[[${userDTO.userImgPath}]]*/ null;
@@ -15,10 +16,6 @@
 		}
 	}
 	
-	function fnProfile() {
-		$('#profileFrm').submit();
-	}
-
 </script>
 
 <body>
@@ -30,17 +27,12 @@
 			<div class="sectionLine"></div>
 			
 			<div class="profileImgArea">
-					<img class="userImg" th:src="${userDTO.userImgPath}">
+					<img class="userImg" th:src="">
 			</div>
-			<form id="profileFrm" method="post" enctype="multipart/form-data" th:action="@{/user/updateProfile.do}">	
-				<div class="profileBtn">
-					<label for="newProfile" class="newProfile">
-						프로필 변경
-					</label>
-					<input type="hidden" name="userId" th:value="${userDTO.userId}">
-					<input type="file" id="newProfile" name="profile" onchange="fnProfile()">
-				</div>
-			</form>	
+			<div class="profileBtn">
+				<label for="newProfile" id="lblNewProfile" class="newProfile">프로필 변경</label>
+				<input type="file" id="newProfile" name="profile">
+			</div>
 			<div class="sectionLine"></div>
 				
 			<div class="InfoArea">

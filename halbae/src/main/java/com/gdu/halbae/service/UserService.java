@@ -6,7 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.halbae.domain.UserDTO;
 
@@ -31,7 +32,7 @@ public interface UserService {
 	//프로필 정보 가져오기
 	public UserDTO selectUserProfile(String loginId);
 	//프로필 사진 변경하기
-	public void updateProfile(MultipartFile profile, HttpServletRequest request);
+	public ResponseEntity<byte[]> updateProfile(MultipartHttpServletRequest multipartRequest);
 	//이름 변경하기
 	public void modifyName(UserDTO userDTO, HttpServletRequest request, HttpServletResponse response);
 	//비번 변경전 현재 비번 확인

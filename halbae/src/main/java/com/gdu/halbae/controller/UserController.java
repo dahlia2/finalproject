@@ -1,20 +1,21 @@
 package com.gdu.halbae.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.halbae.domain.UserDTO;
@@ -115,11 +116,11 @@ public class UserController {
 		return "user/myprofile";
 	}
 	// 프로필 사진 바꾸기
-	@PostMapping("/updateProfile.do")
-	public String updateProfile(MultipartFile profile, HttpServletRequest request, HttpServletResponse response) {
-			userService.updateProfile(profile, request);
-			String loginId = request.getParameter("userId");
-			return "redirect:myProfile.html?loginId=" + loginId;
+	@ResponseBody
+	@PostMapping(value="/updateProfile.do", produces="application/json")
+	public ResponseEntity<byte[]> updateProfile(MultipartHttpServletRequest multipartRequest) {
+		System.out.println("컨트롤러 : " + userService.updateProfile(multipartRequest));
+		return	userService.updateProfile(multipartRequest);
 	}
 	
 	// 이름(별명)바꾸기

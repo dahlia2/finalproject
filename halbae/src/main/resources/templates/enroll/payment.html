@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('Apply Form')}"></head>
+
+<link rel="stylesheet" th:href="@{/css/payment.css(ver=1.0)}">
+
+<!-- 회원 쿠폰 & 포인트 사용 스크립트 -->
+<script th:src="@{/js/user/userFn.js}"></script>
+<script th:inline="javascript">
+	$(function(){
+		
+		let grade = /*[[${classList.classGrade}]]*/ null;
+	
+		function printStar() {
+			for(let i=0; i< grade; i++) {
+				$('#star').append('<i class="fa-solid fa-star" style="color: #f4575f;"></i>');
+			}
+		}
+		
+		printStar();
+		
+		/* 쿠폰 할인율 */
+		var classMoney = parseInt($('.classM').text())*1000;
+		var couponDC = parseInt($('.cou').val())*0.01;
+		var total = classMoney * couponDC;
+		var formattedNumber = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		$('.couponDC').text(formattedNumber).append('원');
+
+
+})
+
+</script>
+
+<body>
+
+
+
+<div th:replace="~{/layout/header::gnbFrag}"></div>
+	<div id="main_wrap">
+  		<div id="enroll_title">강의신청</div>
+  			<div id="main_box">
+		  		<div id="main_L">
+					<div th:object="${classList}" id="applyClass">
+						<img th:src="*{classMainPath}" width="250px" id="classImage">
+						<div>
+				  			<div th:text="*{classTitle}" id="classTitle"></div>
+				  			<div id="classinfo">
+				  				<div th:text="|*{classTime} 수업|" id="classTime"></div>
+				  				<div th:text="*{classArea}" id="classArea"></div>
+				  			</div>
+			  				<span id="star"></span><span th:text="*{classGrade}"></span>
+						</div>
+						<input type="hidden" th:value="*{classNo}" id="classNo">
+					</div>
+				
+					<div class="discountArea">
+						<h3>쿠폰</h3>
+						<div id="couponArea">
+				  			<div th:onclick="|openCoupon(${session.userNo})|" >쿠폰 <span th:text="${couponCount}"></span>장</div>
+				  			<div onclick="openPoint()">포인트 <span th:text="${userPoint}"></span>P</div>
+			  			</div>
+					</div>
+					<th:block th:each="cp : ${userCoupon}">
+						<span th:text="${cp.couponName}">Coupon Name</span>
+						<p>사용 가능한 쿠폰이 없습니다.</p>
+						<div><button id="btn_coupon">쿠폰 선택</button></div>
+					</th:block>
+						<h3>포인트</h3>
+						<div id="pointArea">
+							<p>보유</p>
+							<span>
+								<span>0원</span>
+							</span>
+						</div>
+						<div id="pointArea2">
+							<p>사용</p>
+							<div id="point_inputWrap">
+								<input type="text" value="0" id="point_inputBox"></input>
+								<span>원</span>
+							</div>
+							<button id="btn_point">전액 사용</button>
+						</div>
+						<div class="payHow">
+							<h3>결제수단</h3>
+							<div class="payWrap">
+								<div class="payButton">카드</div>
+								<div class="payButton">무통장</div>
+							</div>				
+						</div>
+					
+					</div>
+		  		</div> 			
+		
+		  	
+		  		<div id="main_R">
+		  			<div class="receipt_area">
+		  				<h3 id="pay_title">최종 결제 금액</h3>
+		  				<table class="tb_pay" th:object="${classList}">
+		  					<tbody>
+		  						<tr class="fees">
+		  							<th>수업료</th>
+		  							<td class="classM" th:text="*{classMoney}"></td>
+		  						</tr>
+		  						<tr>
+		  							<th>신청 인원</th>
+		  							<td th:text="|${session.enrollPerson}명|"></td>
+		  						</tr>
+		  						<tr>
+		  						<th:block th:each="cp : ${userCoupon}">
+		  							<th>쿠폰 할인</th>
+			  						<td class="couponDC"></td>
+			  						<input type="hidden" th:value="${cp.couponDiscount}" class="cou">
+			  						
+		  							<!-- <td th:text="| ${cp.couponDiscount}원 (-) |"></td> -->
+		  						</th:block>
+		  						</tr>
+		  						<tr class="pointdiscount">
+		  							<th>포인트 할인</th>
+		  							<td>원</td>
+		  						</tr>
+		  						<tr class="total_count">
+		  							<th>총 결제금액</th>
+		  							<td><span></span>원</td>
+		  						</tr>
+		  					</tbody>
+		  				</table>
+		  				<div>
+		  					<p>개인정보 제공안내</p>
+		  					<input type="radio" name="ok" id="ok">
+		  					<label for="none">위 내용을 확인하였으며, 결제에 동의합니다.</label>
+		  				</div>
+		  				
+		  			<div>
+		  				<button id="btn_next" onclick="fnNext()">결제하기</button>
+		  			</div>
+		  			
+		  			</div>
+		  
+				</div>
+	</div>
+</div>
+  
+</body>
+</html>
