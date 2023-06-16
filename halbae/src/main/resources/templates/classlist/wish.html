@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('전체클래스')}"></head>
+
+<script th:inline="javascript">
+
+
+</script>
+
+<style>
+	#wishMain {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 30px;
+	}
+	#wishTitle {
+		margin-right: 220px;
+		margin-bottom: 20px;
+		font-size: 35px;
+	}
+	#wish {
+		font-weight: 600;
+		font-size: 30px;
+	}
+	#imgMain {
+		margin-top: 40px;
+		margin-left: 200px;
+		margin-right: 10px;
+	}
+	#wishMini {
+		
+	}
+	#Title {
+		margin-left: 10px;
+	}
+	#heartMain {
+			
+	}	
+	#Main {
+		display: flex;
+  		align-items: center;
+	}
+</style>
+
+<body>
+
+	<div th:replace="~{/layout/header::gnbFrag}"></div>
+	
+	<div>
+	
+		<div id="wishMain">
+			<h1 id="wishTitle">나의 하루배움</h1>
+			<ul>
+				<li>
+					<a id="wish" th:href="@{/wish/wish.html}">찜</a>
+				</li>
+			</ul>
+		</div>
+		<hr>
+                    
+		<div>
+			<div id="Main">
+				<div id="wishMini">
+					<a th:href="@{/class/classDetail.do(classNo=${classList.classNo})}">
+						<img id="imgMain" th:src="${classList.classMainPath}" width="400px;"></img>
+					</a>
+					<div id="heartMain">
+						<input type="hidden" class="classNo" th:value="${classList.classNo}">
+						<img id="heart" style="cursor:pointer;" th:src="@{/images/classList/heart/heart1.png}" width="30px;">
+					</div>
+					<div>
+						<h2 id="Title" th:text="${classList.classTitle}"></h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+	<script>
+		$('#heart').on('click', function(){
+			if($(this).attr('src') =='/images/classList/heart/heart1.png') {
+				$(this).attr('src', '/images/classList/heart/heart2.png');
+				alert('찜 등록이 삭제되었습니다.');
+			}else{
+				alert('찜 등록이 되었습니다.');
+				location.href = '/wish/wish.do?classNo=' + $(this).siblings('.classNo').val();
+			}
+			
+		})		
+	</script>
+	
+	
+</body>
+</html>

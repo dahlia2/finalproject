@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('Main')}"></head>
+
+<script th:inline="javascript">
+	$(function() {
+		var categoryName = /*[[${imgClass.classListDTO.classCategory}]]*/ null;
+		function categoryChange() {
+			if(categoryName == 'cooking' ) {
+				$('.categoryName').text('요리/베이킹');
+			}else if(categoryName == 'fitness' ){
+				$('.categoryName').text('피트니스/스포츠');
+			}else if(categoryName == 'study' ){
+				$('.categoryName').text('개발/공부');
+			}else if(categoryName == 'dance' ){
+				$('.categoryName').text('댄스');
+			}else if(categoryName == 'design' ){
+				$('.categoryName').text('디자인');
+			}
+				
+		}
+	
+	// 함수호출
+	categoryChange();
+	})
+	
+	
+
+</script>
+
+<style>
+	
+	h1 {
+		margin-bottom: 20px;
+		margin-left: 80px;
+		font-size: 37px;
+		width: 1000px;
+	}
+	#imgMain {
+		margin-bottom: 10px;
+		margin-left: 80px;
+	}	
+	#imgDetail {
+	
+	}
+	#text {
+		margin-top: 20px;
+		margin-bottom: 10px;
+		margin-left: 80px;
+		color: blue;
+		font-size: 17px;
+		text-align: left;
+	}
+	#text li {
+		display: inline-block;
+	}
+	#all {
+		
+	}
+	#category {
+		margin-top: 45px;
+		margin-left: 80px;
+		font-size: 20px;
+		font-weight: 600;
+		color: red;
+	}
+
+</style>
+
+<body>
+
+  	<div th:replace="~{/layout/header::gnbFrag}"></div>
+  
+	<div id="all">
+		<div id="category">
+			<span>카테고리 [</span><span class="categoryName"></span><span>]</span>
+		</div>
+		<div>
+		 	<ul id="text">
+		 		<strong>
+			 		<li>원데이 -</li>
+			 		<li th:text="${imgClass.classListDTO.classArea}"></li>
+			 		<li>- 최대 4명(미완성)</li>
+		 		</strong>
+		 	</ul>
+		 	<h1 th:text="${imgClass.classListDTO.classTitle}"><h1>
+	 	</div>
+	 	
+	 	<div>
+	 		<img id="imgMain" th:src="${imgClass.imgMainPath}" width="700px;" height="500px;">
+	 	</div>
+	 	
+	 	<div>
+	 		<img id="imgDetail" th:src="${imgClass.imgDetailPath}" width="1050px;" height="4000px;">
+	 	</div>
+	 	
+	 	
+	 	
+	</div>
+	
+
+ 
+
+
+</body>
+</html>

@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 public class ImgClassDTO {
 	
 	private int imgNo;
-	private int classNo;
-	private int userNo;
 	private String imgName;
-	private String imgPath;
-	private int imgThumb;
+	private String imgMainPath;
+	private String imgDetailPath;
+	private ClassListDTO classListDTO;
 
 }

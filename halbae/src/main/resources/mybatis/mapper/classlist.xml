@@ -6,5 +6,134 @@
 <!-- namespace는 @Mapper를 지정한다. -->
 <mapper namespace="com.gdu.halbae.mapper.ClassListMapper">
 
+	<!-- 클래스 리스트 resultMap -->
+	<resultMap type="ClassListDTO" id="ClassListMap">				<!-- resultMap 사용법 -->
+		<id column="CLASS_NO" property="classNo"/> 					<!-- id태그 : PK 칼럼 -->
+		<result column="CLASS_TITLE" property="classTitle"/> 		<!-- result태그 : 일반 칼럼 -->
+		<result column="CLASS_CATEGORY" property="classCategory"/>
+		<result column="CLASS_AREA" property="classArea"/>
+		<result column="CLASS_TIME" property="classTime"/>
+		<result column="CLASS_MONEY" property="classMoney"/>
+		<result column="CLASS_GRADE" property="classGrade"/>
+		<result column="CLASS_MAIN_PATH" property="classMainPath"/>
+		<association javaType="UserDTO" property="userDTO"> 		<!-- association태그 : DTO를 사용 -->
+			<id column="USER_NO" property="userNo"/>
+			<result column="USER_ID" property="userId"/>
+			<result column="USER_PW" property="userPw"/>
+			<result column="USER_NAME" property="userName"/>
+			<result column="USER_TEL" property="userTel"/>
+			<result column="USER_JOIN_DATE" property="userJoinDate"/>
+			<result column="USER_POINT" property="userPoint"/>
+			<result column="USER_IMG_PATH" property="userImgPath"/>
+			<result column="USER_IMG_ORIGIN_NAME" property="userImgOriginName"/>
+			<result column="USER_IMG_FILE_NAME" property="userImgFileName"/>
+			<result column="USER_HAS_IMG" property="userHasImg"/>
+		</association>
+	</resultMap>
+	
+	<!-- 이미지 클래스 resultMap -->
+	<resultMap type="ImgClassDTO" id="ImgClassMap">			
+		<id column="IMG_NO" property="imgNo"/>		
+		<result column="IMG_NAME" property="imgName"/>
+		<result column="IMG_MAIN_PATH" property="imgMainPath"/>
+		<result column="IMG_DETAIL_PATH" property="imgDetailPath"/>
+		<association javaType="ClassListDTO" property="classListDTO"> 		
+			<id column="CLASS_NO" property="classNo"/> 					
+			<result column="CLASS_TITLE" property="classTitle"/> 		
+			<result column="CLASS_CATEGORY" property="classCategory"/>
+			<result column="CLASS_AREA" property="classArea"/>
+			<result column="CLASS_TIME" property="classTime"/>
+			<result column="CLASS_MONEY" property="classMoney"/>
+			<result column="CLASS_GRADE" property="classGrade"/>
+			<result column="CLASS_MAIN_PATH" property="classMainPath"/>
+		</association>
+	</resultMap>
+	
+	<!-- 전체/카테고리 클래스 -->
+	<select id="getClassListCount" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		  FROM CLASS_LIST
+		 <where>
+		 	<if test="classCategory != 'all'">
+		 		CLASS_CATEGORY = #{classCategory}	
+		 	</if>
+		 </where>
+	</select>
+	
+	<!-- 전체/카테고리 클래스 -->
+	<select id="selectClassList" parameterType="Map" resultMap="ClassListMap">	
+		SELECT A.CLASS_NO, A.CLASS_TITLE, A.CLASS_CATEGORY, A.CLASS_AREA, A.CLASS_TIME, A.CLASS_MONEY, A.CLASS_GRADE, A.CLASS_MAIN_PATH, A.USER_NO                     
+		  FROM (SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
+		  		FROM CLASS_LIST) A
+		 <where>
+		 	<if test="classCategory != 'all'">
+		 		CLASS_CATEGORY = #{classCategory}	
+		 	</if>
+		 </where>
+		 LIMIT #{begin}, #{recordPerPage}
+	</select>
+	
+	<!-- 전체 클래스 -->
+	<select id="getClassListCountAll" resultType="int">
+		SELECT COUNT(*)
+		  FROM CLASS_LIST
+	</select>
+
+	<!-- 최신 클래스 -->
+	<select id="getClassListCountNew" resultType="int">
+		SELECT COUNT(*)
+		  FROM CLASS_LIST
+	</select>
+	
+	<!-- 최신 클래스 -->
+	<select id="selectClassListNew" parameterType="Map" resultMap="ClassListMap">	
+		SELECT A.CLASS_NO, A.CLASS_TITLE, A.CLASS_CATEGORY, A.CLASS_AREA, A.CLASS_TIME, A.CLASS_MONEY, A.CLASS_GRADE, A.CLASS_MAIN_PATH, A.USER_NO                     
+		  FROM (SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
+		  		FROM CLASS_LIST) A	
+		 ORDER BY CLASS_NO DESC
+		 LIMIT #{begin}, #{recordPerPage}
+	</select>
+	
+	<!-- 디테일 클래스 -->
+	<select id="selectClassByNo" parameterType="int" resultMap="ImgClassMap">            
+		SELECT *
+		  FROM IMG_CLASS I INNER JOIN CLASS_LIST C
+		    ON I.CLASS_NO = C.CLASS_NO
+		 WHERE I.CLASS_NO = #{classNo}
+	</select>
+	
+	<!-- 찜목록 클래스 -->
+	<select id="selectWishClassByNo" parameterType="int" resultMap="ClassListMap">            
+		SELECT *
+		  FROM CLASS_LIST
+		 WHERE CLASS_NO = #{classNo}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 이미지 클래스
+	<select id="selectImgClass" parameterType="int" resultType="ImgClassDTO">	
+		SELECT IMG_NO, IMG_NAME, IMG_MAIN_PATH, IMG_DETAIL_PATH                     
+		  FROM IMG_CLASS
+		 WHERE CLASS_NO = #{classNo}
+	</select>
+	-->
 
 </mapper>
