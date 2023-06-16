@@ -7,15 +7,111 @@
 <!-- namespace는 @Mapper를 지정한다. -->
 <mapper namespace="com.gdu.halbae.mapper.EnrollMapper">
 
-	<select id="selectUserById" parameterType="String" resultType="UserDTO">
-		SELECT USER_NO
-		  FROM USER
-		 WHERE USER_ID = #{userId}
-	</select>
 
+	<!-- 스케줄 + 강의 조인 -->
+	<resultMap type="ScheduleDTO" id="ScheduleMap">
+		<id column="SCH_NO" property="schNo" />
+		<result column="SCH_START" property="schStart" />
+		<result column="SCH_NOW_NUM" property="schNowNum" />
+		<result column="SCH_MAX_NUM" property="schMaxNum" />
+		<result column="SCH_STATE" property="schState" />
+		<association column="ClassListDTO" property="classListDTO">
+			<id column="CLASS_NO" property="classNo" />
+			<result column="USER_NO" property="userNo" />
+			<result column="CLASS_TITLE" property="classTitle" />
+			<result column="CLASS_CATEGORY" property="classCategory" />
+			<result column="CLASS_AREA" property="classArea" />
+			<result column="CLASS_TIME" property="classTime" />
+			<result column="CLASS_MONEY" property="classMoney" />
+			<result column="CLASS_GRADE" property="classGrade" />
+		</association>
+	</resultMap>
+	
+	<!-- *** *** 수강신청 Form *** ***  -->
+	<!-- 단순 강의 조회 -->
 	<select id="selectClassByNo" parameterType="int" resultType="ClassListDTO">
-		SELECT CLASSTITLE, CLASSGRADE
+		SELECT *
+		  FROM CLASS_LIST
+	 	 WHERE CLASS_NO = #{classNo}
 	</select>
-
+	
+	<!-- 해당 강의 스케줄 조회 -->
+	<select id="scheduleByClassNo" parameterType="int" resultMap="ScheduleMap">
+		SELECT *
+		  FROM SCHEDULE S INNER JOIN CLASS_LIST C
+		 WHERE S.CLASS_NO = C.CLASS_NO
+		   AND C.CLASS_NO = #{classNo}
+	</select>
+	
+	<!-- 단순 스케줄 조회 -->
+	<select id="selectScheduleByNo" parameterType="int" resultType="ScheduleDTO">
+		SELECT *
+		  FROM SCHEDULE
+		 WHERE SCH_NO = #{schNo}
+	</select>
+	
+	<!-- 회원 조회 -->
+	<select id="selectUserByNo" parameterType="int" resultType="UserDTO">
+		SELECT *
+		  FROM USER
+		 WHERE USER_NO = #{userNo}
+	</select>
+	
+	<!-- 수강 신청 -->
+	<insert id="applyClass" parameterType="EnrollDTO">
+		INSERT INTO ENROLL(
+			USER_NO
+		  , SCH_NO
+		  , ENROLL_DATE
+		  , ENROLL_PERSON
+		  , ENROLL_REQUEST
+		) VALUES (
+	 	    #{userDTO.userNo}
+	 	  , #{scheduleDTO.schNo}
+	 	  , NOW()
+	 	  , #{enrollPerson}
+	 	  , #{enrollRequest}
+		)
+	</insert>
+	
+	<!-- 스케줄 인원 반영 -->
+	<update id="updateSchNowNum" parameterType="EnrollDTO">
+		UPDATE SCHEDULE
+		<set>
+		    <if test="scheduleDTO.schNowNum + enrollPerson lte scheduleDTO.schMaxNum">
+		   		SCH_NOW_NUM = SCH_NOW_NUM + #{enrollPerson}
+		    </if>
+		</set>
+		 WHERE SCH_NO = #{scheduleDTO.schNo}
+	</update>
+	
+	<!-- 스케줄 상태 변경 -->
+	<update id="updateSchState" parameterType="EnrollDTO">
+		UPDATE SCHEDULE
+		<set>
+			<if test="scheduleDTO.schNowNum + enrollPerson == scheduleDTO.schMaxNum">
+			SCH_STATE = 0
+			</if>
+			<if test="!(scheduleDTO.schNowNum + enrollPerson == scheduleDTO.schMaxNum)">
+			SCH_STATE = 1
+			</if>
+		</set>
+		WHERE SCH_NO = #{scheduleDTO.schNo}
+	</update>
+	
+	
+	<!-- *** *** 결제페이지 *** *** -->
+	
+	<!-- 회원의 쿠폰 조회 -->
+	<select id="couponListByNo" parameterType="int" resultType="CouponDTO">
+		SELECT C.COUPON_NAME, C.COUPON_DISCOUNT
+  		  FROM COUPON C, COUPON_USER CU
+ 		 WHERE C.COUPON_NO = CU.COUPON_NO
+           AND CU.USER_NO = #{userNo}
+	</select>
+	
+	
+	
+	
 
 </mapper>
