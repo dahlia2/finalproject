@@ -173,21 +173,5 @@ function fnModifyPw() {
 	    var top = (screen.height - popupHeight) / 2;
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
 	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    var popupWindow = window.open('/chat/chatList.html', '메시지', popupOptions);
-	    
-	    // 팝업 창이 차단되었을 경우 대비
-	    if (!popupWindow || popupWindow.closed || typeof popupWindow.closed == 'undefined') {
-	        alert('팝업 창이 차단되었습니다. 팝업 차단을 해제해주세요.');
-	    }
+	    window.open('/chat/chatList.html', '메시지', popupOptions);
 	}
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
