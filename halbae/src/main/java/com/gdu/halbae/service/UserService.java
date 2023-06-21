@@ -1,11 +1,16 @@
 package com.gdu.halbae.service;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -44,4 +49,17 @@ public interface UserService {
 	public void deleteUser(HttpServletRequest request, HttpServletResponse response);
 	// 유저 미사용 프로필 사진 지우기
 	public void removeUnusedProfile();
+	
+	// 네이버 로그인
+	public String getNaverLoginApiURL(HttpServletRequest request);
+	public String getNaverLoginToken(HttpServletRequest request);
+	public UserDTO getNaverLoginProfile(String accessToken);
+	public UserDTO getUserById(String userId);
+	public void naverLogin(HttpServletRequest request, HttpServletResponse response, UserDTO naverUser);
+	
+	// 카카오 로그인
+	public String getKakaoLoginApiURL(HttpServletRequest request);
+	public String getKakaoLoginToken(HttpServletRequest request);
+	public UserDTO getKakaoLoginProfile(String accessToken);
 }
+

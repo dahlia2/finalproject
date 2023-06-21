@@ -11,15 +11,16 @@
   <link rel="stylesheet" th:href="@{/css/footer.css(ver=1.0)}">
   <script th:src="@{/js/user/headerFn.js(ver=1.0)}"></script>
   <script th:src="@{/js/user/userFn.js(ver=1.0)}"></script>
+  <script th:inline="javascript">
+  	var alertPw = /*[[${alertPw}]]*/ null;
+  	if(alertPw != null) {
+  		alert(alertPw);
+  	}
+  </script>
 </head>
 
 
 <body>
-<<<<<<< HEAD
-
-        <div id="headerWrap" th:fragment="gnbFrag">
-           <div id="headerLogo">
-=======
 		
 		
 	  	<div id="headerWrap" th:fragment="gnbFrag">
@@ -30,54 +31,14 @@
 					<input type="hidden" th:value="${session.loginId}" name="loginId">
 				</form>
 	  		<div id="headerLogo">
->>>>>>> users
           <a th:href="@{/}"><img th:src="@{/images/logo_hb.gif}" width="230px;"/></a>
         </div>
         <form id="searchFrm">
-           <fieldset id="headerSearchArea">           
+        	<fieldset id="headerSearchArea">        	
             <input id="searchBar" placeholder="하루의 배움을 만나보세요." />
             <button id="searchBtn">
-               <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+            	<i class="fa-solid fa-magnifying-glass fa-xl"></i>
             </button>
-<<<<<<< HEAD
-           </fieldset>
-            </form>
-            <th:block th:if="${session.loginId != null}">
-           <nav id="headerNav">
-             <ul>
-               <li>
-                 <p>튜터메뉴</p>
-               </li>
-               <li>
-                 <p>메세지</p>
-               </li>
-               <li>
-                 <p>클래스신청서</p>
-               </li>
-               <li>
-                 <p>수강목록</p>
-               </li>
-               <li>
-                 <p>찜</p>
-               </li>
-               <li>
-                 <p>프로필</p>
-               </li>
-             </ul>
-           </nav>
-        </th:block>
-        <th:block th:if="${session.loginId == null}">
-           <nav id="headerLogin">
-              <ul>
-                 <li>
-                    <p><a th:href="@{/user/login.html}">로그인</a></p>
-                 </li>
-              </ul>
-           </nav>
-        </th:block>
-      </div>
-  
-=======
         	</fieldset>
    			</form>
    			<th:block th:if="${session.loginId != null}">
@@ -123,8 +84,5 @@
         </th:block>
 		</div>
 
->>>>>>> users
 </body>
 </html>
-
-헤더 수정전!

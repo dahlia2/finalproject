@@ -160,9 +160,8 @@
 .externalLogin span {
 	display: inline-block;
 }
-#naver_id_login img {
-	width: 200px;
-	height: 50px;
+.naverBtn {
+
 }
 .kakao {
 	background-color: #f6e24b;	

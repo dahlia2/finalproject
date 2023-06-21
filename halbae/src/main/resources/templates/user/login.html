@@ -6,6 +6,9 @@
 <script th:src="@{/js/user/reg.js(ver=1.0)}"></script>
 <script th:src="@{/js/user/checkbox.js(ver=1.0)}"></script>
 
+<script th:src="@{https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js}" charset="utf-8"></script>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script>
+
 <body>
 	<div th:replace="~{/layout/header::gnbFrag}"></div>
 	<div id="loginWrap">
@@ -51,15 +54,10 @@
 			</form>
 	  </div>
 	  <div class="externalLogin">
-	  	<div id="naver_id_login"></div>
-	  	<div class="kakao">
-	  		<div>
-	  			<img src="/images/user/kakao.png">
-	  			<span>카카오 로그인</span>
-	  		</div>
-	  	</div>
-	  </div>
-  </div>
+	  	<a th:href="${naverApiURL}"><img class="naverBtn"src="/images/user/naver.png" style="width:200px; height:50px;"></a>
+	  	<a th:href="${kakaoApiURL}"><img src="/images/user/kakao.png" style="height:50px;"></a>
+ 		</div>
+ 	</div>
    <!-- 회원가입시 중복된 이메일 체크할 때 alert하는 문구 저장 (같은 js를 사용해서 그냥 넣음 안넣으면 alert 뜸) -->
   <input type="hidden" id="unqMsg">
   <div th:replace="~{/layout/footer::footerFrag}"></div>
