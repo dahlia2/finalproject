@@ -19,6 +19,25 @@
             document.querySelector('.error-msg').style.display = 'block';
         }
     }
+	
+    function submitReviewForm(event) {
+        event.preventDefault(); // 폼 제출 기본 동작을 막습니다.
+
+        // 리뷰 작성 처리 및 성공적으로 완료되었을 때 팝업 창을 닫습니다.
+        $.ajax({
+            url: event.target.action,
+            type: 'POST',
+            data: new FormData(event.target),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                window.close();
+            }
+        });
+
+        return false;
+    }
+
     
 </script>
 
@@ -30,7 +49,9 @@
 	        <p>포토 리뷰</p>
 	        <p>텍스트 리뷰</p>
 	    </div>
-	    <form th:action="@{/review/write}" method="post" enctype="multipart/form-data">
+	    <form th:action="@{/review/write}" method="post" enctype="multipart/form-data" onsubmit="return submitReviewForm(event)">
+			<!-- classNo hidden 필드 추가 -->
+        	<input type="hidden" name="classNo" th:value="${classNo}" />
 	        <div class="form-group">
 	            <label for="rating">클래스는 만족하셨나요?</label>
 	            <div class="rating">
@@ -53,7 +74,7 @@
 	        </div>
 	        <div class="form-group">
 	            <label for="fileInput" class="file">사진 첨부하기</label>
-	            <input type="file" id="fileInput" name="reviewAttachList[]" multiple="multiple" accept="image/*" style="display: none;">
+	            <input type="file" id="fileInput" name="reviewAttachList" multiple="multiple" accept="image/*" style="display: none;">
 	        </div>
 	        <div class="form-group">
 	            <input type="submit" class="button" value="작성완료" onclick="validateReviewContent(event)">

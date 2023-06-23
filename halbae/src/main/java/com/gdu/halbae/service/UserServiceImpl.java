@@ -1,25 +1,39 @@
 package com.gdu.halbae.service;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.halbae.domain.EnrollDTO;
+import com.gdu.halbae.domain.PaymentDTO;
 import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.mapper.UserMapper;
 import com.gdu.halbae.util.JavaMailUtil;
@@ -27,6 +41,7 @@ import com.gdu.halbae.util.ProfileUtil;
 import com.gdu.halbae.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
+
 
 @RequiredArgsConstructor
 @Service
@@ -37,9 +52,31 @@ public class UserServiceImpl implements UserService {
 	private final JavaMailUtil javaMailUtil;
 	private final ProfileUtil profileUtil;
 	
+	// 수강목록 가져오기
+	@Override
+		public void getEnrollList(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			int userNo = (Integer)session.getAttribute("userNo");
+			
+			List<EnrollDTO> enrolls = userMapper.selectEnrollListByUserNo(userNo);
+			List<PaymentDTO> paidEnrolls = new ArrayList<>();
+			
+			
+			PaymentDTO paymentDTO;
+			
+			for(EnrollDTO enroll : enrolls) {
+				paymentDTO = userMapper.selectPaymentDTOByEnrollNo(enroll.getEnrollNo());
+				if(paymentDTO != null) {
+					paidEnrolls.add(paymentDTO);
+				}
+			}
+			
+			model.addAttribute("enrollList", paidEnrolls);
+		}
+	
 	
 	// 회원가입
-	@Override
+	@Override 
 	public String checkUniqueId(UserDTO userDTO) {
 		String msg = "";
 		if(userMapper.checkUniqueId(userDTO.getUserId()) != null) {
@@ -77,7 +114,9 @@ public class UserServiceImpl implements UserService {
 		userDTO.setUserTel(userTel);
 		userDTO.setUserId(userId);
 		userDTO.setUserPw(userPw);
-		userDTO.setUserImgPath("/images/main/default_user.png");
+		if(userDTO.getUserImgPath() == null) {
+			userDTO.setUserImgPath("/images/main/default_user.png");
+		}
 		
 		return userMapper.insertUser(userDTO);
 	}
@@ -226,15 +265,13 @@ public class UserServiceImpl implements UserService {
 		String tempPw = securityUtil.getSha256(userDTO.getUserPw());
 		userDTO.setUserPw(tempPw);
 		int updateResult = userMapper.updateTempPw(userDTO);
-		System.out.println("비밀번호 변경 완료");
 		response.setContentType("text/html; charset=UTF-8");
 		
 		if(updateResult == 1) {
-			
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("if(confirm('로그인하러 가시겠습니까?')) {");
+				out.println("if(confirm('임시 비밀번호가 발급되었습니다. 로그인하러 가시겠습니까?')) {");
 				out.println("location.href='/user/login.html';");
 				out.println("} else {");
 				out.println(" location.href='/';");
@@ -249,7 +286,8 @@ public class UserServiceImpl implements UserService {
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("alert('임시 비밀번호 발급이 실패했습니다. 다시 시도해주세요');");
+				out.println("alert('임시 비밀번호 발급이 실패했습니다. 아이디를 확인해주세요.');");
+				out.println("location.href='/user/findPw.html';");
 				out.println("</script>");
 				out.flush();
 				out.close();
@@ -410,6 +448,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Map<String, Object> updateProfileImg(MultipartHttpServletRequest multipartRequest) {
 		
+		String sep = Matcher.quoteReplacement(File.separator);
+		
 		Map<String, Object> map = new HashMap<>();
 		
 		MultipartFile profile = multipartRequest.getFile("profile");
@@ -433,11 +473,9 @@ public class UserServiceImpl implements UserService {
 				
 				File file = new File(dir, userImgFileName);
 				
-				System.out.println("이미지 생성");
-				
 				profile.transferTo(file);
 				
-				String userImgPath = path + "/" + userImgFileName;
+				String userImgPath = path + sep + userImgFileName;
 				
 				map.put("display", "/user/display.do?userImgPath=" + userImgPath);
 			}
@@ -499,12 +537,302 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 	}
-}
 	
+	/**********************************************/
+	/**********************************************/
+	/************ 네이버 로그인 API **************/
+	/**********************************************/
+	/**********************************************/
 	
+  private static final String CLIENT_ID = "D9tF3QxxsI_fgIeTvWuG";
+  private static final String CLIENT_SECRET = "VL5ywVPQTM";
 	
-	
+	@Override
+	public String getNaverLoginApiURL(HttpServletRequest request) {
 
+		String apiURL = "";
+		
+		try {
+			String redirectURL = URLEncoder.encode("http://localhost:8080/user/naver/login.do", "UTF-8");
+			SecureRandom secureRandom = new SecureRandom();
+			String state = new BigInteger(130, secureRandom).toString();
+			
+			apiURL += "https://nid.naver.com/oauth2.0/authorize?response_type=code";
+			apiURL += "&client_id=" + CLIENT_ID;
+			apiURL += "&redirect_uri=" + redirectURL;
+			apiURL += "&state=" + state;
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("state", state);
+		
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return apiURL;
+	}
+	
+	@Override
+	public String getNaverLoginToken(HttpServletRequest request) {
+		String code = request.getParameter("code");
+		String state = request.getParameter("state");
+		String redirectURI = null;
+		try {
+			redirectURI = URLEncoder.encode("http://localhost:8080/", "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		StringBuffer res = new StringBuffer();
+		try {
+			String apiURL;
+	    apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
+	    apiURL += "client_id=" + CLIENT_ID;
+	    apiURL += "&client_secret=" + CLIENT_SECRET;
+	    apiURL += "&redirect_uri=" + redirectURI;
+	    apiURL += "&code=" + code;
+	    apiURL += "&state=" + state;
+	    
+	    URL url = new URL(apiURL);
+	    HttpURLConnection con = (HttpURLConnection)url.openConnection();
+	    con.setRequestMethod("GET");
+	    int responseCode = con.getResponseCode();
+	    BufferedReader br;
+	    
+	    if(responseCode == 200)	 {
+	    	br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	    }else {
+	    	br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+	    }
+	    
+	    String inputLine;
+	    while((inputLine = br.readLine()) != null) {
+	    	res.append(inputLine);
+	    }
+	    br.close();
+	    con.disconnect();
+	    
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject obj = new JSONObject(res.toString());
+		String accessToken = obj.getString("access_token");
+		
+		return accessToken;
+	}
+	
+	@Override
+	public UserDTO getNaverLoginProfile(String accessToken) {
+
+		String header = "Bearer " + accessToken;
+		StringBuffer sb = new StringBuffer();
+
+		try {
+			String apiURL = "https://openapi.naver.com/v1/nid/me";
+			URL url = new URL(apiURL);
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Authorization", header);
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			if(responseCode == 200) {
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			}else {
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
+			String inputLine;
+			while((inputLine = br.readLine()) != null) {
+				sb.append(inputLine);
+			}
+			br.close();
+			con.disconnect();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(sb.toString());
+		UserDTO userDTO = new UserDTO();
+		try {
+			JSONObject profile = new JSONObject(sb.toString()).getJSONObject("response");
+			/* 가져온 데이터
+			  {"id":"2wVtKX5WoKnsPtPEueEykYS-WKW8PzggkGnMUzgbOho",
+			  "nickname":"\uc870\uc6b0\ubbfc",
+			  "profile_image":"https:\/\/phinf.pstatic.net\/contact\/20220518_74\/1652883673112JElr8_JPEG\/%C0%AF%C6%A9%BA%EA%C7%C1%B7%CE%C7%CA.jpg",
+			  "email":"umin5056@naver.com",
+				"mobile":"010-5056-5439"
+			*/
+			String userImgPath = profile.getString("profile_image").replace("\\", "");
+			String userTel = profile.getString("mobile").replace("-", "");
+			String userPw = userTel.substring(3); 
+			
+			userDTO.setUserName(profile.getString("nickname"));
+			userDTO.setUserTel(userTel);
+			userDTO.setUserId(profile.getString("email"));
+			userDTO.setUserPw(userPw);
+			userDTO.setUserImgPath(userImgPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return userDTO;
+	}
+	
+	@Override
+	public UserDTO getUserById(String userId) {
+		return userMapper.checkUniqueId(userId);
+	}
+	
+	@Override
+	public void naverLogin(HttpServletRequest request, HttpServletResponse response, UserDTO naverUser) {
+		HttpSession session = request.getSession();
+		String userId = naverUser.getUserId();
+		String userName = naverUser.getUserName();
+		session.setAttribute("loginId", userId);
+		session.setAttribute("userName", userName);
+		session.setAttribute("userNo", naverUser.getUserNo());
+		session.setAttribute("userPoint", naverUser.getUserPoint());
+		session.setAttribute("userImgPath", naverUser.getUserImgPath());
+	}
+	
+	/**********************************************/
+	/**********************************************/
+	/************ 카카오 로그인 API ***************/
+	/**********************************************/
+	/**********************************************/
+	private static final String KAKAO_ID = "e3983a7e391da60579eea19765c3228d";
+	
+	@Override
+	public String getKakaoLoginApiURL(HttpServletRequest request) {
+		String apiURL = "";
+		try {
+			String redirectURL = URLEncoder.encode("http://localhost:8080/user/kakao/login.do", "UTF-8");
+			apiURL += "https://kauth.kakao.com/oauth/authorize?response_type=code";
+			apiURL += "&client_id=" + KAKAO_ID;
+			apiURL += "&redirect_uri=" + redirectURL;
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return apiURL;
+	}
+	
+	@Override
+	public String getKakaoLoginToken(HttpServletRequest request) {
+		
+		String redirectURI = "";
+		try {
+			redirectURI = URLEncoder.encode("http://localhost:8080/user/kakao/login.do", "UTF-8");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		String code = request.getParameter("code");
+
+		StringBuilder sb = new StringBuilder();
+		try {
+			String apiURL = "";
+			apiURL += "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
+			apiURL += "&client_id=" + KAKAO_ID;
+			apiURL += "&redirect_uri=" + redirectURI;
+			apiURL += "&code=" + code;
+			
+			URL url = new URL(apiURL);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			
+			if(responseCode == 200)	 {
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			}else {
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
+
+			sb = new StringBuilder();
+			String inputLine;
+			while((inputLine = br.readLine()) != null) {
+				sb.append(inputLine);
+			}
+			
+			br.close();
+			con.disconnect();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	
+		JSONObject obj = new JSONObject(sb.toString());
+		String accessToken = obj.getString("access_token");
+		
+	return accessToken;
+	}
+	
+	@Override
+	public UserDTO getKakaoLoginProfile(String accessToken) {
+		
+		String authorization = "Bearer " + accessToken;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			String apiURL = "https://kapi.kakao.com/v2/user/me";
+			URL url = new URL(apiURL);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Authorization", authorization);
+			
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			
+			if(responseCode == 200)	 {
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			}else {
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
+
+			sb = new StringBuilder();
+			String inputLine;
+			while((inputLine = br.readLine()) != null) {
+				sb.append(inputLine);
+			}
+			br.close();
+			con.disconnect();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("객체 " + sb.toString());
+		
+		UserDTO userDTO = new UserDTO();
+		
+		try {
+			JSONObject obj = new JSONObject(sb.toString()).getJSONObject("properties");
+			JSONObject obj2 = new JSONObject(sb.toString()).getJSONObject("kakao_account");
+			
+			String userName = obj.getString("nickname");
+			String userImgPath = obj.getString("profile_image");
+			String userId = obj2.getString("email");
+			String userPw = userId.substring(0, userId.indexOf("@"));
+			String userTel = "010" + (int)(Math.random() * 100000000);
+			
+			userDTO.setUserId(userId);
+			userDTO.setUserPw(userPw);
+			userDTO.setUserName(userName);
+			userDTO.setUserImgPath(userImgPath);
+			userDTO.setUserTel(userTel);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return userDTO;
+	}
+	
+	
+}// 클래스 종료
+	
+	
+	
+	
 
 
 

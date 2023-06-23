@@ -19,14 +19,14 @@ public interface EnrollService {
 	// 스케줄 조회
 	public List<ScheduleDTO> scheduleByClassNo(HttpServletRequest request);
 	
-	// 쿠폰 조회
-	public List<CouponDTO> couponListByNo(HttpServletRequest request);
-	
 	// 회원 조회
 	public UserDTO selectUserByNo(HttpServletRequest request);
+	public UserDTO getUser(int userNo);
+	
+	// 쿠폰들 조회
+	public List<CouponDTO> selectCoupon(HttpServletRequest request);
 	
 	// 수강 신청
-	public int applyClass(HttpServletRequest request, RedirectAttributes redirectAttributes);
-	
+	public void applyClass(HttpServletRequest request);
 	
 }

@@ -6,33 +6,21 @@
 <mapper namespace="com.gdu.halbae.mapper.ReviewMapper">
 
     <!-- 리뷰 작성 -->
-    <!-- ReviewDTO를 파라미터로 받아 리뷰를 추가 -->
-    <insert id="insertReview" parameterType="ReviewDTO">
+    <insert id="insertReview" parameterType="ReviewDTO" useGeneratedKeys="true" keyProperty="reviewNo">
         INSERT INTO REVIEW (USER_NO, CLASS_NO, REVIEW_CONTENT, REVIEW_GRADE, WRITE_DATE)
-        VALUES (#{userNo}, #{classNo}, #{reviewContent}, #{reviewGrade}, NOW())
+        VALUES (#{userDTO.userNo}, #{classNo}, #{reviewContent}, #{reviewGrade}, NOW())
     </insert>
-    
-    <!-- 리뷰 첨부 파일 저장 -->
-    <!-- 리뷰 번호, 경로, 원본 파일명, 저장된 파일명을 파라미터로 받아 리뷰 첨부 파일을 추가 -->
-    <insert id="insertReviewAttach">
+	<!-- 첨부 -->
+    <insert id="insertReviewAttach" parameterType="ReviewAttachDTO">
         INSERT INTO REVIEW_ATTACH (REVIEW_NO, PATH, ORIGIN_NAME, FILE_NAME, DOWNLOAD, THUMBNAIL)
-        VALUES (#{reviewNo}, #{path}, #{originName}, #{fileName}, 0, 0)
+        VALUES (#{reviewNo}, #{path}, #{originName}, #{fileName}, 0, #{thumbnail})
     </insert>
-    
-    <!-- 리뷰 포인트 업데이트 -->
-    <!-- ReviewDTO를 파라미터로 받아 리뷰에 첨부된 파일 여부에 따라 포인트를 업데이트 -->
-    <update id="updateUserPoint">
-        UPDATE USER 
-           SET USER_POINT = USER_POINT + #{point} 
-         WHERE USER_NO = #{userNo}
-    </update>
-    
-    <!-- 리뷰 좋아요 정보 저장 -->
-    <!-- ReviewLikeDTO를 파라미터로 받아 리뷰 좋아요 정보를 추가 -->
-    <insert id="insertReviewLike" parameterType="ReviewLikeDTO">
-        INSERT INTO REVIEW_LIKE (REVIEW_NO, USER_NO)
-        VALUES (#{reviewNo}, #{userNo})
-    </insert>
+	<!-- 포인트 업데이트 -->
+    <update id="updateUserPoint" parameterType="UserDTO">
+	    UPDATE USER
+	       SET USER_POINT = #{userPoint}
+	     WHERE USER_NO = #{userNo}
+	</update>
     
     <!-- 리뷰 첨부 파일 목록 가져오기 -->
     <!-- 리뷰 번호를 파라미터로 받아 해당 리뷰의 첨부 파일 목록을 조회 -->
@@ -56,18 +44,23 @@
     
     <resultMap id="ReviewResultMap" type="ReviewDTO">
         <id property="reviewNo" column="REVIEW_NO" />
-        <result property="userNo" column="USER_NO" />
         <result property="classNo" column="CLASS_NO" />
         <result property="reviewContent" column="REVIEW_CONTENT" />
         <result property="reviewGrade" column="REVIEW_GRADE" />
         <result property="writeDate" column="WRITE_DATE" />
         <result property="userDTO.userName" column="USER_NAME" />
-        <association property="reviewAttachList" javaType="java.util.List" column="REVIEW_NO" select="getReviewAttachListByReviewNo" />
     </resultMap>
 
+	<!-- 전체 리뷰 수 조회 -->
+	<select id="getTotalReviewCount" parameterType="int" resultType="int">
+	    SELECT COUNT(*) 
+	      FROM REVIEW
+	     WHERE CLASS_NO = #{classNo}
+	</select>
+	
     <!-- 리뷰 목록 조회 -->
     <!-- 리뷰 목록을 조회하여 ReviewDTO 객체에 매핑 -->
-    <select id="getReviewList" resultMap="ReviewResultMap">
+    <select id="getReviewList" parameterType="Map" resultMap="ReviewResultMap">
         SELECT
             R.REVIEW_NO,
             R.USER_NO,
@@ -76,26 +69,49 @@
             R.REVIEW_GRADE,
             R.WRITE_DATE,
             U.USER_NAME
-          FROM REVIEW R
-         INNER JOIN USER U ON R.USER_NO = U.USER_NO
+          FROM REVIEW R INNER JOIN USER U
+            ON R.USER_NO = U.USER_NO
+         WHERE R.CLASS_NO = #{classNo}
          ORDER BY R.REVIEW_NO DESC
+         LIMIT #{begin}, #{recordPerPage}
     </select>
 
     <!-- 리뷰 평균 평점 조회 -->
     <!-- 리뷰의 평균 평점을 조회 -->
-    <select id="getAverageRating" resultType="double">
+    <select id="getAverageRating" parameterType="int" resultType="double">
         SELECT AVG(REVIEW_GRADE)
           FROM REVIEW
+         WHERE CLASS_NO = #{classNo}
     </select>
-
-    <!-- 리뷰 좋아요 카운트 증가 -->
-    <!-- 리뷰 번호와 사용자 번호를 파라미터로 받아 해당 리뷰의 좋아요 카운트를 증가 -->
-    <update id="increaseLikeCount">
-        UPDATE REVIEW
-           SET LIKE_COUNT = LIKE_COUNT + 1
-         WHERE REVIEW_NO = #{reviewNo}
-           AND USER_NO = #{userNo}
-    </update>
+		    
+	<!-- 리뷰 좋아요 수 조회 -->
+	<select id="countReviewLike" parameterType="ReviewLikeDTO" resultType="int">
+		SELECT COUNT(*) 
+		  FROM REVIEW_LIKE 
+		 WHERE REVIEW_NO = #{reviewNo} 
+		   AND USER_NO = #{userNo}
+	</select>
+	
+	<!-- 리뷰 좋아요 등록 -->
+	<insert id="insertReviewLike" parameterType="ReviewLikeDTO">
+		INSERT INTO REVIEW_LIKE (REVIEW_NO, USER_NO) 
+		VALUES (#{reviewNo}, #{userNo})
+	</insert>
+	
+	<!-- 리뷰 좋아요 취소 -->
+	<delete id="deleteReviewLike" parameterType="ReviewLikeDTO">
+		DELETE 
+		  FROM REVIEW_LIKE 
+		 WHERE REVIEW_NO = #{reviewNo} 
+		   AND USER_NO = #{userNo}
+	</delete>
+	
+	<!-- 리뷰 좋아요 수 업데이트 -->
+	<update id="updateReviewLikeCount">
+		UPDATE REVIEW 
+		   SET LIKES = LIKES + #{count} 
+		 WHERE REVIEW_NO = #{reviewNo}
+	</update>
 
     <!-- 사용자명으로 사용자 번호 조회 -->
     <!-- 사용자명을 파라미터로 받아 해당 사용자의 번호를 조회 -->
@@ -103,15 +119,6 @@
         SELECT USER_NO
           FROM USER
          WHERE USER_NAME = #{userName}
-    </select>
-
-    <!-- 리뷰 좋아요 여부 확인 -->
-    <!-- 리뷰 번호와 사용자 번호를 파라미터로 받아 해당 사용자가 해당 리뷰를 좋아요한 경우 true를 반환 -->
-    <select id="getLikeCountByUser" resultType="int">
-        SELECT COUNT(*)
-          FROM REVIEW_LIKE
-         WHERE REVIEW_NO = #{reviewNo}
-           AND USER_NO = #{userNo}
     </select>
 
     <!-- 리뷰 번호로 리뷰 첨부 파일 목록 조회 -->
@@ -128,21 +135,5 @@
           FROM REVIEW_ATTACH
          WHERE REVIEW_NO = #{reviewNo}
     </select>
-    
-    <!-- 리뷰 목록 페이징 -->
-    <!-- 페이징 기준 정보를 파라미터로 받아 리뷰 목록을 조회 -->
-	<select id="getReviewListWithPaging" resultType="ReviewDTO">
-	    SELECT *
-	      FROM REVIEW
-	     ORDER BY reg_date DESC
-	     LIMIT #{criteria.begin}, #{criteria.recordPerPage}
-	</select>
-	
-	<!-- 전체 리뷰 수 조회 -->
-	<!-- 전체 리뷰 수를 조회 -->
-	<select id="getTotalReviewCount" resultType="int">
-	    SELECT COUNT(*) 
-	      FROM REVIEW
-	</select>
 
 </mapper>
