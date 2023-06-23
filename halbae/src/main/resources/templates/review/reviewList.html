@@ -54,6 +54,7 @@
 	}
 	
 	function openPopup() {
+		var classNo =/*[[${classNo}]]*/ null;
 	    // 팝업 창을 열기 위한 설정
 	    var popupWidth = 500;
 	    var popupHeight = 1000;
@@ -61,7 +62,7 @@
 	    var top = (screen.height - popupHeight) / 2;
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
 	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/review/form?classNo=1', '리뷰 작성', popupOptions);
+	    window.open('/review/form?classNo=' + classNo, '리뷰 작성', popupOptions);
 	}
     
 </script>
@@ -83,6 +84,7 @@
 			<br>
 			<!-- 리뷰 작성하기 링크 -->
 			<a href="#" th:onclick="openPopup()" style="text-decoration: underline;">리뷰 작성하기</a>
+			<input type="hidden" name="classNo" th:value="${classNo}" />
 			<br>
 			<br>
 			<br>

@@ -21,7 +21,6 @@ import com.gdu.halbae.domain.ReviewDTO;
 import com.gdu.halbae.domain.ReviewLikeDTO;
 import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.mapper.ReviewMapper;
-import com.gdu.halbae.util.MyFileUtil;
 import com.gdu.halbae.util.MyFileUtil2;
 import com.gdu.halbae.util.PageUtil;
 
@@ -32,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class ReviewServiceImpl implements ReviewService {
 	
     private final ReviewMapper reviewMapper;
-    private final MyFileUtil myFileUtil;
+    private final MyFileUtil2 myFileUtil;
 
     // 리뷰 작성
     @Transactional

@@ -79,9 +79,9 @@
     <!-- 리뷰 평균 평점 조회 -->
     <!-- 리뷰의 평균 평점을 조회 -->
     <select id="getAverageRating" parameterType="int" resultType="double">
-        SELECT AVG(REVIEW_GRADE)
-          FROM REVIEW
-         WHERE CLASS_NO = #{classNo}
+		SELECT COALESCE(AVG(REVIEW_GRADE), 0)
+		  FROM REVIEW
+		 WHERE CLASS_NO = #{classNo}
     </select>
 		    
 	<!-- 리뷰 좋아요 수 조회 -->
