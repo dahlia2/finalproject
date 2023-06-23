@@ -12,55 +12,36 @@
 
 <script th:inline="javascript">
 
-	// 채팅 기능을 처리하기 위한 JavaScript 코드
-	// WebSocket 연결
-	var socket = new WebSocket("ws://localhost:8080/chat");
-	
-	// WebSocket 연결이 수립되었을 때의 이벤트 리스너
-	socket.onopen = function(event) {
-	    console.log("WebSocket 연결 성립됨");
-	};
-	
-	// WebSocket 메시지를 수신했을 때의 이벤트 리스너
-	socket.onmessage = function(event) {
-	    var message = JSON.parse(event.data);
-	    // 수신한 메시지를 chatMessages 컨테이너에 추가
-	    $("#chatMessages").append("<p>" + message.sender + ": " + message.content + "</p>");
-	};
-	
-	// WebSocket 연결이 닫혔을 때의 이벤트 리스너
-	socket.onclose = function(event) {
-	    console.log("WebSocket 연결 종료됨");
-	};
-	
-	// 전송 버튼 클릭 이벤트 리스너
-	$("#sendMessageButton").click(function() {
-	    var message = $("#messageInput").val();
-	    // WebSocket 연결을 통해 메시지 전송
-	    socket.send(message);
-	    // 입력 필드 초기화
-	    $("#messageInput").val("");
-	});
+
 	
 </script>
 
 <body>
 
     <div class="chat-container">
-        <div class="header">
-            <img src="/images/chat/logo.jpg">
-            <p>하루배움 메시지로 간편하게 문의해보세요!</p>
-        </div>
-        <div class="chatMessages"></div>
-        <div class="send">
-            <form id="send-message-form" action="#" method="post">
-                <input type="text" id="messageInput" name="message" placeholder="메시지 보내기" required>
-                <button type="submit" id="sendMessageButton" >
-                    <img src="/images/chat/send.jpg">
-                </button>
-            </form>
-        </div>
-    </div>
+	    <div class="header">
+	        <img src="/images/chat/logo.jpg">
+	        <p>하루배움 메시지로 간편하게 문의해보세요!</p>
+	    </div>
+	    <div class="chatMessages">
+	        <!-- 채팅 메시지 출력 -->
+	        <ul>
+	            <li th:each="message : ${messages}">
+	                <p th:text="${message.message}"></p>
+	                <p th:text="${message.sendTime}"></p>
+	            </li>
+	        </ul>
+	    </div>
+	    <div class="send">
+	        <form id="send-message-form" action="#" method="post">
+	            <input type="text" id="messageInput" name="message" placeholder="메시지 보내기" required>
+	            <button type="submit" id="sendMessageButton">
+	                <img src="/images/chat/send.jpg">
+	            </button>
+	        </form>
+	    </div>
+	</div>
+
 
 </body>
 </html>

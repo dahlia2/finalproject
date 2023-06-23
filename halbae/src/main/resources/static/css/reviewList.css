@@ -4,10 +4,29 @@ body {
 
 a {
     color: black; /* 링크의 색상을 검정색으로 변경 */
+    font-size: 18px;
 }
+
 ul {
     list-style-type: none;
     padding-left: 0;
+}
+
+.t {
+	font-size: 33px; 
+	font-weight: bold;
+	color: #333333;
+}
+
+.m-1 {
+	font-size: 22px;
+	color: #646464;
+}
+
+.m-2 {
+	font-size: 22px; 
+	font-weight: bold;
+	color: #EC3951;
 }
 
 .profile-image img {
@@ -59,20 +78,19 @@ ul {
     height: auto;
 }
 
-.like-container {
+#likes-container {
     display: flex;
     align-items: flex-start;
     margin-top: 20px;
 }
 
-.like-count {
+#like-count {
     margin-left: 5px;
 }
 
-.like-button {
+#like-image {
     width: 18px;
     height: 18px;
-    background: url('/images/review/heart.png') no-repeat;
     background-size: contain;
     border: none;
     cursor: pointer;
@@ -91,8 +109,8 @@ ul {
 #reviewList {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-inline-start: 0;
+    align-items: left;
+    padding-inline-start: 380px;
 }
 
 #images1 {
@@ -100,9 +118,9 @@ ul {
     height: 40px;
 }
 
-#images2 {
-    width: 100px;
-    height: 100px;
+#reviewAttachList {
+  display: flex;
+  justify-content: flex-start;
 }
 
 #link {
@@ -111,31 +129,13 @@ ul {
 
 /* 리뷰 별점 */
 .rating {
-    unicode-bidi: bidi-override;
-    direction: rtl;
-    text-align: center;
-    margin-bottom: 38px;
-    justify-content: flex-start;
+	display: flex;
 }
 
-.rating input {
-    display: none;
+.rating span {
+	color: gold;
+	font-size: 20px;
 }
-
-.rating label {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 2px;
-    background: url('star-empty.png') no-repeat;
-    background-size: contain;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-.rating label:hover,
-.rating label:hover ~ label,
-.rating input:checked ~ label {
-    background: url('star-field.png') no-repeat;
-    background-size: contain;
+.rating span::selection {
+   	background: none;
 }
