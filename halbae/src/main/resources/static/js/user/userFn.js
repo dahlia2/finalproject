@@ -66,7 +66,7 @@ function fnSendCode() {
 			data: 'email=' + email,
 			dataType: 'json',
 			success: function(res) {
-				alert('메일이 전송되었습니다. 인증코드는 : ' + res.authCode);
+				alert('메일이 전송되었습니다.');
 				$('.validate').on('click', function() {
 					if(res.authCode == $('#authCode').val()) {
 						alert('인증되었습니다.');
@@ -98,7 +98,7 @@ function fnTempPw() {
 			data: 'email=' + email,
 			dataType: 'json',
 			success: function(res) {
-				alert('메일이 전송되었습니다. 비밀번호는 : ' + res.tempPw);
+				alert('메일이 전송되었습니다.');
 				$('#tempPw').val(res.tempPw);
 				$('#tempPwFrm').submit();
 			},

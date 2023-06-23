@@ -1,6 +1,7 @@
 package com.gdu.halbae.util;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
@@ -14,7 +15,7 @@ public class ProfileUtil {
 	
 	// String path 만들기
 	public String getPath() {
-		// 루트/storage/2023/05/08
+
 		return "/Users/woomin/Documents/TeamPrj/UserProfile";
 	}
 	

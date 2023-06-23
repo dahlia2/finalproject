@@ -7,11 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.halbae.domain.UserDTO;
 
 public interface UserService {
+	
+	// 수강 목록 가져오기
+	public void getEnrollList(HttpServletRequest request, Model model);
+	
 	//회원가입
 	public String checkUniqueId(UserDTO userDTO);
 	public String checkIdCountByTel(UserDTO userDTO);
@@ -44,4 +49,16 @@ public interface UserService {
 	public void deleteUser(HttpServletRequest request, HttpServletResponse response);
 	// 유저 미사용 프로필 사진 지우기
 	public void removeUnusedProfile();
+	
+	// 네이버 로그인
+	public String getNaverLoginApiURL(HttpServletRequest request);
+	public String getNaverLoginToken(HttpServletRequest request);
+	public UserDTO getNaverLoginProfile(String accessToken);
+	public UserDTO getUserById(String userId);
+	public void naverLogin(HttpServletRequest request, HttpServletResponse response, UserDTO naverUser);
+	
+	// 카카오 로그인
+	public String getKakaoLoginApiURL(HttpServletRequest request);
+	public String getKakaoLoginToken(HttpServletRequest request);
+	public UserDTO getKakaoLoginProfile(String accessToken);
 }

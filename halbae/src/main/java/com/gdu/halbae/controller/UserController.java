@@ -28,10 +28,56 @@ public class UserController {
 	
 	private final UserService userService;
 	
-	// 이전 주소를 저장한 상태로 login 페이지로 이동
+	@GetMapping("/enrollList.do")
+	public String enrollList(HttpServletRequest request, Model model) {
+		
+		 userService.getEnrollList(request, model);
+		
+		return "user/enrollList";
+	}
+	
 	@GetMapping("/login.html")
-	public String login() {
+	public String login(HttpServletRequest request, Model model) {
+		model.addAttribute("naverApiURL", userService.getNaverLoginApiURL(request));
+		model.addAttribute("kakaoApiURL", userService.getKakaoLoginApiURL(request));
 		return "user/login";
+	}
+	
+	@GetMapping("/naver/login.do")
+	public String naverLogin(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response, Model model) {
+		String accessToken = userService.getNaverLoginToken(request);
+		
+		UserDTO profile = userService.getNaverLoginProfile(accessToken);
+		
+		UserDTO naverUser = userService.getUserById(profile.getUserId());;
+		
+		if(naverUser == null) {
+			userService.insertUser(profile);
+			userService.naverLogin(request, response, profile);
+			redirectAttributes.addFlashAttribute("alertPw", "초기 비밀번호는 연락처 8자리입니다.");
+		}else {
+			userService.naverLogin(request, response, profile);
+		}
+		return "redirect:/";
+	}
+	
+	@GetMapping("/kakao/login.do")
+	public String kakaoLogin(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response, Model model) {
+		String accessToken = userService.getKakaoLoginToken(request);
+		
+		UserDTO profile = userService.getKakaoLoginProfile(accessToken);
+		
+		UserDTO kakaoUser = userService.getUserById(profile.getUserId());
+		
+		if(kakaoUser == null) {
+			userService.insertUser(profile);
+			userService.naverLogin(request, response, profile);
+			redirectAttributes.addFlashAttribute("alertPw", "초기 비밀번호는 아이디와 동일합니다. (@ 이후 제외)");
+		}else {
+			userService.naverLogin(request, response, profile);
+		}
+		
+		return "redirect:/";
 	}
 	
 	// 회원 가입
