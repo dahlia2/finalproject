@@ -4,22 +4,7 @@
 
 <script th:inline="javascript">
 $(function(){
-	/* 카테고리 선택시 그 카테고리 유지 코드(미완성) */
-	/*
-	$(document).ready(function() {
-		  // 페이지 로드 시 저장된 카테고리를 선택하도록 설정
-		  var savedCategory = localStorage.getItem('selectedCategory');
-		  if (savedCategory) {
-		    $('#category').val(savedCategory);
-		  }
-
-		  $('.search').on('click', function() {
-		    var selectedCategory = $('#category').val();
-		    // 선택한 카테고리를 localStorage에 저장
-		    localStorage.setItem('selectedCategory', selectedCategory);
-		  });
-		});
-	*/
+	
 	
 	// 카테고리 파라미터 영어로 오는데 화면에는 한글로 표시하는 코드!
 	var categoryName = /*[[${categoryName}]]*/ null;
@@ -37,23 +22,45 @@ $(function(){
 		}
 	}
 	
-	// 클래스 이미지에 하트 클릭시 빨간하트로 변경 및 찜목록으로 이동하기
-	// 로그인 안하고 클릭시 (로그인 후 사용 가능합니다.) alert 띄우고, 로그인 페이지로 이동하기 
-	$(".btn_heart").on('click', function(event){
-	    if($(this).data('state') == 0){
-	        $(this).css('background-image', 'url("/images/classList/heart/heart1.png")');
-	        $(this).text('ON').data('state', '1');
-	    }else{
-	        $(this).css('background-image', 'url("/images/classList/heart/heart2.png")');
-	        $(this).text('OFF').data('state', '0');
-	    }
-	});
+	$('.heart').on('click', function(){
+		if($(this).attr('src') =='/images/classList/heart/heart2.png') {
+			$(this).attr('src', '/images/classList/heart/heart1.png');							
+		}else {
+			$(this).attr('src', '/images/classList/heart/heart2.png');
+		}
+	})
 	
+	// var wishResult = /*[[${wishResult}]]*/ null;
+	/*
+	if(wishResult != null){
+		if(wishResult == 1){
+			$('.heart').on('click', function(){
+				if($(this).attr('src') =='/images/classList/heart/heart2.png') {
+					$(this).attr('src', '/images/classList/heart/heart1.png');							
+				}
+			})
+			alert('찜등록이 되었습니다.');
+		}else{
+			alert('찜등록이 실패했습니다.')
+		}
+	}
+	*/
 	
-	
-	
-	
-	
+	/*
+	// 로그인 안하고 클릭시 (로그인 후 사용 가능합니다.) alert 띄우고, 로그인 페이지로 이동하기
+	// 찜 등록/삭제 함수
+	$('.heart').on('click', function(){
+		if($(this).attr('src') =='/images/classList/heart/heart2.png') {
+			$(this).attr('src', '/images/classList/heart/heart1.png');	
+			location.href = '/wish/wish.do?classNo=' + $(this).siblings('.classNo').val();
+		}else{
+			$(this).attr('src', '/images/classList/heart/heart2.png');
+			alert('찜에서 삭제되었습니다.');
+			location.href = '/wish/removeWish.do?classNo=' + $(this).siblings('.classNo').val();
+		}
+		
+	})
+	*/
 	
 	
 	
@@ -61,7 +68,6 @@ $(function(){
 	
 	// 함수호출
 	categoryChange();
-	
 })
 </script>
 
@@ -111,6 +117,9 @@ $(function(){
 		margin: 0 auto;
 		margin-top: 60px;
 	}
+	.addressMain1{
+		margin-top: 2px;
+	}
 	.addressMain {
 		border: 1px solid #3390ff;
 		display: inline;
@@ -126,6 +135,57 @@ $(function(){
 	.grade {
 		color: red;
 	}
+	#pagination{
+		display: flex;
+		justify-content: center;
+	}
+.strong {
+	color: black;
+  	float: left;
+  	padding: 8px 16px;
+  	text-decoration: none;
+  	transition: background-color 0.3s;
+  	border: 1px solid #ddd;
+}
+.strong,active{
+	background-color: #4CAF50;
+  	color: white;
+  	border: 1px solid #4CAF50;
+}
+.strong:hover:not(.active) {
+  	background-color: #ddd;
+  }
+#pagination a {
+  	color: black;
+  	float: left;
+  	padding: 8px 16px;
+  	text-decoration: none;
+  	transition: background-color 0.3s;
+  	border: 1px solid #ddd;
+}
+
+#pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+#pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+@media screen and (max-width: 600px) {
+  #pagination a {
+    float: none;
+    display: block;
+    text-align: center;
+  }
+  .strong {
+    float: none;
+    display: block;
+    text-align: center;
+  }
+}
 
 </style>
 
@@ -172,8 +232,13 @@ $(function(){
 						<li class="classmini">
 							<a th:href="@{/class/classDetail.do(classNo=${class.classNo})}">
 						<!-- <span th:text="${class.classNo}">클래스번호</span><span>번</span> -->
-							<div class="imgWrap"><img th:src="${class.classMainPath}" width="100%;" height="250px;"></div>
-							<div>
+							<th:block th:if="${class.classNo <= 50}">
+								<div class="imgWrap"><img th:src="${class.classMainPath}" width="100%;" height="250px;"></div>
+							</th:block>
+							<th:block th:if="${class.classNo > 50}">
+								<div class="imgWrap"><img th:src="@{/class/display.do(classNo=${class.classNo})}" width="100%;" height="250px;"></div>
+							</th:block>
+							<div class="addressMain1">
 								<div class="addressMain">
 									<span class="address" th:text="${class.classArea}">위치</span>
 								</div>
@@ -186,7 +251,7 @@ $(function(){
 								<div class="heartMain">
 									<input type="hidden" class="classNo" th:value="${class.classNo}">
 									<span><span class="grade"><span>평점: </span><span th:text="${class.classGrade}"></span><span>점</span></span><span> (최대 5점)</span></span>
-									<img class="heart" style="cursor:pointer;" th:src="@{/images/classList/heart/heart2.png}" width="30px;">
+									<img th:id="${class.classNo}" class="heart" style="cursor:pointer;" th:src="@{/images/classList/heart/heart2.png}" width="30px;" onclick="fnWishAdd(this)">
 								</div>
 							</div>
 						</li>
@@ -197,19 +262,42 @@ $(function(){
 				1. 클래스 이미지에 하트 클릭시 빨간하트로 변경 및 찜목록으로 넣기
 				2. 로그인 안하고 클릭시 (로그인 후 사용 가능합니다.) alert 띄우고, 로그인 페이지로 이동하기 
 			-->
-				<script>
-					$('.heart').on('click', function(){
-						if($(this).attr('src') =='/images/classList/heart/heart2.png') {
-							$(this).attr('src', '/images/classList/heart/heart1.png');	
-							alert('찜에 등록되었습니다.');
-							location.href = '/wish/wish.do?classNo=' + $(this).siblings('.classNo').val();
-						}else{
-							$(this).attr('src', '/images/classList/heart/heart2.png');	
-							alert('찜에서 삭제되었습니다.');
-							location.href = '/wish/removeWish.do?classNo=' + $(this).siblings('.classNo').val();
+				<script th:inline="javascript">
+					var wishList = /*[[${wishList}]]*/ null;
+					console.log(wishList);
+					function chkWish() {
+						for(let i=0; i < wishList.length; i++) {
+							console.log(wishList[i]);
+							$('#' + wishList[i]).attr('src', '/images/classList/heart/heart1.png');
 						}
+					}
+					chkWish();
+				
+					function fnWishAdd(vThis){
 						
-					})
+						$.ajax({
+							// 요청
+							type: 'get',
+							url: '/wish/wish.do',
+							data: 'classNo=' + $(vThis).siblings('.classNo').val(),
+							// 응답
+							dataType: 'json',
+							success: function(resData){
+								if(resData.insertResult == 1){
+									alert('찜 등록이 되었습니다.');
+								}else if(resData.removeResult == 1){
+									alert('찜 등록이 삭제되었습니다.')
+								}
+							
+							}
+							
+						})
+						
+					}
+					
+					
+					
+					// 함수호출
 								
 				</script>
 			

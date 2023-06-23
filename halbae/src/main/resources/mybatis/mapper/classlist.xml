@@ -102,17 +102,37 @@
 		 WHERE I.CLASS_NO = #{classNo}
 	</select>
 	
-	<!-- 찜목록 클래스 -->
-	<select id="selectWishClassByNo" parameterType="int" resultMap="ClassListMap">            
-		SELECT *
+	<!-- 클래스 등록 -->
+	<insert id="insertClass" useGeneratedKeys="true" keyProperty="classNo" parameterType="ClassListDTO">
+		INSERT INTO CLASS_LIST(CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO)
+		VALUES(#{classTitle}, #{classCategory}, #{classArea}, #{classTime}, #{classMoney}, #{classGrade}, #{classMainPath}, ${userDTO.userNo})
+	</insert>
+	
+	<!-- 등록한 클래스 이미지 뽑는 메퍼 -->
+	<select id="getClassByNo" parameterType="int" resultMap="ClassListMap">
+		SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
 		  FROM CLASS_LIST
 		 WHERE CLASS_NO = #{classNo}
 	</select>
 	
 	
-	
-	
-	
+	<!-- USER_NO에 클래스 등록한 CLASS_NO 리스트 -->
+	<select id="selectClassUploadList" parameterType="int" resultType="int">	
+	SELECT CLASS_NO
+	  FROM CLASS_LIST
+	 WHERE USER_NO = #{userNo}
+	</select>
+		
+	<!-- 찜 페이지 클래스 리스트 목록 뽑기 -->
+	<select id="selectUploadList" parameterType="List" resultType="ClassListDTO">
+		SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
+		  FROM CLASS_LIST
+		<where>			
+	  		<foreach collection="list" item="classNo" open="CLASS_NO IN(" separator="," close=")">
+	  			#{classNo}
+	  		</foreach>		  	
+	  	</where>
+	</select>
 	
 	
 	

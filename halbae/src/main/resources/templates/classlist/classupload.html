@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('전체클래스')}"></head>
+
+<script th:inline="javascript">
+
+</script>
+
+<style>
+	
+
+</style>
+
+<body>
+
+	<div th:replace="~{/layout/header::gnbFrag}"></div>
+	
+	<h1>클래스 등록 화면입니다.</h1>
+	<!-- th:enctype="multipart/form-data" -->
+	<div>
+		<form method="POST" enctype="multipart/form-data" th:action="@{/class/classAdd.do}">
+			<div>
+				<label for="classMainPath">메인이미지</label>
+				<input id="classMainPath" type="file" name="classMainPath">
+			</div>
+			<div>
+				<label for="classTitle">제목</label>
+				<input id="classTitle" name="classTitle" required="required">
+			</div>
+			<div>
+				<select id="category" name="classCategory" style="width:150px; height:40px;">
+		              <option id="categoryChecke" value="">카테고리(선택)</option>
+		              <option value="cooking">요리/베이킹</option>
+		              <option value="fitness">피트니스/스포츠</option>
+		              <option value="study">개발/공부</option>
+		              <option value="dance">댄스</option>
+		              <option value="design">디자인</option>
+			    </select>
+			</div>
+			<div>
+				<label for="classArea">위치(지역)</label>
+				<input id="classArea" name="classArea" required="required">
+			</div>
+			<div>
+				<label for="classTime">강의 시간</label>
+				<input id="classTime" name="classTime" required="required">
+			</div>
+			<div>
+				<label for="classMoney">강의 비용</label>
+				<input id="classMoney" name="classMoney" required="required">
+			</div>
+			<div>
+				<label for="classGrade">평점(최대 5점)</label>
+				<input id="classGrade" name="classGrade">
+			</div>
+			<div>
+				<button>등록완료</button>
+				<input type="reset" value="다시작성">
+			</div>
+		</form>
+		<div>
+			<a th:href="@{/class/classUploadList.do}">클래스 등록 목록</a>
+		</div>
+	</div>
+	
+</body>
+</html>
