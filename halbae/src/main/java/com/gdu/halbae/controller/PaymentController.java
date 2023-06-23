@@ -41,7 +41,7 @@ public class PaymentController {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("couponList", session.getAttribute("couponList"));
 		
-		return "/enroll/payment";
+		return "enroll/payment";
     }
 	
 	/* 쿠폰 사용 */
@@ -52,7 +52,7 @@ public class PaymentController {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("couponList", session.getAttribute("couponList"));
 		
-	    return "/enroll/payment";
+	    return "enroll/payment";
 	}
 	
 	/* 쿠폰 번호 조회 */
@@ -109,4 +109,14 @@ public class PaymentController {
 		
 		return "enroll/paySuccess";	
 	}
+	
+	
+	/* 결제 취소 */
+	@GetMapping("/payFail.do")
+	public String payFail(HttpServletRequest request) {
+		paymentService.deleteEnroll(request);
+		System.out.println("여기까지 왔다~!");
+		return "redirect:/class/classDetail.do?classNo=" + request.getParameter("classNo");
+	}
+	
 }

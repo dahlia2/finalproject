@@ -62,6 +62,10 @@
          WHERE SCH_NO = #{schNo}	
 	</select>
 
-	
+	<!-- 결제취소 (Enroll 삭제) -->
+	<delete id="deleteEnroll" parameterType="int">
+		DELETE FROM ENROLL
+			WHERE #{enrollNo}
+	</delete>
 
 </mapper>

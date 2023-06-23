@@ -31,5 +31,8 @@ public interface PaymentMapper {
 	// 쿠폰 delete
 	public int deleteCoupon(Map<String, Object> map);
 	
+	// 결제취소 (Enroll 삭제)
+	public int deleteEnroll(int enrollNo);
+	
 }
 
