@@ -66,7 +66,7 @@ function fnSendCode() {
 			data: 'email=' + email,
 			dataType: 'json',
 			success: function(res) {
-				alert('메일이 전송되었습니다. 인증코드는 : ' + res.authCode);
+				alert('메일이 전송되었습니다.');
 				$('.validate').on('click', function() {
 					if(res.authCode == $('#authCode').val()) {
 						alert('인증되었습니다.');
@@ -98,7 +98,6 @@ function fnTempPw() {
 			data: 'email=' + email,
 			dataType: 'json',
 			success: function(res) {
-				alert('메일이 전송되었습니다. 비밀번호는 : ' + res.tempPw);
 				$('#tempPw').val(res.tempPw);
 				$('#tempPwFrm').submit();
 			},
@@ -205,5 +204,5 @@ function fnModifyPw() {
 	    var top = (screen.height - popupHeight) / 2;
 	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
 	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/chat/chat', '메시지', popupOptions);
+	    window.open('/chat/list', '메시지', popupOptions);
 }

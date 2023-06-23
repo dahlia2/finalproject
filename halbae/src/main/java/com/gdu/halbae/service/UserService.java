@@ -1,22 +1,22 @@
 package com.gdu.halbae.service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.halbae.domain.UserDTO;
 
 public interface UserService {
+	
+	// 수강 목록 가져오기
+	public void getEnrollList(HttpServletRequest request, Model model);
+	
 	//회원가입
 	public String checkUniqueId(UserDTO userDTO);
 	public String checkIdCountByTel(UserDTO userDTO);

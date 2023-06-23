@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('수강신청 목록')}"></head>
+<link rel="stylesheet" th:href="@{/css/header.css(ver=1.0)}">
+<link rel="stylesheet" th:href="@{/css/user/myprofile.css(ver=1.0)}">
+<body>
+
+	<div th:replace="~{/layout/header::gnbFrag}"></div>
+	
+	<div class="profileContainer">
+		<div class="profileWrap">
+			<div class="profileTitle">수강목록 </div>
+			<div class="sectionLine"></div>
+			
+		<th:block th:each="${enroll:${enrollList}">
+			<
+		</th:block>			
+		</div>
+	</div>
+	
+	<div th:replace="~{/layout/footer::footerFrag}"></div>
+</body>
+</html>

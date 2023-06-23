@@ -121,6 +121,31 @@
   	SELECT USER_IMG_PATH
   	  FROM USER
   </select>
+  
+  <!-- 수강 목록 가져오기 -->
+  <select id="selectEnrollListByUserNo" parameterType="int" resultType="EnrollDTO">
+  	SELECT *
+  	  FROM ENROLL
+  	 WHERE USER_NO = #{userNo} 
+  </select>
+  
+  <select id="selectPaymentDTOByEnrollNo" parameterType="int" resultType="PaymentDTO">
+  	SELECT *
+  	  FROM PAYMENT
+  	 WHERE ENROLL_NO = #{enrollNo}
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     
     
 </mapper>

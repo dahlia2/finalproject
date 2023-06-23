@@ -2,8 +2,8 @@ package com.gdu.halbae.domain;
 
 import java.util.Date;
 
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data

@@ -11,10 +11,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +27,13 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.halbae.domain.EnrollDTO;
+import com.gdu.halbae.domain.PaymentDTO;
 import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.mapper.UserMapper;
 import com.gdu.halbae.util.JavaMailUtil;
@@ -47,9 +52,31 @@ public class UserServiceImpl implements UserService {
 	private final JavaMailUtil javaMailUtil;
 	private final ProfileUtil profileUtil;
 	
+	// 수강목록 가져오기
+	@Override
+		public void getEnrollList(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			int userNo = (Integer)session.getAttribute("userNo");
+			
+			List<EnrollDTO> enrolls = userMapper.selectEnrollListByUserNo(userNo);
+			List<PaymentDTO> paidEnrolls = new ArrayList<>();
+			
+			
+			PaymentDTO paymentDTO;
+			
+			for(EnrollDTO enroll : enrolls) {
+				paymentDTO = userMapper.selectPaymentDTOByEnrollNo(enroll.getEnrollNo());
+				if(paymentDTO != null) {
+					paidEnrolls.add(paymentDTO);
+				}
+			}
+			
+			model.addAttribute("enrollList", paidEnrolls);
+		}
+	
 	
 	// 회원가입
-	@Override
+	@Override 
 	public String checkUniqueId(UserDTO userDTO) {
 		String msg = "";
 		if(userMapper.checkUniqueId(userDTO.getUserId()) != null) {
@@ -238,15 +265,13 @@ public class UserServiceImpl implements UserService {
 		String tempPw = securityUtil.getSha256(userDTO.getUserPw());
 		userDTO.setUserPw(tempPw);
 		int updateResult = userMapper.updateTempPw(userDTO);
-		System.out.println("비밀번호 변경 완료");
 		response.setContentType("text/html; charset=UTF-8");
 		
 		if(updateResult == 1) {
-			
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("if(confirm('로그인하러 가시겠습니까?')) {");
+				out.println("if(confirm('임시 비밀번호가 발급되었습니다. 로그인하러 가시겠습니까?')) {");
 				out.println("location.href='/user/login.html';");
 				out.println("} else {");
 				out.println(" location.href='/';");
@@ -261,7 +286,8 @@ public class UserServiceImpl implements UserService {
 			try {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
-				out.println("alert('임시 비밀번호 발급이 실패했습니다. 다시 시도해주세요');");
+				out.println("alert('임시 비밀번호 발급이 실패했습니다. 아이디를 확인해주세요.');");
+				out.println("location.href='/user/findPw.html';");
 				out.println("</script>");
 				out.flush();
 				out.close();
@@ -422,6 +448,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Map<String, Object> updateProfileImg(MultipartHttpServletRequest multipartRequest) {
 		
+		String sep = Matcher.quoteReplacement(File.separator);
+		
 		Map<String, Object> map = new HashMap<>();
 		
 		MultipartFile profile = multipartRequest.getFile("profile");
@@ -447,7 +475,7 @@ public class UserServiceImpl implements UserService {
 				
 				profile.transferTo(file);
 				
-				String userImgPath = path + "/" + userImgFileName;
+				String userImgPath = path + sep + userImgFileName;
 				
 				map.put("display", "/user/display.do?userImgPath=" + userImgPath);
 			}

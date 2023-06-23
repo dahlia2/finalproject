@@ -28,6 +28,14 @@ public class UserController {
 	
 	private final UserService userService;
 	
+	@GetMapping("/enrollList.do")
+	public String enrollList(HttpServletRequest request, Model model) {
+		
+		 userService.getEnrollList(request, model);
+		
+		return "user/enrollList";
+	}
+	
 	@GetMapping("/login.html")
 	public String login(HttpServletRequest request, Model model) {
 		model.addAttribute("naverApiURL", userService.getNaverLoginApiURL(request));
