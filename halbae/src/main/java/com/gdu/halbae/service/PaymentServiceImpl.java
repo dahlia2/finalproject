@@ -66,13 +66,15 @@ public class PaymentServiceImpl implements PaymentService {
 	public void insertPayment(HttpServletRequest request) {
 		
 		// ****** 쿠폰 or 포인트 사용하지 않았을 때 ******
-		Optional<String> opt1 = Optional.ofNullable(request.getParameter("couponNo"));
+		/* Optional<String> opt1 = Optional.ofNullable(request.getParameter("couponNo"));
 		int couponNo = Integer.parseInt(opt1.orElse("0"));
 		
 		Optional<String> opt2 = Optional.ofNullable(request.getParameter("point"));
-		int point = Integer.parseInt(opt2.orElse("0"));
+		int point = Integer.parseInt(opt2.orElse("0")); */
 		
 		// 결제 INSERT
+		int couponNo = Integer.parseInt(request.getParameter("couponNo"));
+		int point = Integer.parseInt(request.getParameter("point"));
 		int enrollNo = Integer.parseInt(request.getParameter("enrollNo"));
 		int totalCP = Integer.parseInt(request.getParameter("totalCP"));			
 		int paySale = totalCP + point;											// 총 할인금액
