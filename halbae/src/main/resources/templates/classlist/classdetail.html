@@ -69,98 +69,103 @@
    categoryChange();
    })
    
-	// 메시지창 팝업 	열기
-	function openMessage() {
-	    // 팝업 창을 열기 위한 설정
-	    var popupWidth = 500;
-	    var popupHeight = 800;
-	    var left = (screen.width - popupWidth) / 2;
-	    var top = (screen.height - popupHeight) / 2;
-	    var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
-	    // 팝업 창을 열고 해당 HTML 페이지를 로드
-	    window.open('/chat/list2', '메시지', popupOptions);
-	}
+   // 메시지창 팝업    열기
+   function openMessage() {
+       // 팝업 창을 열기 위한 설정
+       var popupWidth = 500;
+       var popupHeight = 800;
+       var left = (screen.width - popupWidth) / 2;
+       var top = (screen.height - popupHeight) / 2;
+       var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
+       // 팝업 창을 열고 해당 HTML 페이지를 로드
+       window.open('/chat/list2', '메시지', popupOptions);
+   }
+   
+   function fnEnroll() {
+         let classNo = /*[[${classNo}]]*/ null;
+         location.href='/enroll/apply.page?classNo=' + classNo;
+      }
    
 </script>
 
 <body>
 
-	<div th:replace="~{/layout/header::gnbFrag}"></div>
+   <div th:replace="~{/layout/header::gnbFrag}"></div>
   
-	<div id="all">
-		<div id="detailMain">
-			<!-- <div id="category">
-				<span>카테고리 [</span><span class="categoryName"></span><span>]</span>
-			</div> -->
-		<ul id="text">
-			<li>원데이· </li>
-			<li th:text="${imgClass.classListDTO.classArea}"></li>
-			<li>· 최대 6명</li>
-		</ul>
-			<h1 th:text="${imgClass.classListDTO.classTitle}"></h1>
-			<ul id="profile">
-	        	<li class="profile-container">
-				<div class="left-section">
-					<!-- 회원 프로필사진 가져오기(0이면 기본 프로필 사진, 1이면 회원이 등록한 프로필 사진) -->
-					<div class="profile-image">
-					    <img id="images1" src="https://s3.ap-northeast-2.amazonaws.com/taling.me/Content/Uploads/Profile/s_15db7d017ca94ded79119b94b46d8e2b9d4873d4.jpg" alt="Profile Image">
-					</div>
-	           	</div>
-					<div class="right-section">
-						<!-- 회원 정보 -->
-						<div class="profile-info">
-							<!-- 회원 닉네임 가져오기 (userName + 튜터) -->
-			                <p class="userName">어썸블리스 튜터</p>
-							<!-- 클래스 평점 평균과 리뷰 수 가져오기 -->
-							<span class="rating">
-								<span class="star">★</span>
-								<span class="rating-info">&nbsp;5.0(7)</span>
-							</span>
-						</div>
-		            </div>
-				</li>
-			</ul>
-		<div>
-			<img id="imgMain" th:src="${imgClass.imgMainPath}" width="700px;" height="500px;">
-		</div>
-		</div>
-		<!-- 스케줄 -->
-		<div id="scjMain">
-			<div id="scjsub">
-  				<h2 id="classScj">클래스 일정</h2>
-  				<ul id="class-info">
-          			<li>
-						<p id="timeChoice">협의 후 날짜, 시간 결정</p>
-						<p id="address"><span>성수</span></p>
-              			<span id="addressDetail">서울시 성동구 상원2길 5-11 어썸블리스</span>
-           			</li>
-  				</ul>
-  				<p id="moneyTime1">
-     				<span>30,000원 <span> / 시간</span></span>
-  				</p>
-				<p id="moneyTime2">
-     				<span>60,000원 <span> / 총 1회 2시간</span></span>
-  				</p>
-  				<ul id="heartClass">
-     				<li id="heart">
-        				<img id="wish" th:src="@{/images/classList/heart/wish.png}">   
-    				</li>
-     				<li>
-        				<a id="class">클래스 신청하기</a>
-     				</li>
-  				</ul>
-  				<ul id="chattingMain">
-     				<li>
-        				<button id="chatting" onclick="openMessage()">
-	        				<img id="chat" th:src="@{/images/classList/heart/chat.png}">
-	        				튜터에게 문의하기
-        				</button>
-        				
-        			</li>
-     			</ul>
-  			</div>
-		</div>
-	</div>
+   <div id="all">
+      <div id="detailMain">
+         <!-- <div id="category">
+            <span>카테고리 [</span><span class="categoryName"></span><span>]</span>
+         </div> -->
+      <ul id="text">
+         <li>원데이· </li>
+         <li th:text="${imgClass.classListDTO.classArea}"></li>
+         <li>· 최대 6명</li>
+      </ul>
+         <h1 th:text="${imgClass.classListDTO.classTitle}"></h1>
+         <ul id="profile">
+              <li class="profile-container">
+            <div class="left-section">
+               <!-- 회원 프로필사진 가져오기(0이면 기본 프로필 사진, 1이면 회원이 등록한 프로필 사진) -->
+               <div class="profile-image">
+                   <img id="images1" src="https://s3.ap-northeast-2.amazonaws.com/taling.me/Content/Uploads/Profile/s_15db7d017ca94ded79119b94b46d8e2b9d4873d4.jpg" alt="Profile Image">
+               </div>
+                 </div>
+               <div class="right-section">
+                  <!-- 회원 정보 -->
+                  <div class="profile-info">
+                     <!-- 회원 닉네임 가져오기 (userName + 튜터) -->
+                         <p class="userName">어썸블리스 튜터</p>
+                     <!-- 클래스 평점 평균과 리뷰 수 가져오기 -->
+                     <span class="rating">
+                        <span class="star">★</span>
+                        <span class="rating-info">&nbsp;5.0(7)</span>
+                     </span>
+                  </div>
+                  </div>
+            </li>
+         </ul>
+      <div>
+         <img id="imgMain" th:src="${imgClass.imgMainPath}" width="700px;" height="500px;">
+      </div>
+      </div>
+      <!-- 스케줄 -->
+      <div id="scjMain">
+         <div id="scjsub">
+              <h2 id="classScj">클래스 일정</h2>
+              <ul id="class-info">
+                   <li>
+                  <p id="timeChoice">협의 후 날짜, 시간 결정</p>
+                  <p id="address"><span>성수</span></p>
+                       <span id="addressDetail">서울시 성동구 상원2길 5-11 어썸블리스</span>
+                    </li>
+              </ul>
+              <p id="moneyTime1">
+                 <span>30,000원 <span> / 시간</span></span>
+              </p>
+            <p id="moneyTime2">
+                 <span>60,000원 <span> / 총 1회 2시간</span></span>
+              </p>
+              <ul id="heartClass">
+                 <li id="heart">
+                    <img id="wish" th:src="@{/images/classList/heart/wish.png}">   
+                </li>
+                 <li>
+                    <a id="class" onclick="fnEnroll()">클래스 신청하기</a>
+                 </li>
+              </ul>
+              <ul id="chattingMain">
+                 <li>
+                    <button id="chatting" onclick="openMessage()">
+                       <img id="chat" th:src="@{/images/classList/heart/chat.png}">
+                       튜터에게 문의하기
+                    </button>
+                    
+                 </li>
+              </ul>
+           </div>
+      </div>
+   </div>
       
       
     <div class="tabs">
