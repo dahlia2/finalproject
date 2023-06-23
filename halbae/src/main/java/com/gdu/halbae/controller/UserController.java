@@ -53,11 +53,10 @@ public class UserController {
 		
 		if(naverUser == null) {
 			userService.insertUser(profile);
-			userService.naverLogin(request, response, profile);
 			redirectAttributes.addFlashAttribute("alertPw", "초기 비밀번호는 연락처 8자리입니다.");
-		}else {
-			userService.naverLogin(request, response, profile);
 		}
+		naverUser = userService.getUserById(profile.getUserId());;
+		userService.naverLogin(request, response, naverUser);
 		return "redirect:/";
 	}
 	
@@ -71,11 +70,11 @@ public class UserController {
 		
 		if(kakaoUser == null) {
 			userService.insertUser(profile);
-			userService.naverLogin(request, response, profile);
 			redirectAttributes.addFlashAttribute("alertPw", "초기 비밀번호는 아이디와 동일합니다. (@ 이후 제외)");
-		}else {
-			userService.naverLogin(request, response, profile);
 		}
+		kakaoUser = userService.getUserById(profile.getUserId());
+		userService.naverLogin(request, response, kakaoUser);
+		
 		
 		return "redirect:/";
 	}

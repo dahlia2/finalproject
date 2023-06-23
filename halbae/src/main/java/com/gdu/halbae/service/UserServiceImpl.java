@@ -692,6 +692,8 @@ public class UserServiceImpl implements UserService {
 		session.setAttribute("userNo", naverUser.getUserNo());
 		session.setAttribute("userPoint", naverUser.getUserPoint());
 		session.setAttribute("userImgPath", naverUser.getUserImgPath());
+		
+		System.out.println("사용자 식별자 " + naverUser.getUserNo());
 	}
 	
 	/**********************************************/
