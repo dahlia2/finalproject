@@ -5,10 +5,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.service.EnrollService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,31 +30,42 @@ public class EnrollController {
 	public String applyPage(HttpServletRequest request, Model model) {
 		model.addAttribute("classList", enrollService.classListByNo(request));
 		model.addAttribute("scheduleList", enrollService.scheduleByClassNo(request));
-		model.addAttribute("user", enrollService.selectUserByNo(request));
 		return "enroll/apply";
 	}
 	
+	// 회원 전화번호
+    @GetMapping("/user.do")
+    @ResponseBody
+    public UserDTO getUserTel(@RequestParam("userNo") Integer userNo) {
+        UserDTO userDTO = enrollService.getUser(userNo);
+        return userDTO;
+    }
+	
+    
+    // 수강 신청
+    @PostMapping("/apply.do")
+    public String applyClass(HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
+    	enrollService.applyClass(request);
+    	redirectAttributes.addAttribute("schNo", request.getParameter("schNo"));
+    	session.setAttribute("classList", enrollService.classListByNo(request));
+    	session.setAttribute("enrollPerson", request.getParameter("enrollPerson"));
+    	session.setAttribute("user", enrollService.selectUserByNo(request));
+    	session.setAttribute("couponList", enrollService.selectCoupon(request));
+    	return "redirect:/enroll/payment.page";
+    }
+    
 	/* 결제 페이지 */
 	@RequestMapping("/payment.page")
-	public String payPage(HttpSession session, Model model) {
+	public String payPage(HttpServletRequest request, HttpSession session, Model model) {
+		model.addAttribute("schNo", request.getParameter("schNo"));
 		model.addAttribute("classList", session.getAttribute("classList"));
-		model.addAttribute("userCoupon", session.getAttribute("userCoupon"));
-		session.getAttribute("enrollPerson");
+		model.addAttribute("enrollPerson", session.getAttribute("enrollPerson"));
+		model.addAttribute("user", session.getAttribute("user"));
+		model.addAttribute("couponList", session.getAttribute("couponList"));
+		model.addAttribute("payCoupon", request.getParameter("payCoupon"));
+		model.addAttribute("payPoint", request.getParameter("payPoint"));
 		return "enroll/payment";
 	}
 	
-	
-	// 수강 신청
-	@PostMapping("/apply.do")
-	public String applyClass(HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addAttribute("applyResult", enrollService.applyClass(request, redirectAttributes));
-
-	    session.setAttribute("classList", enrollService.classListByNo(request));
-	    session.setAttribute("userCoupon", enrollService.couponListByNo(request));
-	    session.setAttribute("enrollPerson", request.getParameter("enrollPerson"));
-	    
-	    System.out.println("클래스조회 : " + enrollService.classListByNo(request));
-	    System.out.println("쿠폰조회 : " + enrollService.couponListByNo(request));
-		return "redirect:/enroll/payment.page";
-	}
 }
+	

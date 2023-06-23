@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('Apply Form')}"></head>
+
+<link rel="stylesheet" th:href="@{/css/paySuccess.css(ver=1.0)}">
+
+
+<script th:inline="javascript">
+
+	function fnGoClass(){
+		location.href= '/class/classDetail.do?classNo=' + $('#classNo').val();
+	}
+
+</script>
+<body>
+<div th:replace="~{/layout/header::gnbFrag}"></div>
+
+	<div id="main_wrap">
+		<div id="main_box">
+			<div id="img1"><img th:src="@{/images/enroll/paySuccess.png}" width="100px"></div>
+			<div id="paySuccess">결제가 완료되었어요.</div>
+			<div id="userNameBox">
+				<img th:src="@{/images/enroll/wing_L.png}" width="50px">
+				<span th:text="|${session.userName}님|" id="userName"></span> 곧 만나요
+				<img th:src="@{/images/enroll/wing_R.png}" width="50px">
+			</div>
+			<div id="orderNum" th:text="|주문번호 : &nbsp; ${orderNumber}|"></div>
+
+			<div th:object="${map.classListDTO}" id="classBox">
+				<h2>신청하신 클래스</h2>
+				<div id="applyClass">
+					<input type="hidden" th:value="*{classNo}" id="classNo">
+					<img th:src="*{classMainPath}" width="250px" id="classImage">
+					<div id="classInfo">
+						<div th:text="*{classTitle}" id="classTitle"></div>				
+						<div th:object="${map.scheduleDTO}">
+							<div th:text="*{#dates.format(schStart,'yyyy년 M월 d일 H시')}"></div>
+						</div>
+						<button id="btnClass" onclick="fnGoClass()">수업페이지</button>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

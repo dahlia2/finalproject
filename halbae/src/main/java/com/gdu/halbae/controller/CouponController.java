@@ -10,12 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.halbae.domain.CouponDTO;
-import com.gdu.halbae.domain.CouponUserDTO;
 import com.gdu.halbae.service.CouponService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,10 +48,19 @@ public class CouponController {
     }
     
     // 쿠폰 사용
-    @PostMapping("/coupon/use")
-    @ResponseBody
-    public void useCoupon(@RequestBody CouponUserDTO couponUserDTO) {
-        couponService.useCoupon(couponUserDTO);
+    @GetMapping("/couponUse")
+    public String getCouponUsePage(Model model, HttpSession session, @RequestParam(value = "userNo", required = false) Integer userNo
+    															   , @RequestParam(value = "payPoint", required = false) String payPoint
+    															   , @RequestParam(value= "schNo", required = false) String schNo) {
+        if (userNo == null) {
+            userNo = (int) session.getAttribute("userNo");
+            }
+        List<CouponDTO> userCoupons = couponService.getAllCoupons(userNo);
+        int couponCount = couponService.getAvailableCouponCount(userNo);
+        model.addAttribute("coupons", userCoupons);
+        model.addAttribute("couponCount", couponCount);
+        model.addAttribute("payPoint", payPoint);
+        model.addAttribute("schNo", schNo);
+        return "coupon/couponUse";
     }
-    
 }
