@@ -15,68 +15,68 @@
 
 
 <body>
-		
-		
-	  	<div id="headerWrap" th:fragment="gnbFrag">
-				<form id="profileFrm" method="get" th:action="@{/user/myProfile.html}">
-					<input type="hidden" name="loginId" th:value="${session.loginId}">
-				</form>
-		  	<form id="logoutFrm" method="post" th:action="@{/user/logout.do}">
-					<input type="hidden" th:value="${session.loginId}" name="loginId">
-				</form>
-	  		<div id="headerLogo">
+      
+      
+        <div id="headerWrap" th:fragment="gnbFrag">
+            <form id="profileFrm" method="get" th:action="@{/user/myProfile.html}">
+               <input type="hidden" name="loginId" th:value="${session.loginId}">
+            </form>
+           <form id="logoutFrm" method="post" th:action="@{/user/logout.do}">
+               <input type="hidden" th:value="${session.loginId}" name="loginId">
+            </form>
+           <div id="headerLogo">
           <a th:href="@{/}"><img th:src="@{/images/logo_hb.gif}" width="230px;"/></a>
         </div>
         <form id="searchFrm">
-        	<fieldset id="headerSearchArea">        	
+           <fieldset id="headerSearchArea">           
             <input id="searchBar" placeholder="하루의 배움을 만나보세요." />
             <button id="searchBtn">
-            	<i class="fa-solid fa-magnifying-glass fa-xl"></i>
+               <i class="fa-solid fa-magnifying-glass fa-xl"></i>
             </button>
-        	</fieldset>
-   			</form>
-   			<th:block th:if="${session.loginId != null}">
-	        <nav id="headerNav">
-	          <ul>
-	            <li>
-	              <p>튜터메뉴</p>
-	            </li>
-	            <li>
-	              <p>메세지</p>
-	            </li>
-	            <li>
-	              <p>클래스신청서</p>
-	            </li>
-	            <li>
-	              <p>수강목록</p>
-	            </li>
-	            <li>
-	              <p>찜</p>
-	            </li>
-	            <li>
-	            	<div class="myGnb" onclick="fnToggleLnb()">
-	              	My <i class="fa-solid fa-chevron-down"></i>
-	              </div>
-	              <ul class="myLnb hidden">
-	              	<li onclick="$('#profileFrm').submit()"><span>내 프로필</span></li>
-	              	<li><span>내 쿠폰</span></li>
-	              	<li><span>내 포인트</span></li>
-	              	<li onclick="$('#logoutFrm').submit()"><span>로그아웃</span></li>
-	              </ul>
-	            </li>
-	          </ul>
-	        </nav>
+           </fieldset>
+            </form>
+            <th:block th:if="${session.loginId != null}">
+           <nav id="headerNav">
+             <ul>
+               <li>
+                 <p>튜터메뉴</p>
+               </li>
+               <li>
+                 <p>메세지</p>
+               </li>
+               <li>
+                 <p>클래스신청서</p>
+               </li>
+               <li>
+                 <p>수강목록</p>
+               </li>
+               <li>
+                 <p>찜</p>
+               </li>
+               <li>
+                  <div class="myGnb" onclick="fnToggleLnb()">
+                    My <i class="fa-solid fa-chevron-down"></i>
+                 </div>
+                 <ul class="myLnb hidden">
+                    <li onclick="$('#profileFrm').submit()"><span>내 프로필</span></li>
+                    <li><span>내 쿠폰</span></li>
+                    <li><span>내 포인트</span></li>
+                    <li onclick="$('#logoutFrm').submit()"><span>로그아웃</span></li>
+                 </ul>
+               </li>
+             </ul>
+           </nav>
         </th:block>
         <th:block th:if="${session.loginId == null}">
-	        <nav id="headerLogin">
-	        	<ul class="loginLink">
-	        		<li>
-	        			<p><a th:href="@{/user/login.html}">로그인</a></p>
-	        		</li>
-	        	</ul>
-        	</nav>
+           <nav id="headerLogin">
+              <ul class="loginLink">
+                 <li>
+                    <p><a th:href="@{/user/login.html}">로그인</a></p>
+                 </li>
+              </ul>
+           </nav>
         </th:block>
-		</div>
+      </div>
 
 </body>
 </html>

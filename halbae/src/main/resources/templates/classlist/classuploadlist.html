@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header::headFrag('전체클래스')}"></head>
+
+<script th:inline="javascript">
+
+</script>
+
+<style>
+	
+
+</style>
+
+<body>
+
+	<div th:replace="~{/layout/header::gnbFrag}"></div>
+	
+	<h1>클래스 등록 목록 화면입니다.</h1>
+	
+	<div>
+	
+      <hr>
+                    
+      <div>
+         <div id="Main">
+            <div id="wishMini">
+               <th:block th:each="class:${classUploadList}">
+               <div class="container">
+               
+       			 <div>
+           			<a th:href="@{/class/classDetail.do(classNo=${class.classNo})}">
+           			<th:block th:if="${class.classNo <= 50}">
+						<img class="imgMain" th:src="${class.classMainPath}" width="400px;">
+					</th:block>
+					<th:block th:if="${class.classNo > 50}">
+						<img class="imgMain" th:src="@{/class/display.do(classNo=${class.classNo})}" width="400px;" height="270px;">
+					</th:block>
+           		 	</a>
+        		</div>
+                
+                  <div class="textMain">
+	                  <div>
+	                     <h2 class="Title" th:text="${class.classTitle}"></h2>
+	                  </div>
+	                  <div class="addressMain">
+	                  	<span class="address" th:text="${class.classArea}">위치</span>
+	                  </div>
+	                  <p class="timeMoney">
+						<span th:text="${class.classTime}">소요시간</span> /
+						<strong><span class="money" th:text="${class.classMoney}">총금액</span></strong>
+					 </p>
+					 <div class="gradeMain">
+					 	<span><span><span>평점: </span><span class="grade" th:text="${class.classGrade}"></span><span class="grade">점</span></span></span>
+	                 </div>
+	                 <div class="heartMain">
+	                     <input type="hidden" class="classNo" th:value="${class.classNo}">
+	                     <input type="button" class="modify" value="수정" onclick="">
+	                     <input type="button" class="remove" value="삭제" onclick="">
+	                 </div>
+                  </div>
+                  
+               </div>
+               </th:block>
+            </div>
+         </div>
+      </div>
+      
+   </div>
+	
+</body>
+</html>
