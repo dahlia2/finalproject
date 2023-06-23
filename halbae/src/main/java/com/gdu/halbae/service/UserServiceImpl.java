@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 		userDTO.setUserId(userId);
 		userDTO.setUserPw(userPw);
 		if(userDTO.getUserImgPath() == null) {
-			userDTO.setUserImgPath("/images/main/default_user.png");
+			userDTO.setUserImgPath("/images/user/default_profile.jpeg");
 		}
 		
 		return userMapper.insertUser(userDTO);
