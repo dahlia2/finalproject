@@ -21,4 +21,6 @@ public interface PaymentService {
 	// 클래스, 스케줄 조회
 	public Map<String, Object> selectClassAndSch(int enrollNo);
 	
+	// Enroll 삭제
+	public void deleteEnroll(HttpServletRequest request);
 }

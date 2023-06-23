@@ -17,8 +17,11 @@
 		// 가맹점 식별코드
 		IMP.init("imp51052215");
 		
-		var randomNumber = Math.floor(Math.random() * 1000);
+		var enrollNo = enrollNo;
 		var schNo = $('#schNo').val();
+		var classNo = $('#classNo').val();
+		var randomNumber = Math.floor(Math.random() * 1000);
+		
 		IMP.request_pay({
 			pg: "kcp",
 	      	pay_method: "card",
@@ -28,7 +31,6 @@
 	      	buyer_email: userId,
 		    buyer_name: userName,
 		    buyer_tel: userTel
-		    
 			}, rsp => {
 				if(rsp.success) {
 					$.ajax({
@@ -51,7 +53,7 @@
 						})	// ajax
 					} else {
 						alert(rsp.error_msg);
-						location.href="/enroll/deleteEnroll.do?enrollNo=" + enrollNo;
+						location.href="/payment/payFail.do?enrollNo=" + enrollNo + '&classNo=' + classNo;
 					}
 				}
 			)
@@ -62,8 +64,11 @@
 			// 가맹점 식별코드
 			IMP.init("imp24537365");
 		
-			var randomNumber = Math.floor(Math.random() * 1000);
+			var enrollNo = enrollNo;
 			var schNo = $('#schNo').val();
+			var classNo = $('#classNo').val();
+			var randomNumber = Math.floor(Math.random() * 1000);
+			
 			IMP.request_pay({
 				pg: "kakaopay",
 		      	merchant_uid: randomNumber,
@@ -89,13 +94,13 @@
 								},
 							dataType: 'json',
 							success: function(resData) {
-								console.log(resData);
+								console.log('성공!!');
 				     	  		location.href='/payment/paySuccess.page?enrollNo=' + resData.enrollNo;
 				     	  		}
 							})	// ajax
 						} else {
 							alert(rsp.error_msg);
-							location.href="/enroll/deleteEnroll.do?enrollNo=" + enrollNo;
+							location.href="/payment/payFail.do?enrollNo=" + enrollNo + '&classNo=' + classNo;
 						}
 					}
 				)

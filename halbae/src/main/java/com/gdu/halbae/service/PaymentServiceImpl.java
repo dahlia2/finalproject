@@ -46,6 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		// enrollNo 통해서 스케줄 가져오기
 		int schNo = paymentMapper.selectEnroll(enrollNo);
+		
 		ScheduleDTO scheduleDTO = enrollMapper.selectScheduleByNo(schNo);
 		
 		// schNo 통해서 스케줄 가져오기
@@ -112,6 +113,14 @@ public class PaymentServiceImpl implements PaymentService {
 			couponUser.put("userNo", userNo);
 			paymentMapper.deleteCoupon(couponUser);			
 		}
+		
+	}
+	
+	// 결제실패 (Enroll 삭제)
+	@Override
+	public void deleteEnroll(HttpServletRequest request) {
+		int enrollNo = Integer.parseInt(request.getParameter("enrollNo"));
+		paymentMapper.deleteEnroll(enrollNo);
 		
 	}
 	
