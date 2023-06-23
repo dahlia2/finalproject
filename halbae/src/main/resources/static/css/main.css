@@ -18,7 +18,7 @@
     height: 180px;
 	background-color: #efefef;
 	background-size: 350px 180px;
-	border-radius: 20px;
+	border-radius: 5px;
 	margin-bottom: 20px;
    }
 #user_profile {
@@ -110,14 +110,15 @@
 	padding-bottom: 10px;
    }
 #class_Bar li {
-	width: 111px;
-	height: 80px;
+	width: 110px;
+	height: 98px;
 	margin-right: 18px;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
 	background-color: #f7f7f7;
 	border-radius: 8px;
+	padding: 14px;
    }
 #class_Bar li:hover {
 	cursor: pointer;

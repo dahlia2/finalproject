@@ -63,7 +63,8 @@ function fnNew(){
 			  				<img th:src="@{${session.userImgPath}}" class="profile" onclick="$('#profileFrm').submit()">
 			  			</form>
 			  			<div>
-			  				<span th:text="${session.userName}"style="font-size: 22px; font-weight: 600;"></span> 님
+			  				<span th:text="|${session.userName} 님|"style="font-size: 18px; font-weight: bold;"></span> 반가워요
+			  				
 			  			</div>
 			  			<form method="post" th:action="@{/user/logout.do}">
 			  				<input type="hidden" th:value="${session.loginId}" name="loginId">
@@ -71,13 +72,13 @@ function fnNew(){
 			  			</form>
 		  			</div>
 			  		<div class="eventBox">
-			  			<div th:onclick="|openCoupon(${session.userNo})|" >쿠폰 <span th:text="${couponCount}"></span>장</div>
-			  			<div onclick="openPoint()">포인트 <span th:text="${session.userPoint}"></span>P</div>
+			  			<div th:onclick="|openCoupon(${session.userNo})|" >쿠폰 <span style="font-weight: bold;" th:text="|${couponCount}장|"></span></div>
+			  			<div onclick="openPoint()">포인트 <span style="font-weight: bold;" th:text="|${session.userPoint}P|"></span></div>
 			  		</div>
 			  		<div class="serviceBox">
 			  			<div onclick="openMessage()">메세지</div>
 			  			<div>수강 목록</div>
-			  			<div>찜 목록</div>
+			  			<div><img src="/images/review/heart.png" alt="Heart" width="13px"> 찜</div>
 			  		</div>
 		  		</th:block>
 		  		
@@ -95,13 +96,13 @@ function fnNew(){
         <div class="smallBanner2"></div>
         <div class="classBar_Container">
            <ul id="class_Bar">
-              <li onclick="fnList('all')"><img th:src="@{/images/main/all.png}" width="50px"><p>전체클래스</p></li>
-              <li onclick="fnNew()"><img th:src="@{/images/main/new.png}" width="50px"><p>최신클래스</p></li>
-              <li onclick="fnList('cooking')"><img th:src="@{/images/main/cooking3.png}" width="50px"><p>요리/베이킹</p></li>
-              <li onclick="fnList('fitness')"><img th:src="@{/images/main/fitness.png}" width="50px"><p>피트니스</p></li>
-              <li onclick="fnList('dance')"><img th:src="@{/images/main/dance.png}" width="50px"><p>댄스</p></li>
-              <li onclick="fnList('design')"><img th:src="@{/images/main/design.png}" width="50px"><p>디자인</p></li>
-              <li onclick="fnList('study')"><img th:src="@{/images/main/study.png}" width="50px"><p>공부</p></li>
+              <li onclick="fnList('all')"><img th:src="@{/images/main/all.png}" width="35px"><p>전체클래스</p></li>
+              <li onclick="fnNew()"><img th:src="@{/images/main/new.png}" width="30px"><p>최신클래스</p></li>
+              <li onclick="fnList('cooking')"><img th:src="@{/images/main/cooking3.png}" width="30px"><p>요리/베이킹</p></li>
+              <li onclick="fnList('fitness')"><img th:src="@{/images/main/fitness.png}" width="30px"><p>피트니스</p></li>
+              <li onclick="fnList('dance')"><img th:src="@{/images/main/dance.png}" width="30px"><p>댄스</p></li>
+              <li onclick="fnList('design')"><img th:src="@{/images/main/design.png}" width="30px"><p>디자인</p></li>
+              <li onclick="fnList('study')"><img th:src="@{/images/main/study.png}" width="30px"><p>공부</p></li>
            </ul>
         </div>
      </div>
