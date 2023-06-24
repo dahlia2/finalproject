@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+.enrollListTitle {
+	text-align: center;
+	font-size: 30px;
+	color: #4d4e4e;
+}
+.enrollWrap {
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+}
+
+.noEnrolls {
+	font-size: 40px;
+	color: #4d4e4e;
+}
+
+.enrolls {
+	display: flex;
+	margin-bottom: 30px;
+
+}
+
+.thumbnail {
+	width: 150px;
+	height: 150px;
+	margin-right: 20px;
+}
+.enrollInfo {
+	padding-top: 15px;
+}
+.location {
+	color: #e35b61;
+	margin-right:3px;
+}
+.area {
+	background-color: #e35b61;
+	padding:3px;
+	border-radius: 5px;
+	font-size: 20px;
+	color:white;
+	margin-right: 5px;
+}
+.schStart {
+	color:#e35b61;
+	font-size: 17px;
+}
+.locationWrap {
+	margin-bottom: 5px;
+}
+.title {
+	font-size: 25px;
+	color: #4d4e4e;
+	font-weight: 700;
+}
+.gradeWrap {
+	margin-bottom: 5px;
+	color:#4d4e4e;
+}
+.gradeStar {
+	color: #e35b61;
+}
+.paid {
+	font-size: 17px;
+	font-weight: 500;
+	color: #4d4e4e;
+}
+
+

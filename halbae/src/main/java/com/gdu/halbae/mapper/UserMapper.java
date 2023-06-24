@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.gdu.halbae.domain.EnrollDTO;
-import com.gdu.halbae.domain.PaymentDTO;
+import com.gdu.halbae.domain.ClassListDTO;
+import com.gdu.halbae.domain.ScheduleDTO;
 import com.gdu.halbae.domain.UserDTO;
 
 @Mapper
@@ -42,6 +42,8 @@ public interface UserMapper {
 	public List<String> selectUsedProfile();
 	
 	// 수강 목록 가져오기
-	public List<EnrollDTO> selectEnrollListByUserNo(int userNo);
-	public PaymentDTO selectPaymentDTOByEnrollNo(int enrollNo);
+	public List<Integer> selectSchNoByUserNo(int userNo);
+	public int selectClassNoBySchNo(int schNo);
+	public ClassListDTO selectClassByClassNo(int classNo);
+	public ScheduleDTO selectSchBySchNo(int schNo);
 }

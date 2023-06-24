@@ -30,9 +30,7 @@ public class UserController {
 	
 	@GetMapping("/enrollList.do")
 	public String enrollList(HttpServletRequest request, Model model) {
-		
-		 userService.getEnrollList(request, model);
-		
+		userService.getEnrollList(request, model);
 		return "user/enrollList";
 	}
 	

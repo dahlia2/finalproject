@@ -123,16 +123,29 @@
   </select>
     
   <!-- 수강 목록 가져오기 -->
-  <select id="selectEnrollListByUserNo" parameterType="int" resultType="EnrollDTO">
-  	SELECT *
+  <select id="selectSchNoByUserNo" parameterType="int" resultType="int">
+  	SELECT SCH_NO
   	  FROM ENROLL
   	 WHERE USER_NO = #{userNo} 
   </select>
   
-  <select id="selectPaymentDTOByEnrollNo" parameterType="int" resultType="PaymentDTO">
-  	SELECT *
-  	  FROM PAYMENT
-  	 WHERE ENROLL_NO = #{enrollNo}
+  <select id="selectClassNoBySchNo" parameterType="int" resultType="int">
+  	SELECT CLASS_NO
+  	  FROM SCHEDULE
+  	 WHERE SCH_NO = #{schNo}
   </select>
+  
+  <select id="selectClassByClassNo" parameterType="int" resultType="ClassListDTO">
+  	SELECT *
+  	  FROM CLASS_LIST
+  	 WHERE CLASS_NO = #{classNo} 
+  </select>
+  
+  <select id="selectSchBySchNo" parameterType="int" resultType="ScheduleDTO">
+  	SELECT *
+  	  FROM SCHEDULE
+  	 WHERE SCH_NO = #{schNo} 
+  </select>
+  
     
 </mapper>
