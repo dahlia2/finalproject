@@ -73,6 +73,7 @@ public class ClassListServiceImpl implements ClassListService {
 		
 		
 		List<Integer> wishList = wishMapper.selectClassNoInWish(userNo);
+		System.out.println("전체 클래스 메소드 : " + wishList);
 		
 		
 		// select -> option 태그에 카테고리 별 개수 구하는 코드
@@ -116,7 +117,7 @@ public class ClassListServiceImpl implements ClassListService {
 		
 		
 		List<Integer> wishList = wishMapper.selectClassNoInWish(userNo);
-		
+		System.out.println("최신 클래스 메소드 : " + wishList);
 		
 		model.addAttribute("newClass", "최신");
 		model.addAttribute("totalRecord", totalRecord);
@@ -129,7 +130,7 @@ public class ClassListServiceImpl implements ClassListService {
 	
 	// 디테일 클래스
 	@Override
-	public ImgClassDTO getClassByNo(HttpServletRequest request) {
+	public ClassListDTO getClassByNo(HttpServletRequest request) {
 		
 		String strClassNo = request.getParameter("classNo");
 		int classNo = 0;	// null, 빈문자열이 올때 0값을 사용하기위한 선언이다!
@@ -149,12 +150,13 @@ public class ClassListServiceImpl implements ClassListService {
 		String classArea = multipartHttpServletRequest.getParameter("classArea");
 		String classTime = multipartHttpServletRequest.getParameter("classTime");
 		String classMoney = multipartHttpServletRequest.getParameter("classMoney");
-		String classGradeStr = multipartHttpServletRequest.getParameter("classGrade");
-		double classGrade = Double.parseDouble(classGradeStr);
 		
 		MultipartFile classMainPath = multipartHttpServletRequest.getFile("classMainPath");
+		MultipartFile classDetailPath = multipartHttpServletRequest.getFile("classDetailPath");
+		
 		int uploadResult = 0;
-		if(classMainPath != null && classMainPath.isEmpty() == false) {
+		if(classMainPath != null && classMainPath.isEmpty() == false
+			&& classDetailPath != null && classDetailPath.isEmpty() == false) {
 			
 			// 예외 처리
 			try {
@@ -169,21 +171,32 @@ public class ClassListServiceImpl implements ClassListService {
 				}
 				
 				// 첨부 파일의 원래 이름
-				String originName = classMainPath.getOriginalFilename();
-				System.out.println("첨부 파일의 원래 이름 " + originName);
-				originName = originName.substring(originName.lastIndexOf("\\") + 1);
+				String originNameMain = classMainPath.getOriginalFilename();
+				String originNameDetail = classDetailPath.getOriginalFilename();
+				
+				System.out.println("메인 첨부 파일의 원래 이름 " + originNameMain);
+				System.out.println("상세 첨부 파일의 원래 이름 " + originNameDetail);
+
+				originNameMain = originNameMain.substring(originNameMain.lastIndexOf("\\") + 1);
+				originNameDetail = originNameDetail.substring(originNameDetail.lastIndexOf("\\") + 1);
 				
 				// 첨부 파일의 저장 이름
-				String filesystemName = myFileUtil.getFilesystemName(originName);
-				System.out.println("첨부 파일의 저장 이름 " + filesystemName);
+				String filesystemNameMain = myFileUtil.getFilesystemName(originNameMain);
+				String filesystemNameDetail = myFileUtil.getFilesystemName(originNameDetail);
+				
+				System.out.println("메인첨부 파일의 저장 이름 " + filesystemNameMain);
+				System.out.println("상세첨부 파일의 저장 이름 " + filesystemNameDetail);
 				
 				// 첨부 파일의 File 객체 (HDD에 저장할 첨부 파일)
-				File file = new File(dir, filesystemName);
+				File fileMain = new File(dir, filesystemNameMain);
+				File fileDetail = new File(dir, filesystemNameDetail);
 				
-				String imgPath = dir + "\\" + filesystemName;
+				String imgPathMain = dir + "\\" + filesystemNameMain;
+				String imgPathDetail = dir + "\\" + filesystemNameDetail;
 				
 				// 첨부 파일을 HDD에 저장
-				classMainPath.transferTo(file);  // 실제로 서버에 저장된다.
+				classMainPath.transferTo(fileMain);  // 실제로 서버에 저장된다.
+				classDetailPath.transferTo(fileDetail);  // 실제로 서버에 저장된다.
 				
 				HttpSession session = multipartHttpServletRequest.getSession();
 				int userNo = (int) session.getAttribute("userNo");
@@ -192,13 +205,13 @@ public class ClassListServiceImpl implements ClassListService {
 				userDTO.setUserNo(userNo);
 				
 				ClassListDTO classListDTO = new ClassListDTO();
-				classListDTO.setClassMainPath(imgPath);
+				classListDTO.setClassMainPath(imgPathMain);
+				classListDTO.setClassDetailPath(imgPathDetail);
 				classListDTO.setClassTitle(classTitle);
 				classListDTO.setClassCategory(classCategory);
 				classListDTO.setClassArea(classArea);
 				classListDTO.setClassTime(classTime);
 				classListDTO.setClassMoney(classMoney);
-				classListDTO.setClassGrade(classGrade);
 				classListDTO.setUserDTO(userDTO);
 				
 				
@@ -218,7 +231,7 @@ public class ClassListServiceImpl implements ClassListService {
 		
 	}
 	
-	// 클래스 등록하고 HDD에 저장되어 있는 이미지 뽑는 코드
+	// 클래스 등록하고 HDD에 저장되어 있는 메인 이미지 뽑는 코드
 	@Override
 	public ResponseEntity<byte[]> display(int classNo) {
 		
@@ -228,6 +241,25 @@ public class ClassListServiceImpl implements ClassListService {
 		
 		try {
 			File imgPath = new File(classListDTO.getClassMainPath());
+			image = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(imgPath), HttpStatus.OK);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return image;
+	}
+	
+	// 클래스 등록하고 HDD에 저장되어 있는 디테일 이미지 뽑는 코드
+	@Override
+	public ResponseEntity<byte[]> displayDetail(int classNo) {
+		
+		ClassListDTO classListDTO = classListMapper.getClassByNo(classNo);
+		
+		ResponseEntity<byte[]> image = null;
+		
+		try {
+			File imgPath = new File(classListDTO.getClassDetailPath());
 			image = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(imgPath), HttpStatus.OK);
 			
 		}catch(Exception e) {
@@ -258,12 +290,56 @@ public class ClassListServiceImpl implements ClassListService {
 		
 	}
 	
+	@Override
+	public int getClassUploadRemove(HttpServletRequest request) {
+		
+		String strClassNo = request.getParameter("classNo");
+		int classNo = 0;
+		if(strClassNo != null && strClassNo.isEmpty() == false) {
+			classNo = Integer.parseInt(strClassNo);
+		}
+		
+		System.out.println("서비스 임플 값 : " + classNo);
+		
+		ClassListDTO removeClassList = classListMapper.getClassByNo(classNo);
+		
+		if(removeClassList != null) {
+			
+			File fileMain = new File(removeClassList.getClassMainPath());
+			File fileDetail = new File(removeClassList.getClassDetailPath());
+			
+			if(fileMain.exists() || fileDetail.exists()) {
+				fileMain.delete();
+				fileDetail.delete();
+			}
+			
+		}
+		
+		int removeClass = classListMapper.removeClass(classNo);
+		
+		return removeClass;
+	}
 	
 	
+	@Override
+	public void getClassEdit(HttpServletRequest request, Model model) {
+		
+		String strClassNo = request.getParameter("classNo");
+		int classNo = 0;
+		if(strClassNo != null && strClassNo.isEmpty() == false) {
+			classNo = Integer.parseInt(strClassNo);
+		}
+		
+		model.addAttribute("classList", getClassByNo(request));
+		System.out.println("서비스 임플에 값 : " + model);
+		
+	}
 	
-	
-	
-	
+	@Override
+	public int modifyClass(MultipartHttpServletRequest multipartHttpServletRequest) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 

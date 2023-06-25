@@ -8,7 +8,103 @@
 
 <style>
 	
+body {
+  font-family: Arial, sans-serif;
+}
 
+.container {
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="file"],
+input[type="text"],
+select {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+input[type="reset"] {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="reset"]:hover {
+  background-color: #d32f2f;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+.classTitle{
+	margin-bottom: 20px;
+}
+#classTitle{
+	width: 560px;
+	height: 30px;
+}
+#classMoney{
+	margin-bottom: 10px;
+}
+#classList{
+	color: red;
+}
+.classMainPath{
+	display: inline-block;
+}
+.classDetailPath{
+	display: inline-block;
+}
 </style>
 
 <body>
@@ -17,18 +113,22 @@
 	
 	<h1>클래스 등록 화면입니다.</h1>
 	<!-- th:enctype="multipart/form-data" -->
-	<div>
+	<div class="container">
 		<form method="POST" enctype="multipart/form-data" th:action="@{/class/classAdd.do}">
-			<div>
+			<div class="classMainPath">
 				<label for="classMainPath">메인이미지</label>
-				<input id="classMainPath" type="file" name="classMainPath">
+				<input id="classMainPath" type="file" name="classMainPath" required="required">
 			</div>
-			<div>
+			<div class="classDetailPath">
+				<label for="classDetailPath">상세이미지</label>
+				<input id="classDetailPath" type="file" name="classDetailPath" required="required">
+			</div>
+			<div class="classTitle">
 				<label for="classTitle">제목</label>
 				<input id="classTitle" name="classTitle" required="required">
 			</div>
 			<div>
-				<select id="category" name="classCategory" style="width:150px; height:40px;">
+				<select id="category" name="classCategory" style="width:150px; height:40px;" required="required">
 		              <option id="categoryChecke" value="">카테고리(선택)</option>
 		              <option value="cooking">요리/베이킹</option>
 		              <option value="fitness">피트니스/스포츠</option>
@@ -45,13 +145,9 @@
 				<label for="classTime">강의 시간</label>
 				<input id="classTime" name="classTime" required="required">
 			</div>
-			<div>
+			<div id="classMoney">
 				<label for="classMoney">강의 비용</label>
 				<input id="classMoney" name="classMoney" required="required">
-			</div>
-			<div>
-				<label for="classGrade">평점(최대 5점)</label>
-				<input id="classGrade" name="classGrade">
 			</div>
 			<div>
 				<button>등록완료</button>
@@ -59,7 +155,7 @@
 			</div>
 		</form>
 		<div>
-			<a th:href="@{/class/classUploadList.do}">클래스 등록 목록</a>
+			<a id="classList" th:href="@{/class/classUploadList.do}">클래스 등록 목록 <-- [클릭]</a>
 		</div>
 	</div>
 	

@@ -17,6 +17,7 @@ public class ClassListDTO {
 	private String classMoney;
 	private double classGrade;
 	private String classMainPath;
+	private String classDetailPath;
 	private UserDTO userDTO;
 	
 
