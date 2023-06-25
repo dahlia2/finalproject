@@ -16,6 +16,6 @@ public class ScheduleDTO {
 	private Date schStart;              // 시작시간
 	private int schNowNum;				// 현재 정원
 	private int schMaxNum;              // 최대 정원
-	private int schState;               // 수강가능유무 (불가능 0, 가능 1)
+	private int schState;               // 수강가능유무 (불가능 0, 가능 1, 작가협의 2)
 
 }

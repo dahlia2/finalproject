@@ -2,8 +2,8 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: 50px;
-	margin-bottom: 80px;
+	margin-top: 30px;
+	margin-bottom: 50px;
 	}
 #main_box {
 	width: 900px;
@@ -13,52 +13,57 @@
 	margin-bottom: 13px;
 	}
 #paySuccess {
-	font-size: 38px;
+	font-size: 30px;
 	text-align: center;
 	font-weight: bold;
 	margin-bottom: 15px;
 	color: #363635;
 	}
-	
 #userNameBox {
-	font-size: 25px;
+	display: flex;
 	margin-bottom: 20px;
 	text-align: center;
+	justify-content: center;
+	align-items: center;
 	}
-
 /* 유저이름 강조 */
 #userName {
-	font-size: 30px;
+	margin-left: 12px;
+	line-height: 50px;
+	font-size: 23px;
 	font-weight: bold;
+	}
+#soon {
+	margin-right: 12px;
 	}
 
 #orderNum {
 	text-align: center;
 	font-weight: bold;
-	padding-bottom: 40px;
+	padding-bottom: 20px;
 	border-bottom: 3px solid #d8d8d8;
 	}
 
 /* 신청한 클래스 */
 #classBox {
 	position:  relative;
-	margin-top: 110px;
+	margin-top: 90px;
 	}
 #classBox h2 {
-	position: absolute;
-	top: -60px;
-	left: 40px;
-	font-size: 20px;
-	color: white;
-	width: 170px;
-	background-color: #ff0045;
-	border-radius: 30px;
-	text-align: center;
-	padding: 6px;
-	margin-left: 50px;
+    position: absolute;
+    top: -40px;
+    left: 90px;
+    font-size: 16px;
+    color: white;
+    width: 130px;
+    background-color: #a6a4a5;
+    border-radius: 30px;
+    text-align: center;
+    padding: 5px;
+    margin-left: 50px;
 	}
 #applyClass {
-	padding-top: 20px;
+	padding-top: 18px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -71,14 +76,17 @@
 	padding-bottom: 40px;
 	}	
 #classTitle{
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: bold;
 	margin-bottom: 10px;
 	}	
 #btnClass {
-	width: 100px;
+	width: 80px;
 	padding: 5px;
-	margin-top: 20px;
+	margin-top: 16px;
 	border-radius: 20px;
-	font-size: 18px;
+	font-size: 12px;
+	}
+#bottom {
+	text-align: center;
 	}

@@ -65,23 +65,16 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public void insertPayment(HttpServletRequest request) {
 		
-		// ****** 쿠폰 or 포인트 사용하지 않았을 때 ******
-		/* Optional<String> opt1 = Optional.ofNullable(request.getParameter("couponNo"));
-		int couponNo = Integer.parseInt(opt1.orElse("0"));
-		
-		Optional<String> opt2 = Optional.ofNullable(request.getParameter("point"));
-		int point = Integer.parseInt(opt2.orElse("0")); */
-		
 		// 결제 INSERT
 		int couponNo = Integer.parseInt(request.getParameter("couponNo"));
 		int point = Integer.parseInt(request.getParameter("point"));
 		int enrollNo = Integer.parseInt(request.getParameter("enrollNo"));
 		int totalCP = Integer.parseInt(request.getParameter("totalCP"));			
-		int paySale = totalCP + point;											// 총 할인금액
-		int payMethod = Integer.parseInt(request.getParameter("payMethod"));	// 결제수단
-		int payAmount = Integer.parseInt(request.getParameter("amount"));		// 총 결제금액
+		int paySale = totalCP + point;														// 총 할인금액
+		int payMethod = Integer.parseInt(request.getParameter("payMethod"));				// 결제수단
+		int payAmount = Integer.parseInt(request.getParameter("amount"));					// 총 결제금액
 		int userNo = Integer.parseInt(request.getSession().getAttribute("userNo")+"");		// 회원번호
-		int schNo = Integer.parseInt(request.getParameter("schNo"));	// 스케줄 번호
+		int schNo = Integer.parseInt(request.getParameter("schNo"));						// 스케줄 번호
 		
 		PaymentDTO paymentDTO = new PaymentDTO();
 		paymentDTO.setEnrollNo(enrollNo);
@@ -105,7 +98,6 @@ public class PaymentServiceImpl implements PaymentService {
 		Map<String, Object> pointUser = new HashMap<>();
 		pointUser.put("point", point);
 		pointUser.put("userNo", userNo);
-		System.out.println("pointUser " + pointUser);
 		paymentMapper.updateUserPoint(pointUser);
 		
 		// 사용한 쿠폰 DELETE

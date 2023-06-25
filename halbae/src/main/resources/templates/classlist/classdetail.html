@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="/css/classDetail.css" />
 
 <script th:inline="javascript">
-
    // 기본값으로 상세보기 탭 선택
    $(document).ready(function() {
       openTab('detail');
@@ -25,7 +24,7 @@
        if (tabName === 'review') {
            // Make an AJAX request to retrieve the review content
            $.ajax({
-               url: '/review/list?classNo=[[${imgClass.classListDTO.classNo}]]',
+               url: '/review/list?classNo=[[${imgClass.classNo}]]',
                type: 'GET',
                success: function(response) {
                    // Replace the content of the review tab with the retrieved reviewList HTML
@@ -42,8 +41,8 @@
        $('#' + tabName).show();
    }
 
-   $(function() {
-      var categoryName = /*[[${imgClass.classListDTO.classCategory}]]*/ null;
+   $(function() {      
+      var categoryName = /*[[${imgClass.classCategory}]]*/ null;
       function categoryChange() {
          if(categoryName == 'cooking' ) {
             $('.categoryName').text('요리/베이킹');
@@ -89,7 +88,6 @@
 </script>
 
 <body>
-
    <div th:replace="~{/layout/header::gnbFrag}"></div>
   
    <div id="all">
@@ -99,10 +97,10 @@
          </div> -->
       <ul id="text">
          <li>원데이· </li>
-         <li th:text="${imgClass.classListDTO.classArea}"></li>
+         <li th:text="${imgClass.classArea}"></li>
          <li>· 최대 6명</li>
       </ul>
-         <h1 th:text="${imgClass.classListDTO.classTitle}"></h1>
+         <h1 th:text="${imgClass.classTitle}"></h1>
          <ul id="profile">
               <li class="profile-container">
             <div class="left-section">
@@ -125,35 +123,59 @@
                   </div>
             </li>
          </ul>
-      <div>
-         <img id="imgMain" th:src="${imgClass.imgMainPath}" width="700px;" height="500px;">
+      <div id="imgMain">
+         <th:block th:if="${imgClass.classNo <= 50}">
+            <img th:src="${imgClass.classMainPath}" width="700px;" height="500px;">
+        </th:block>
+        <th:block th:if="${imgClass.classNo > 50}">
+            <img th:src="@{/class/display.do(classNo=${imgClass.classNo})}" width="700px;" height="500px;">
+        </th:block>
       </div>
       </div>
+      
       <!-- 스케줄 -->
       <div id="scjMain">
          <div id="scjsub">
-              <h2 id="classScj">클래스 일정</h2>
+              <h2 id="classScj">&nbsp;&nbsp;클래스 일정</h2>
               <ul id="class-info">
-                   <li>
-                  <p id="timeChoice">협의 후 날짜, 시간 결정</p>
-                  <p id="address"><span>성수</span></p>
-                       <span id="addressDetail">서울시 성동구 상원2길 5-11 어썸블리스</span>
-                    </li>
+                 <th:block th:each="sch,vs:${scheduleList}">
+                 <th:block th:if="${sch.schState != 2}">
+                   <li class="schduleList">
+                      <div th:text="|🌺&nbsp;&nbsp;${#dates.format(sch.schStart,'yyyy년 M월 d일 H시')} |" class="schStart"></div>
+                        <div class="block">
+                           <span th:text="|&nbsp;(${sch.schNowNum}|"></span>
+                           <span th:text="| /${sch.schMaxNum}명) |" class="schNum"></span>
+                           <th:block th:if="${sch.schState == 0}">
+                             <span class="unavailable">마감</span>
+                          </th:block>
+                          <th:block th:if="${sch.schState == 1}">
+                              <span class="available">가능</span>
+                          </th:block>
+                        </div>
+                   </li>
+               </th:block>
+               <th:block th:if="${sch.schState == 2}">
+                   <li class="scheduleArray">
+                  <span class="undefined">🌺&nbsp;&nbsp;작가님과 협의 후 결정</span>
+                   </li>
+               </th:block>
+                 </th:block>
               </ul>
-              <p id="moneyTime1">
-                 <span>30,000원 <span> / 시간</span></span>
-              </p>
-            <p id="moneyTime2">
-                 <span>60,000원 <span> / 총 1회 2시간</span></span>
+              
+            <div th:object="${classList}" id="applyClass">
+              <p id="moneyTime">
+                 <span th:text="|총 *{classMoney}|"></span>
+                 <span th:text="|/ *{classTime}|"></span>
               </p>
               <ul id="heartClass">
                  <li id="heart">
                     <img id="wish" th:src="@{/images/classList/heart/wish.png}">   
                 </li>
-                 <li>
+                <li>
                     <a id="class" onclick="fnEnroll()">클래스 신청하기</a>
-                 </li>
+                </li>
               </ul>
+            </div>
               <ul id="chattingMain">
                  <li>
                     <button id="chatting" onclick="openMessage()">
@@ -174,10 +196,15 @@
     </div>
      <!-- 클래스 소개 탭 -->
     <div id="detail" class="tab-content">
-         <img th:src="${imgClass.imgDetailPath}" width="1100px;" height="4300px;">
+       <th:block th:if="${imgClass.classNo <= 50}">
+           <img th:src="${imgClass.classDetailPath}" width="1100px;" height="4300px;">
+      </th:block>
+      <th:block th:if="${imgClass.classNo > 50}">
+           <img th:src="@{/class/displayDetail.do(classNo=${imgClass.classNo})}" width="1100px;" height="4300px;">
+      </th:block>
      </div>
     <!-- 리뷰 탭 -->
     <div id="review" class="tab-content"></div>
-   
+    
 </body>
 </html>

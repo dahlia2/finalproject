@@ -1,5 +1,4 @@
 	$(function(){
-		
 		/* 평점 ★로 표시 */
 		let grade = /*[[${classList.classGrade}]]*/ null;
 	
@@ -8,7 +7,6 @@
 				$('#star').append('<i class="fa-solid fa-star" style="color: #f4575f;"></i>');
 			}
 		}
-		
 		printStar();
 		
 		/* 결제 수단 선택 */
@@ -103,26 +101,25 @@
 			alert('⚠ 결제수단 및 동의안내를 체크해 주세요. ⚠');
 		} else {
 
-			var userNo = $('#userNo').val();				// 회원번호
-			var couponNo = $('#payCoupon').val();			// 사용한 쿠폰번호
-			if(couponNo == '') {
-				couponNo = 0;
-			}
+			var userNo = $('#userNo').val();						// 회원번호
+			var classTitle = $('#classTitle').text();				// 수업명
 			
-			var totalCP = $('#totalCP').val(); 				// 쿠폰 할인 금액
-			var point = $('#payPoint').val();				// 사용한 포인트 금액
-			if(point == '') {
-				point = 0;
-			}
+			var couponNo = $('#payCoupon').val();					// 사용한 쿠폰번호
+			if(couponNo == '') { couponNo = 0; }
+
+			var totalCP = $('#totalCP').val(); 						// 쿠폰 할인금액
+			if(totalCP == '') { totalCP = 0; }
 			
-			var payMethod = $('#paymentMethodInput').val();	// 결제 수단 (카드 0, 무통장 1)
+			var point = $('#payPoint').val();						// 사용한 포인트 금액
+			if(point == '') { point = 0; }
 			
-			var classTitle = $('#classTitle').text();		// 수업명
-			var amount = $('#amount').val(); 				// 총 금액
-			var randomNumber = Math.floor(Math.random() * 1000);
+			var amount = $('#amount').val(); 						// 총 금액
+			var payMethod = $('#paymentMethodInput').val();			// 결제 수단 (신용카드 0, 카카오페이 1)
+			var randomNumber = Math.floor(Math.random() * 1000);	// 아임포트용 주문번호
 			
 			// 결제수단 : 신용카드
 			if(payMethod === '0') {
+			
 				$.ajax({
 					type: 'post',
 					url: '/payment/pay.do',
@@ -147,3 +144,28 @@
 			}  // if
 		} 
 	} // fnNext()
+	
+	
+	// 쿠폰 사용 팝업 열기
+	function openCouponUse(userNo) {
+		var popupWidth = 500;
+		var popupHeight = 1000;
+		var left = Math.floor((screen.width - popupWidth) / 2);
+		var top = Math.floor((screen.height - popupHeight) / 2);
+		var popupOptions = 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top;
+		var payPoint = $('#payPoint').val();
+		var schNo = $('#schNo').val();
+		window.open('/couponUse?userNo=' + userNo + '&payPoint=' + payPoint + '&schNo=' + schNo, '쿠폰', popupOptions);
+	}
+   
+	// 포인트 사용 팝업 열기
+	function openPointUse(){
+		var popupWidth = 500;
+		var popupHeight = 600;
+		var left = (screen.width - popupWidth) / 2;
+		var top = (screen.height - popupHeight) / 2;
+		var popupOptions = 'width=' + popupWidth + ', height=' + 450 + ', left=' + left + ', top=' + top;
+		var payCoupon = $('#payCoupon').val();
+		var schNo = $('#schNo').val();
+		window.open('/user/pointUse?payCoupon=' + payCoupon + '&schNo=' + schNo, '포인트', popupOptions);
+	}
