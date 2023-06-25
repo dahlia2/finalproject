@@ -3,10 +3,68 @@
 <head th:replace="~{/layout/header::headFrag('전체클래스')}"></head>
 
 <script th:inline="javascript">
+	var removeResult = /*[[${removeResult}]]*/ null;
+	
+	if(removeResult != null){
+		if(removeResult == 1){
+			alert('등록된 클래스가 삭제되었습니다.');
+		}else{
+			alert('등록된 클래스 삭제가 실패되었습니다.');
+		}
+	}
 
 </script>
 
 <style>
+
+.container {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.imgMain {
+  width: 400px;
+}
+
+.textMain {
+  margin-left: 20px;
+}
+
+.Title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.addressMain {
+  margin-bottom: 10px;
+}
+
+.timeMoney {
+  margin-bottom: 10px;
+}
+
+.gradeMain {
+  margin-bottom: 10px;
+}
+
+.heartMain {
+  display: flex;
+  align-items: center;
+}
+
+.edit,
+.remove {
+  margin-left: 10px;
+}
+
+.remove {
+  color: red;
+  cursor: pointer;
+}
 	
 
 </style>
@@ -54,8 +112,8 @@
 	                 </div>
 	                 <div class="heartMain">
 	                     <input type="hidden" class="classNo" th:value="${class.classNo}">
-	                     <input type="button" class="modify" value="수정" onclick="">
-	                     <input type="button" class="remove" value="삭제" onclick="">
+	                     <input type="button" class="edit" value="편집(수정)" onclick="fnEdit(this)">
+	                     <input type="button" class="remove" value="삭제" onclick="fnRemove(this)">
 	                 </div>
                   </div>
                   
@@ -66,6 +124,19 @@
       </div>
       
    </div>
+<script th:inline="javascript">
+	
+	function fnRemove(vThis) {
+	    var classNo = $(vThis).parent().find('.classNo').val();
+	    location.href = '/class/classUploadRemove.do?classNo=' + classNo;
+	}
+	
+	function fnEdit(vThis) {
+	    var classNo = $(vThis).parent().find('.classNo').val();
+	    location.href = '/class/classEdit.do?classNo=' + classNo;
+	}
+
+</script>
 	
 </body>
 </html>

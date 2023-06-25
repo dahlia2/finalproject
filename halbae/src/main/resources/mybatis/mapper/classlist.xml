@@ -16,6 +16,7 @@
 		<result column="CLASS_MONEY" property="classMoney"/>
 		<result column="CLASS_GRADE" property="classGrade"/>
 		<result column="CLASS_MAIN_PATH" property="classMainPath"/>
+		<result column="CLASS_DETAIL_PATH" property="classDetailPath"/>
 		<association javaType="UserDTO" property="userDTO"> 		<!-- association태그 : DTO를 사용 -->
 			<id column="USER_NO" property="userNo"/>
 			<result column="USER_ID" property="userId"/>
@@ -46,6 +47,7 @@
 			<result column="CLASS_MONEY" property="classMoney"/>
 			<result column="CLASS_GRADE" property="classGrade"/>
 			<result column="CLASS_MAIN_PATH" property="classMainPath"/>
+			<result column="CLASS_DETAIL_PATH" property="classDetailPath"/>
 		</association>
 	</resultMap>
 	
@@ -62,8 +64,8 @@
 	
 	<!-- 전체/카테고리 클래스 -->
 	<select id="selectClassList" parameterType="Map" resultMap="ClassListMap">	
-		SELECT A.CLASS_NO, A.CLASS_TITLE, A.CLASS_CATEGORY, A.CLASS_AREA, A.CLASS_TIME, A.CLASS_MONEY, A.CLASS_GRADE, A.CLASS_MAIN_PATH, A.USER_NO                     
-		  FROM (SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
+		SELECT A.CLASS_NO, A.CLASS_TITLE, A.CLASS_CATEGORY, A.CLASS_AREA, A.CLASS_TIME, A.CLASS_MONEY, A.CLASS_GRADE, A.CLASS_MAIN_PATH, A.CLASS_DETAIL_PATH, A.USER_NO                     
+		  FROM (SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, CLASS_DETAIL_PATH, USER_NO
 		  		FROM CLASS_LIST) A
 		 <where>
 		 	<if test="classCategory != 'all'">
@@ -87,30 +89,29 @@
 	
 	<!-- 최신 클래스 -->
 	<select id="selectClassListNew" parameterType="Map" resultMap="ClassListMap">	
-		SELECT A.CLASS_NO, A.CLASS_TITLE, A.CLASS_CATEGORY, A.CLASS_AREA, A.CLASS_TIME, A.CLASS_MONEY, A.CLASS_GRADE, A.CLASS_MAIN_PATH, A.USER_NO                     
-		  FROM (SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
+		SELECT A.CLASS_NO, A.CLASS_TITLE, A.CLASS_CATEGORY, A.CLASS_AREA, A.CLASS_TIME, A.CLASS_MONEY, A.CLASS_GRADE, A.CLASS_MAIN_PATH, A.CLASS_DETAIL_PATH, A.USER_NO                     
+		  FROM (SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, CLASS_DETAIL_PATH, USER_NO
 		  		FROM CLASS_LIST) A	
 		 ORDER BY CLASS_NO DESC
 		 LIMIT #{begin}, #{recordPerPage}
 	</select>
 	
 	<!-- 디테일 클래스 -->
-	<select id="selectClassByNo" parameterType="int" resultMap="ImgClassMap">            
+	<select id="selectClassByNo" parameterType="int" resultMap="ClassListMap">            
 		SELECT *
-		  FROM IMG_CLASS I INNER JOIN CLASS_LIST C
-		    ON I.CLASS_NO = C.CLASS_NO
-		 WHERE I.CLASS_NO = #{classNo}
+		  FROM CLASS_LIST
+		 WHERE CLASS_NO = #{classNo}
 	</select>
 	
 	<!-- 클래스 등록 -->
 	<insert id="insertClass" useGeneratedKeys="true" keyProperty="classNo" parameterType="ClassListDTO">
-		INSERT INTO CLASS_LIST(CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO)
-		VALUES(#{classTitle}, #{classCategory}, #{classArea}, #{classTime}, #{classMoney}, #{classGrade}, #{classMainPath}, ${userDTO.userNo})
+		INSERT INTO CLASS_LIST(CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_MAIN_PATH, CLASS_DETAIL_PATH, USER_NO)
+		VALUES(#{classTitle}, #{classCategory}, #{classArea}, #{classTime}, #{classMoney}, #{classMainPath}, #{classDetailPath}, ${userDTO.userNo})
 	</insert>
 	
 	<!-- 등록한 클래스 이미지 뽑는 메퍼 -->
 	<select id="getClassByNo" parameterType="int" resultMap="ClassListMap">
-		SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
+		SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, CLASS_DETAIL_PATH, USER_NO
 		  FROM CLASS_LIST
 		 WHERE CLASS_NO = #{classNo}
 	</select>
@@ -123,9 +124,9 @@
 	 WHERE USER_NO = #{userNo}
 	</select>
 		
-	<!-- 찜 페이지 클래스 리스트 목록 뽑기 -->
+	<!-- 등록한 클래스 리스트 목록 뽑기 -->
 	<select id="selectUploadList" parameterType="List" resultType="ClassListDTO">
-		SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, USER_NO
+		SELECT CLASS_NO, CLASS_TITLE, CLASS_CATEGORY, CLASS_AREA, CLASS_TIME, CLASS_MONEY, CLASS_GRADE, CLASS_MAIN_PATH, CLASS_DETAIL_PATH, USER_NO
 		  FROM CLASS_LIST
 		<where>			
 	  		<foreach collection="list" item="classNo" open="CLASS_NO IN(" separator="," close=")">
@@ -134,8 +135,12 @@
 	  	</where>
 	</select>
 	
-	
-	
+	<!-- 등록한 클래스 삭제 -->
+	<delete id="removeClass" parameterType="int">
+		DELETE
+		  FROM CLASS_LIST
+		 WHERE CLASS_NO = #{classNo}
+	</delete>
 	
 	
 	
