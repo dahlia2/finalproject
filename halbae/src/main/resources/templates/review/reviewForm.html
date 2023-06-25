@@ -32,7 +32,10 @@
             contentType: false,
             success: function(response) {
                 window.close();
-            }
+            },
+	        error: function(response) {
+	            window.close();
+        }
         });
 
         return false;

@@ -4,6 +4,7 @@
 <link rel="stylesheet" th:href="@{/css/header.css(ver=1.0)}">
 <link rel="stylesheet" th:href="@{/css/user/myprofile.css(ver=1.0)}">
 <link rel="stylesheet" th:href="@{/css/user/enroll.css(ver=1.0)}">
+
 <body>
 
 	<div th:replace="~{/layout/header::gnbFrag}"></div>
@@ -18,22 +19,34 @@
 				start = start.substring(0, 16);
 				start = start.replace('T', ' ');
 				$('#'+i).text(start);
+				
 			}
+			  var classMoneyElements = document.querySelectorAll('.classMoney');
+
+			  classMoneyElements.forEach(function(element) {
+			    var classMoneyValue = element.innerText;
+			    var classMoneyWithoutWon = classMoneyValue.replace(/원/g, '');
+
+			    element.innerText = classMoneyWithoutWon;
+			  });			
 		})
 		
 		function fnMoveClass(vThis) {
 			location.href="/class/classDetail.do?classNo=" + $(vThis).prev().val();
 		}
-	</script>
+		
+
+ 	</script>
 	
 	<div class="profileContainer">
 		<div class="profileWrap">
-			<div class="enrollListTitle">수강 목록</div>
+			<div class="enrollListTitle">나의 하루배움</div>
 			<div class="sectionLine"></div>
 			
 			<div class="enrollWrap">
 				<div th:if="${enrollList.size == 0}">
-					<div class="noEnrolls">신청된 강의가 없습니다.</div>
+					<div class="noEnrolls1">일정이 있는 클래스만 수강목록에 노출돼요. 협의로 진행되거나 전자책, 녹화영상 클래스는 노출되지 않아요.</div>
+					<div class="noEnrolls2">수강 중인 재능이 없습니다.</div>
 				</div>
 				<div th:if="${enrollList != null}">
 					<div th:each="enroll,vs:${enrollList}">
@@ -48,12 +61,16 @@
 								</div>	
 								<div class="title" th:text="${enroll.classTitle}"></div>
 								<div class="gradeWrap">
-									<span class="grade" th:text="|평점 : ${enroll.classGrade}|"></span>
-									<i class="fa-solid fa-star lg gradeStar"></i>
-								</div>
-								<div class="paid">
-									<span th:text="${enroll.classTime}"></span>
-									<span th:text="${enroll.classMoney}"></span>
+									<span class="grade" >
+									    <span th:each="star : ${#numbers.sequence(1, 5)}">
+									        <span style="display: inline-block;" th:text="${enroll.classGrade >= star ? '★' : '☆'}"></span>
+									    </span>
+									</span>
+									<div class="paid">
+										<span class="won">₩</span>
+										<span class="classMoney" th:text="${enroll.classMoney}"></span>
+										<span class="classTime" th:text="${enroll.classTime}"></span>
+									</div>
 								</div>
 							</div>
 						</div>
