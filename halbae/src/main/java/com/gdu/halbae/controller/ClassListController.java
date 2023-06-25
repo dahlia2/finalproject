@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/class")
 @Controller
 public class ClassListController {
-	
+	// 안녕
 	// field
 	private final ClassListService classListService;
 	
