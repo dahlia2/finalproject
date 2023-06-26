@@ -164,8 +164,8 @@
               
             <div th:object="${classList}" id="applyClass">
               <p id="moneyTime">
-                 <span th:text="|총 *{classMoney}|"></span>
-                 <span th:text="|/ *{classTime}|"></span>
+                 <span th:text="|총 *{classMoney} / |"></span>
+                 <span th:text="*{classTime}" id="classTime"></span>
               </p>
               <ul id="heartClass">
                  <li id="heart">
