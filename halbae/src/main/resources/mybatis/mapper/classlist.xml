@@ -142,8 +142,18 @@
 		 WHERE CLASS_NO = #{classNo}
 	</delete>
 	
-	
-	
+	<!-- 등록한 클래스 수정 -->
+	<update id="modifyClass" parameterType="ClassListDTO">
+		UPDATE CLASS_LIST
+		   SET CLASS_TITLE = #{classTitle}
+		     , CLASS_CATEGORY = #{classCategory}
+		     , CLASS_AREA = #{classArea}
+		     , CLASS_TIME = #{classTime}
+		     , CLASS_MONEY = #{classMoney}
+		     , CLASS_MAIN_PATH = #{classMainPath}
+		     , CLASS_DETAIL_PATH = #{classDetailPath}
+		 WHERE USER_NO = ${userDTO.userNo} AND CLASS_NO = #{classNo}
+	</update>
 	
 	
 	

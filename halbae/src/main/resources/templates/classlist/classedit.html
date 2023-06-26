@@ -143,7 +143,7 @@ a:hover {
 	
 	<h1>클래스 편집(수정) 화면입니다.</h1>
 	<div class="container">
-		<form method="POST" enctype="multipart/form-data" th:action="@{/class/classModify.do}">
+		<form method="POST" enctype="multipart/form-data" th:action="@{/class/classModify.do(classNo=${classList.classNo})}">
 			<div id="uploadMain">
 				<div class="classMainPath">
 					<label for="classMainPath">메인이미지</label>
@@ -198,6 +198,6 @@ a:hover {
 			</div>
 		</form>
 	</div>
-	
+	<div th:replace="~{/layout/footer::footerFrag}"></div>
 </body>
 </html>

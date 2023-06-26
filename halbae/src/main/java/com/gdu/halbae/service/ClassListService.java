@@ -13,7 +13,7 @@ import com.gdu.halbae.domain.ImgClassDTO;
 public interface ClassListService {
 	public void getClassList(HttpServletRequest request, Model model);		// 전체/카테고리 클래스
 	public void getClassListNew(HttpServletRequest request, Model model);	// 최신 클래스
-	public ClassListDTO getClassByNo(HttpServletRequest request);			// 디테일 클래스
+	public ClassListDTO getClassByNo(HttpServletRequest request, Model model);			// 디테일 클래스
 	
 	public int addClass(MultipartHttpServletRequest multipartHttpServletRequest);	// 클래스 등록(파일)
 	public ResponseEntity<byte[]> display(int classNo);								// 클래스 등록한 이미지 뽑는 메소드(메인)

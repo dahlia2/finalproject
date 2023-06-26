@@ -169,7 +169,8 @@
               </p>
               <ul id="heartClass">
                  <li id="heart">
-                    <img id="wish" th:src="@{/images/classList/heart/wish.png}">   
+                    <input type="hidden" class="classNo" th:value="${imgClass.classNo}">
+	                   <img th:id="${imgClass.classNo}" class="wish" style="cursor:pointer;" th:src="@{/images/classList/heart/heart2.png}" onclick="fnWishAdd(this)">   
                 </li>
                 <li>
                     <a id="class" onclick="fnEnroll()">클래스 신청하기</a>
@@ -188,6 +189,46 @@
            </div>
       </div>
    </div>
+   <script th:inline="javascript">
+               var wishList = /*[[${wishList}]]*/ null;
+               console.log(wishList);
+               function chkWish() {
+                  for(let i=0; i < wishList.length; i++) {
+                     console.log(wishList[i]);
+                     $('#' + wishList[i]).attr('src', '/images/classList/heart/heart1.png');
+                  }
+               }
+               chkWish();
+            
+               function fnWishAdd(vThis){
+                  
+                  $.ajax({
+                     // 요청
+                     type: 'get',
+                     url: '/wish/wish.do',
+                     data: 'classNo=' + $(vThis).siblings('.classNo').val(),
+                     // 응답
+                     dataType: 'json',
+                     success: function(resData){
+                        if(resData.insertResult == 1){
+                           alert('찜 등록이 되었습니다.');
+                           $(vThis).attr('src', '/images/classList/heart/heart1.png');
+                        }else if(resData.removeResult == 1){
+                           alert('찜 등록이 삭제되었습니다.');
+                           $(vThis).attr('src', '/images/classList/heart/heart2.png');
+                        }
+                     
+                     }
+                     
+                  })
+                  
+               }
+               
+               
+               
+               // 함수호출
+                        
+            </script>
       
       
     <div class="tabs">
@@ -205,6 +246,6 @@
      </div>
     <!-- 리뷰 탭 -->
     <div id="review" class="tab-content"></div>
-    
+    <div th:replace="~{/layout/footer::footerFrag}"></div>
 </body>
 </html>
