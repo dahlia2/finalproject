@@ -16,12 +16,20 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
-		      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven-version>3.8.1</maven-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 	
 	<dependencies>
 	
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+		<dependency>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.8.1</version>
+		</dependency>
+				
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 	    <dependency>
 	      <groupId>org.json</groupId>
@@ -127,7 +135,8 @@
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-version}</version>
 				<configuration>
 					<excludes>
 						<exclude>
