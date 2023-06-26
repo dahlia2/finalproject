@@ -288,6 +288,9 @@ h1 {
     color: #4a4a49;
     margin-top: 20px;
     font-size: 22px;
-    margin-left: 90px;
+    margin-left: 120px;
     font-weight: bold;
     }
+ #classTime {
+ 	font-size: 18px;
+ 	}
