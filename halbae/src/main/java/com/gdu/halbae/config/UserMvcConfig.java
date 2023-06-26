@@ -35,7 +35,10 @@ public class UserMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(autoLoginInterceptor).addPathPatterns("/**");
 		registry.addInterceptor(preventLoginInterceptor).addPathPatterns(preventLogin);
 		// 로그인 체크 인터셉터 추가하기
-//		registry.addInterceptor(loginCheckInterceptor).addPathPatterns("");
+		registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/review/**")
+													  .addPathPatterns("/chat/**")
+													  .addPathPatterns("/wish/**")
+													  .addPathPatterns("/enroll/**");
 	}
 	
 }

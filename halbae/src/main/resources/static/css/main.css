@@ -11,6 +11,11 @@
 .main_top_L {
 	margin-right: 40px;
    }
+   
+/* 배너 변경 애니메이션 */
+#bigBanner {
+    transition: opacity 0.5s ease-in-out;
+}
 
 /* 로그인 박스  */
 .login_box {

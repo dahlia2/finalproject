@@ -13,12 +13,19 @@ var imgArray=new Array();
 imgArray[0]="/images/main/bigBanner1.png";
 imgArray[1]="/images/main/bigBanner2.png";
 
+var imgNum = 1;
 function showImage(){
-	 var imgNum=Math.round(Math.random()*1);
 	 var objImg=document.getElementById("bigBanner");
-	 objImg.src=imgArray[imgNum];
-	 setTimeout(showImage,2000);
+	 objImg.style.opacity = 0.2;
+	 
+	 setTimeout(function() {
+		objImg.src=imgArray[Math.floor(imgNum%2)];
+	 	objImg.style.opacity = 1;
+	 },500);
+	 imgNum++;	 
+	 setTimeout(showImage,3500);
 }
+
 
 /* 클래스 카테고리 바 */
 function fnList(classCategory) {
@@ -87,7 +94,7 @@ function fnNew(){
   		</div>
   		<div class="main_top_R">
 	  		<div>
-	  			<img src="" id="bigBanner">
+	  			<img src="/images/main/bigBanner2.png" id="bigBanner">
 	  		</div>
   		</div>
   	</div>
