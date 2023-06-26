@@ -10,6 +10,9 @@ import com.gdu.halbae.domain.ImgClassDTO;
 
 @Mapper
 public interface ClassListMapper {
+	
+	public List<ClassListDTO> selectAllClass();
+	
 	public int getClassListCount(String classCategory);						// 전체/카테고리 클래스
 	public List<ClassListDTO> selectClassList(Map<String, Object> map);		// 전체/카테고리 클래스
 	public int getClassListCountAll();										// 전체 클래스

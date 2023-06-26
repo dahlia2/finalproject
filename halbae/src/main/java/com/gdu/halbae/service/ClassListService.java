@@ -11,6 +11,9 @@ import com.gdu.halbae.domain.ClassListDTO;
 import com.gdu.halbae.domain.ImgClassDTO;
 
 public interface ClassListService {
+	
+	public void getMainList(HttpServletRequest request, Model model);
+	
 	public void getClassList(HttpServletRequest request, Model model);		// 전체/카테고리 클래스
 	public void getClassListNew(HttpServletRequest request, Model model);	// 최신 클래스
 	public ClassListDTO getClassByNo(HttpServletRequest request, Model model);			// 디테일 클래스

@@ -29,12 +29,16 @@ $(function(){
       }
    }
    
+   var onLogin = /*[[${session.userNo}]]*/ null;
+   
    $('.heart').on('click', function(){
-      if($(this).attr('src') =='/images/classList/heart/heart2.png') {
-         $(this).attr('src', '/images/classList/heart/heart1.png');                     
-      }else {
-         $(this).attr('src', '/images/classList/heart/heart2.png');
-      }
+	  if(onLogin != null) {
+	      if($(this).attr('src') =='/images/classList/heart/heart2.png') {
+	         $(this).attr('src', '/images/classList/heart/heart1.png');                     
+	      }else {
+	         $(this).attr('src', '/images/classList/heart/heart2.png');
+	      }
+	  }
    })
    
    // var wishResult = /*[[${wishResult}]]*/ null;
@@ -119,7 +123,7 @@ $(function(){
    
    .classmini {
       width: 280px;
-      height: 430px;
+      height: 350px;
       line-height: 30px;
       margin-right: 10px;
    }
@@ -283,8 +287,8 @@ $(function(){
         
         <br>
      
-      <div id="class">
-         <ul>
+      <div id="class" th:fragment="listFrag">
+         <ul class="classWrap">
             <th:block th:each="class:${classList}">
                   <li class="classmini">
                      <a th:href="@{/class/classDetail.do(classNo=${class.classNo})}">
@@ -358,10 +362,6 @@ $(function(){
                   
                }
                
-               
-               
-               // 함수호출
-                        
             </script>
          
          <div id="pagination" th:utext="${pagination}"></div>

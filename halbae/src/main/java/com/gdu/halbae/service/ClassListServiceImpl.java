@@ -40,6 +40,19 @@ public class ClassListServiceImpl implements ClassListService {
 	private final PageUtil pageUtil;
 	private final MyFileUtil myFileUtil;
 	
+	@Override
+	public void getMainList(HttpServletRequest request, Model model) {
+		
+		HttpSession session = request.getSession();
+		Integer userNo = (Integer) session.getAttribute("userNo");
+		if(userNo != null) {
+			List<Integer> wishList = wishMapper.selectClassNoInWish(userNo);
+			model.addAttribute("wishList", wishList);
+		
+		}
+		model.addAttribute("classList", classListMapper.selectAllClass());
+	}
+	
 	// 전체,카테고리 클래스
 	@Override
 	public void getClassList(HttpServletRequest request, Model model) {
@@ -73,8 +86,6 @@ public class ClassListServiceImpl implements ClassListService {
 		
 		
 		List<Integer> wishList = wishMapper.selectClassNoInWish(userNo);
-		System.out.println("전체 클래스 메소드 : " + wishList);
-		
 		
 		// select -> option 태그에 카테고리 별 개수 구하는 코드
 		model.addAttribute("classCountAll", classListMapper.getClassListCountAll());

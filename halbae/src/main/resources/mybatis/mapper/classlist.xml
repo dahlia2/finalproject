@@ -51,6 +51,11 @@
 		</association>
 	</resultMap>
 	
+	<select id="selectAllClass" resultMap="ClassListMap">
+		SELECT *
+		  FROM CLASS_LIST
+	</select>
+	
 	<!-- 전체/카테고리 클래스 -->
 	<select id="getClassListCount" parameterType="String" resultType="int">
 		SELECT COUNT(*)
