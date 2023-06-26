@@ -33,12 +33,12 @@ public class UserMvcConfig implements WebMvcConfigurer {
 		preventLogin.add("/user/findId.do");
 		preventLogin.add("/user/findPw.html");
 		registry.addInterceptor(autoLoginInterceptor).addPathPatterns("/**");
-		registry.addInterceptor(preventLoginInterceptor).addPathPatterns(preventLogin)
-														.addPathPatterns("/review/**")
-														.addPathPatterns("/chat/**")
-														.addPathPatterns("/wish/**");
+		registry.addInterceptor(preventLoginInterceptor).addPathPatterns(preventLogin);
 		// 로그인 체크 인터셉터 추가하기
-//		registry.addInterceptor(loginCheckInterceptor).addPathPatterns("");
+		registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/review/**")
+													  .addPathPatterns("/chat/**")
+													  .addPathPatterns("/wish/**")
+													  .addPathPatterns("/enroll/**");
 	}
 	
 }
