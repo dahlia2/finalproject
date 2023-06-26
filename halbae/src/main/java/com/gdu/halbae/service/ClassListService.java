@@ -5,10 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.halbae.domain.ClassListDTO;
-import com.gdu.halbae.domain.ImgClassDTO;
 
 public interface ClassListService {
 	

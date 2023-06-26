@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.gdu.halbae.domain.ClassListDTO;
 import com.gdu.halbae.domain.CouponDTO;
 import com.gdu.halbae.domain.ScheduleDTO;

@@ -9,14 +9,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProfileUtil {
-
-	// 경로 구분자
-	private String sep = Matcher.quoteReplacement(File.separator);
 	
+	private String sep = Matcher.quoteReplacement(File.separator);
+
 	// String path 만들기
 	public String getPath() {
+		
+		LocalDate now = LocalDate.now();
 
-		return "/Users/woomin/Documents/TeamPrj/UserProfile";
+		return "/storage" + sep + now.getYear() + sep + String.format("%02d", now.getMonthValue()) + sep + String.format("%02d", now.getDayOfMonth());
+//		return "/Users" + sep +"woomin" + sep + "UserProfile";
+		
 	}
 	
 	// String filesystemName 만들기

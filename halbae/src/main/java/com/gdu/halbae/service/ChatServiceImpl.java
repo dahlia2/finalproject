@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class ChatServiceImpl implements ChatService {
+  
     private final ChatMapper chatMapper;
 
     @Autowired

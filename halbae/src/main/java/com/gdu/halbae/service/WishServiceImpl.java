@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import com.gdu.halbae.domain.ClassListDTO;
 import com.gdu.halbae.domain.WishDTO;
 import com.gdu.halbae.mapper.WishMapper;
-import com.gdu.halbae.util.PageUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +41,6 @@ public class WishServiceImpl implements WishService {
 	
 	// field
 	private final WishMapper wishMapper;
-	private final PageUtil pageUtil;
 	
 	// 클래스리스트 찜목록 삽입/삭제
 	@Override
@@ -126,19 +124,6 @@ public class WishServiceImpl implements WishService {
 		// select -> option 태그에 카테고리 별 개수 구하는 코드
 		model.addAttribute("wishCount", wishCount);
 		
-		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

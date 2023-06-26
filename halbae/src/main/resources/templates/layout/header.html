@@ -47,7 +47,7 @@
                  <p><a th:href="@{/class/classUpload.html}">튜터메뉴</a></p>
                </li>
                <li>
-                 <p>메세지</p>
+                <div onclick="openMessage()">메세지</div>
                </li>
                <li>
                  <p>클래스신청서</p>
@@ -64,8 +64,8 @@
                  </div>
                  <ul class="myLnb hidden">
                     <li onclick="$('#profileFrm').submit()"><span>내 프로필</span></li>
-                    <li><span>내 쿠폰</span></li>
-                    <li><span>내 포인트</span></li>
+                    <li th:onclick="|openCoupon(${session.userNo})|" ><span>내 쿠폰</span></li>
+                    <li onclick="openPoint()"><span>내 포인트</span></li>
                     <li onclick="$('#logoutFrm').submit()"><span>로그아웃</span></li>
                  </ul>
                </li>

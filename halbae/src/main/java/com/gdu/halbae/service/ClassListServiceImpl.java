@@ -1,7 +1,6 @@
 package com.gdu.halbae.service;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,14 +12,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.halbae.domain.ClassListDTO;
-import com.gdu.halbae.domain.ImgClassDTO;
 import com.gdu.halbae.domain.UserDTO;
 import com.gdu.halbae.mapper.ClassListMapper;
 import com.gdu.halbae.mapper.WishMapper;
@@ -28,7 +25,6 @@ import com.gdu.halbae.util.MyFileUtil;
 import com.gdu.halbae.util.PageUtil;
 
 import lombok.RequiredArgsConstructor;
-import net.coobird.thumbnailator.Thumbnails;
 
 @RequiredArgsConstructor
 @Service

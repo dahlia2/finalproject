@@ -50,6 +50,7 @@
 }
 #headerNav li {
 	padding: 3px 10px;
+	cursor: pointer;
 }
 .loginLink {
 	margin-top: 55px;
