@@ -22,4 +22,5 @@ public interface ClassListMapper {
 	public List<Integer> selectClassUploadList(int userNo);					// 클랙스 등록 목록 userNo주고 classNo받아오는 코드
 	public List<ClassListDTO> selectUploadList(List<Integer> uploadList);	// 다 뽑은 classNo를 전달해서 classList 테이블에 컬럼 값을 가져오는 코드!
 	public int removeClass(int classNo);									// 등록한 클래스 삭제
+	public int modifyClass(ClassListDTO classListDTO);						// 클래스 수정
 }

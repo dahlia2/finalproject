@@ -130,18 +130,28 @@ public class ClassListServiceImpl implements ClassListService {
 	
 	// 디테일 클래스
 	@Override
-	public ClassListDTO getClassByNo(HttpServletRequest request) {
+	public ClassListDTO getClassByNo(HttpServletRequest request, Model model) {
 		
 		String strClassNo = request.getParameter("classNo");
 		int classNo = 0;	// null, 빈문자열이 올때 0값을 사용하기위한 선언이다!
 		if(strClassNo != null && strClassNo.isEmpty() == false) { // 자바는 빈문자열 처리시 .isEmpty()를 사용한다. (기본은 비어있다라는 말!)
 			classNo = Integer.parseInt(strClassNo);
 		}
+		
+		HttpSession session = request.getSession();
+		Object userNoObj = session.getAttribute("userNo");
+		int userNo = 0; // 기본값 설정
+		if (userNoObj != null) {
+		    userNo = Integer.parseInt(userNoObj.toString());
+		}
+		
+		List<Integer> wishList = wishMapper.selectClassNoInWish(userNo);
+		model.addAttribute("wishList", wishList);
+		
 		return classListMapper.selectClassByNo(classNo);
 	}
 	
 	// 클래스 등록
-	@Transactional
 	@Override
 	public int addClass(MultipartHttpServletRequest multipartHttpServletRequest) {
 		
@@ -330,15 +340,102 @@ public class ClassListServiceImpl implements ClassListService {
 			classNo = Integer.parseInt(strClassNo);
 		}
 		
-		model.addAttribute("classList", getClassByNo(request));
+		model.addAttribute("classList", classListMapper.getClassByNo(classNo));
 		System.out.println("서비스 임플에 값 : " + model);
 		
 	}
 	
+	// 클래스 수정
 	@Override
 	public int modifyClass(MultipartHttpServletRequest multipartHttpServletRequest) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		String strClassNo = multipartHttpServletRequest.getParameter("classNo");
+		int classNo = 0;
+		if(strClassNo != null && strClassNo.isEmpty() == false) {
+			classNo = Integer.parseInt(strClassNo);
+		}
+		
+		String classTitle = multipartHttpServletRequest.getParameter("classTitle");
+		String classCategory = multipartHttpServletRequest.getParameter("classCategory");
+		String classArea = multipartHttpServletRequest.getParameter("classArea");
+		String classTime = multipartHttpServletRequest.getParameter("classTime");
+		String classMoney = multipartHttpServletRequest.getParameter("classMoney");
+		
+		MultipartFile classMainPath = multipartHttpServletRequest.getFile("classMainPath");
+		MultipartFile classDetailPath = multipartHttpServletRequest.getFile("classDetailPath");
+		
+		int modifyResult = 0;
+		if(classMainPath != null && classMainPath.isEmpty() == false
+			&& classDetailPath != null && classDetailPath.isEmpty() == false) {
+			
+			// 예외 처리
+			try {
+				
+				// 첨부 파일의 저장 경로
+				String path = myFileUtil.getPath();
+				
+				// 첨부 파일의 저장 경로가 없으면 만들기
+				File dir = new File(path);
+				if(dir.exists() == false) {	// 저장 경로에 파일이 존재하지 않다면 
+					dir.mkdirs();
+				}
+				
+				// 첨부 파일의 원래 이름
+				String originNameMain = classMainPath.getOriginalFilename();
+				String originNameDetail = classDetailPath.getOriginalFilename();
+				
+				System.out.println("메인 첨부 파일의 원래 이름 " + originNameMain);
+				System.out.println("상세 첨부 파일의 원래 이름 " + originNameDetail);
+
+				originNameMain = originNameMain.substring(originNameMain.lastIndexOf("\\") + 1);
+				originNameDetail = originNameDetail.substring(originNameDetail.lastIndexOf("\\") + 1);
+				
+				// 첨부 파일의 저장 이름
+				String filesystemNameMain = myFileUtil.getFilesystemName(originNameMain);
+				String filesystemNameDetail = myFileUtil.getFilesystemName(originNameDetail);
+				
+				System.out.println("메인첨부 파일의 저장 이름 " + filesystemNameMain);
+				System.out.println("상세첨부 파일의 저장 이름 " + filesystemNameDetail);
+				
+				// 첨부 파일의 File 객체 (HDD에 저장할 첨부 파일)
+				File fileMain = new File(dir, filesystemNameMain);
+				File fileDetail = new File(dir, filesystemNameDetail);
+				
+				String imgPathMain = dir + "\\" + filesystemNameMain;
+				String imgPathDetail = dir + "\\" + filesystemNameDetail;
+				
+				// 첨부 파일을 HDD에 저장
+				classMainPath.transferTo(fileMain);  // 실제로 서버에 저장된다.
+				classDetailPath.transferTo(fileDetail);  // 실제로 서버에 저장된다.
+				
+				HttpSession session = multipartHttpServletRequest.getSession();
+				int userNo = (int) session.getAttribute("userNo");
+				
+				UserDTO userDTO = new UserDTO();
+				userDTO.setUserNo(userNo);
+				
+				ClassListDTO classListDTO = new ClassListDTO();
+				classListDTO.setClassNo(classNo);
+				classListDTO.setClassMainPath(imgPathMain);
+				classListDTO.setClassDetailPath(imgPathDetail);
+				classListDTO.setClassTitle(classTitle);
+				classListDTO.setClassCategory(classCategory);
+				classListDTO.setClassArea(classArea);
+				classListDTO.setClassTime(classTime);
+				classListDTO.setClassMoney(classMoney);
+				classListDTO.setUserDTO(userDTO);
+				
+				
+				// DB로 보내기
+				modifyResult = classListMapper.modifyClass(classListDTO);
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return modifyResult;
 	}
 	
 	

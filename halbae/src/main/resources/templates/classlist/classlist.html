@@ -4,7 +4,14 @@
 
 <script th:inline="javascript">
 $(function(){
-   
+	var uploadResult = /*[[${uploadResult}]]*/ null;
+	if(uploadResult != null){
+		if(uploadResult == 1){
+			alert('클래스가 등록되었습니다.');
+		}else{
+			alert('클래스가 등록되지 않았습니다.');
+		}
+	}
    
    // 카테고리 파라미터 영어로 오는데 화면에는 한글로 표시하는 코드!
    var categoryName = /*[[${categoryName}]]*/ null;
@@ -306,7 +313,7 @@ $(function(){
 							    </span>
 							</span>
                         </div>
-                        <input type="hidden" class="classNo" th:value="${class.classNo}">
+                        <input type="hidden" class="classNo" th:value="${class	.classNo}">
 	                   <img th:id="${class.classNo}" class="heart" style="cursor:pointer;" th:src="@{/images/classList/heart/heart2.png}" onclick="fnWishAdd(this)">
 
                      </div>
@@ -362,5 +369,6 @@ $(function(){
       </div>
 
    </div>
+   <div th:replace="~{/layout/footer::footerFrag}"></div>
 </body>
 </html>

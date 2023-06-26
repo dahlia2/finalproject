@@ -56,9 +56,9 @@ public class ClassListController {
    // 디테일 클래스
    @GetMapping("/classDetail.do")
    public String listDetail(HttpServletRequest request, Model model) {
-      model.addAttribute("imgClass", classListService.getClassByNo(request));
+      model.addAttribute("imgClass", classListService.getClassByNo(request, model));
       model.addAttribute("classNo", request.getParameter("classNo"));
-      System.out.println("컨트롤러 디테일 클래스 : " + classListService.getClassByNo(request));
+      System.out.println("컨트롤러 디테일 클래스 : " + classListService.getClassByNo(request, model));
       
       model.addAttribute("scheduleList", enrollService.scheduleByClassNo(request));
       model.addAttribute("classList", enrollService.classListByNo(request));

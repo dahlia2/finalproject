@@ -40,6 +40,9 @@ $(function(){
    .Title {
    		margin-bottom: 3px;
    }
+   .titleMain{
+   		margin-bottom: 7px;
+   }
    .addressMain{
    		margin-bottom: 3px;
    		font-size: 19px;
@@ -53,6 +56,7 @@ $(function(){
    .timeMoney{
    		margin-bottom: 3px;
    		font-size: 20px;
+   		margin-top: 7px;
    }
    .money{
    		color: red;
@@ -74,6 +78,9 @@ $(function(){
    .textMain{
    		margin-left: 30px;
    		margin-top: 70px;
+   }
+   .heartMain{
+   		margin-top: 10px;
    }
 </style>
 
@@ -111,7 +118,7 @@ $(function(){
         		</div>
                 
                   <div class="textMain">
-	                  <div>
+	                  <div class="titleMain">
 	                     <h2 class="Title" th:text="${class.classTitle}"></h2>
 	                  </div>
 	                  <div class="addressMain">
@@ -121,8 +128,12 @@ $(function(){
 						<span th:text="${class.classTime}">소요시간</span> /
 						<strong><span class="money" th:text="${class.classMoney}">총금액</span></strong>
 					 </p>
-					 <div class="gradeMain">
-					 	<span><span><span>평점: </span><span class="grade" th:text="${class.classGrade}"></span><span class="grade">점</span></span></span>
+					 <div>
+                 		<span class="grade" >
+						    <span th:each="star : ${#numbers.sequence(1, 5)}">
+						        <span style="display: inline-block;" th:text="${class.classGrade >= star ? '★' : '☆'}"></span>
+						    </span>
+						</span>
 	                 </div>
 	                 <div class="heartMain">
 	                     <input type="hidden" class="classNo" th:value="${class.classNo}">
@@ -148,6 +159,6 @@ $(function(){
     
    </script>
    
-   
+   <div th:replace="~{/layout/footer::footerFrag}"></div>
 </body>
 </html>

@@ -4,12 +4,20 @@
 
 <script th:inline="javascript">
 	var removeResult = /*[[${removeResult}]]*/ null;
-	
 	if(removeResult != null){
 		if(removeResult == 1){
 			alert('등록된 클래스가 삭제되었습니다.');
 		}else{
 			alert('등록된 클래스 삭제가 실패되었습니다.');
+		}
+	}
+	
+	var modifyResult = /*[[${modifyResult}]]*/ null;
+	if(modifyResult != null){
+		if(modifyResult == 1){
+			alert('클래스가 수정되었습니다.');
+		}else{
+			alert('클래스 수정이 실패되었습니다.');
 		}
 	}
 
@@ -23,14 +31,18 @@
   padding: 20px;
   border: 1px solid #ccc;
   margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .imgMain {
   width: 400px;
+  border-radius: 5px;
 }
 
 .textMain {
   margin-left: 20px;
+  flex-grow: 1;
 }
 
 .Title {
@@ -49,24 +61,44 @@
 
 .gradeMain {
   margin-bottom: 10px;
+  color: red;
 }
 
 .heartMain {
   display: flex;
   align-items: center;
+  margin-top: 20px;
 }
 
-.edit,
-.remove {
-  margin-left: 10px;
+.edit{
+	cursor: pointer;
+	width: 70px;
+  	height: 30px;
+	font-size: 15px;
+	font-weight: 600;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
 }
 
 .remove {
-  color: red;
+  color: white;
   cursor: pointer;
+  margin-left: 10px;
+  width: 50px;
+  height: 30px;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: red;
+  border: none;
+  border-radius: 5px;
 }
-	
-
+h1{
+	margin-top: 10px;
+	margin-bottom: 20px;
+  	text-align: center;
+}
 </style>
 
 <body>
@@ -108,7 +140,11 @@
 						<strong><span class="money" th:text="${class.classMoney}">총금액</span></strong>
 					 </p>
 					 <div class="gradeMain">
-					 	<span><span><span>평점: </span><span class="grade" th:text="${class.classGrade}"></span><span class="grade">점</span></span></span>
+					 	<span class="grade" >
+						    <span th:each="star : ${#numbers.sequence(1, 5)}">
+						        <span style="display: inline-block;" th:text="${class.classGrade >= star ? '★' : '☆'}"></span>
+						    </span>
+						</span>
 	                 </div>
 	                 <div class="heartMain">
 	                     <input type="hidden" class="classNo" th:value="${class.classNo}">
@@ -135,8 +171,8 @@
 	    var classNo = $(vThis).parent().find('.classNo').val();
 	    location.href = '/class/classEdit.do?classNo=' + classNo;
 	}
-
-</script>
 	
+</script>
+	<div th:replace="~{/layout/footer::footerFrag}"></div>
 </body>
 </html>

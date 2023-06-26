@@ -10,6 +10,7 @@
 	
 body {
   font-family: Arial, sans-serif;
+  
 }
 
 .container {
@@ -96,8 +97,12 @@ a:hover {
 #classMoney{
 	margin-bottom: 10px;
 }
+#classListMain{
+	display: inline;
+	border: 2px solid black;
+}
 #classList{
-	color: red;
+	font-size: 20px;
 }
 .classMainPath{
 	display: inline-block;
@@ -154,10 +159,10 @@ a:hover {
 				<input type="reset" value="다시작성">
 			</div>
 		</form>
-		<div>
-			<a id="classList" th:href="@{/class/classUploadList.do}">클래스 등록 목록 <-- [클릭]</a>
+		<div id="classListMain">
+			<a id="classList" th:href="@{/class/classUploadList.do}">클래스 등록 목록</a>
 		</div>
 	</div>
-	
+	<div th:replace="~{/layout/footer::footerFrag}"></div>
 </body>
 </html>
